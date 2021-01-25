@@ -1,0 +1,137 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MonsterBattleData : IMonsterBattleData {
+	public MonsterBattleData() {
+		firstAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
+		secondAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
+	}
+	public AbnormalTypeState firstAbnormalState_ { get; set; }
+	public AbnormalTypeState secondAbnormalState_ { get; set; }
+
+	private const int RankLimit_ = 6;
+
+	private int attackParameterRank_ = 0;
+	private int defenseParameterRank_ = 0;
+	private int specialAttackParameterRank_ = 0;
+	private int specialDefenseParameterRank_ = 0;
+	private int speedParameterRank_ = 0;
+
+	private int avoidRateParameterRank_ = 0;
+	private int hitRateParameterRank_ = 0;
+
+	public void RankReset() {
+		attackParameterRank_ = 0;
+		defenseParameterRank_ = 0;
+		specialAttackParameterRank_ = 0;
+		specialDefenseParameterRank_ = 0;
+		speedParameterRank_ = 0;
+
+		avoidRateParameterRank_ = 0;
+		hitRateParameterRank_ = 0;
+
+		firstAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
+		secondAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
+	}
+
+	public void AttackParameterRankAdd(int value) {
+		if (attackParameterRank_ + value > RankLimit_) {
+			attackParameterRank_ = RankLimit_;
+			return;
+		}
+		attackParameterRank_ += value;
+	}
+	public void DefenseParameterRankAdd(int value) {
+		if (defenseParameterRank_ + value > RankLimit_) {
+			defenseParameterRank_ = RankLimit_;
+			return;
+		}
+		defenseParameterRank_ += value;
+	}
+	public void SpecialAttackParameterRankAdd(int value) {
+		if (specialAttackParameterRank_ + value > RankLimit_) {
+			specialAttackParameterRank_ = RankLimit_;
+			return;
+		}
+		specialAttackParameterRank_ += value;
+	}
+	public void SpecialDefenseParameterRankAdd(int value) {
+		if (specialDefenseParameterRank_ + value > RankLimit_) {
+			specialDefenseParameterRank_ = RankLimit_;
+			return;
+		}
+		specialDefenseParameterRank_ += value;
+	}
+	public void SpeedParameterRankAdd(int value) {
+		if (speedParameterRank_ + value > RankLimit_) {
+			speedParameterRank_ = RankLimit_;
+			return;
+		}
+		speedParameterRank_ += value;
+	}
+
+	public void AvoidRateParameterRankAdd(int value) {
+		if (avoidRateParameterRank_ + value > RankLimit_) {
+			avoidRateParameterRank_ = RankLimit_;
+			return;
+		}
+		avoidRateParameterRank_ += value;
+	}
+	public void HitRateParameterRankAdd(int value) {
+		if (hitRateParameterRank_ + value > RankLimit_) {
+			hitRateParameterRank_ = RankLimit_;
+			return;
+		}
+		hitRateParameterRank_ += value;
+	}
+
+	public float RealAttackParameterRank() {
+		//分子,分母
+		float numerator = 2, denominator = 2;
+
+		if (attackParameterRank_ < 0) denominator -= attackParameterRank_;
+		else numerator += attackParameterRank_;
+
+		return numerator / denominator;
+	}
+	public float RealDefenseParameterRank() {
+		//分子,分母
+		float numerator = 2, denominator = 2;
+
+		if (defenseParameterRank_ < 0) denominator -= defenseParameterRank_;
+		else numerator += defenseParameterRank_;
+
+		return numerator / denominator;
+	}
+	public float RealSpecialAttackParameterRank() {
+		//分子,分母
+		float numerator = 2, denominator = 2;
+
+		if (specialAttackParameterRank_ < 0) denominator -= specialAttackParameterRank_;
+		else numerator += specialAttackParameterRank_;
+
+		return numerator / denominator;
+	}
+	public float RealSpecialDefenseParameterRank() {
+		//分子,分母
+		float numerator = 2, denominator = 2;
+
+		if (specialDefenseParameterRank_ < 0) denominator -= specialDefenseParameterRank_;
+		else numerator += specialDefenseParameterRank_;
+
+		return numerator / denominator;
+	}
+	public float RealSpeedParameterRank() {
+		//分子,分母
+		float numerator = 2, denominator = 2;
+
+		if (speedParameterRank_ < 0) denominator -= speedParameterRank_;
+		else numerator += speedParameterRank_;
+
+		return numerator / denominator;
+	}
+
+	public int GetAvoidRateParameterRank() { return avoidRateParameterRank_; }
+	public int GetHitRateParameterRank() { return hitRateParameterRank_; }
+}
