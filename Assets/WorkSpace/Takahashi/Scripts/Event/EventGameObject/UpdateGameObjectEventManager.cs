@@ -3,76 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UpdateGameObjectEventManager {
-	private int eventGameObjectsExecuteCounter_ = 0;
-	private List<UpdateGameObject> eventGameObjects_ = new List<UpdateGameObject>();
-	private List<float> eventGameObjectsEndValue_ = new List<float>();
-	private List<List<UpdateGameObject>> executeEvenetGameObjects_ = new List<List<UpdateGameObject>>();
-	private List<List<float>> executeEventGameObjectsEndValue_ = new List<List<float>>();
+	private UpdateGameObjectEventManagerExecuteState executeState_ = new UpdateGameObjectEventManagerExecuteState(UpdateGameObjectEventManagerExecute.None);
 
-	public void EventGameObjectSet(UpdateGameObject eventGameObject, float endValue = 0) {
-		eventGameObjects_.Add(eventGameObject);
-		eventGameObjectsEndValue_.Add(endValue);
+	private int updateGameObjectsExecuteCounter_ = 0;
+	private List<UpdateGameObject> updateGameObjects_ = new List<UpdateGameObject>();
+	private List<Vector3> endVec3s_ = new List<Vector3>();
+	private List<List<UpdateGameObject>> executeUpdateGameObjects_ = new List<List<UpdateGameObject>>();
+	private List<List<Vector3>> executeEndVec3s_ = new List<List<Vector3>>();
+	private List<UpdateGameObjectEventManagerExecute> updateGameObjectEventManagerExecutes_ = new List<UpdateGameObjectEventManagerExecute>();
+
+	public UpdateGameObjectEventManagerExecuteState GetExecuteState() { return executeState_; }
+
+	public UpdateGameObject GetExecuteUpdateGameObjects(int value) { return executeUpdateGameObjects_[updateGameObjectsExecuteCounter_][value]; }
+	public int GetExecuteUpdateGameObjectsCount() { return executeUpdateGameObjects_[updateGameObjectsExecuteCounter_].Count; }
+	public Vector3 GetExecuteEndVec3s(int value) { return executeEndVec3s_[updateGameObjectsExecuteCounter_][value]; }
+
+	public void UpdateGameObjectSet(UpdateGameObject eventGameObject, Vector3 endValue) {
+		updateGameObjects_.Add(eventGameObject);
+		endVec3s_.Add(endValue);
 	}
-	public void EventGameObjectsExecuteSet() {
+	public void UpdateGameObjectsExecuteSet(UpdateGameObjectEventManagerExecute setExecute = UpdateGameObjectEventManagerExecute.None) {
 		List<UpdateGameObject> addGameObjects = new List<UpdateGameObject>();
-		List<float> addFloats = new List<float>();
+		List<Vector3> addVec3s = new List<Vector3>();
 
-		for (int i = 0; i < eventGameObjects_.Count; ++i) {
-			addGameObjects.Add(eventGameObjects_[i]);
-			addFloats.Add(eventGameObjectsEndValue_[i]);
+		for (int i = 0; i < updateGameObjects_.Count; ++i) {
+			addGameObjects.Add(updateGameObjects_[i]);
+			addVec3s.Add(endVec3s_[i]);
 		}
 
-		executeEvenetGameObjects_.Add(addGameObjects);
-		executeEventGameObjectsEndValue_.Add(addFloats);
+		executeUpdateGameObjects_.Add(addGameObjects);
+		executeEndVec3s_.Add(addVec3s);
+		updateGameObjectEventManagerExecutes_.Add(setExecute);
 
-		eventGameObjects_.Clear();
-		eventGameObjectsEndValue_.Clear();
+		updateGameObjects_.Clear();
+		endVec3s_.Clear();
 	}
 
-	public void EventGameObjectsActiveSetExecute(bool setActive) {
-		for (int i = 0; i < executeEvenetGameObjects_[eventGameObjectsExecuteCounter_].Count; ++i) {
-			executeEvenetGameObjects_[eventGameObjectsExecuteCounter_][i].GetGameObject().SetActive(setActive);
+	public void UpdateGameObjectsActiveSetExecute(bool setActive) {
+		for (int i = 0; i < executeUpdateGameObjects_[updateGameObjectsExecuteCounter_].Count; ++i) {
+			executeUpdateGameObjects_[updateGameObjectsExecuteCounter_][i].GetGameObject().SetActive(setActive);
 		}
 
-		eventGameObjectsExecuteCounter_ += 1;
+		updateGameObjectsExecuteCounter_ += 1;
 	}
-	public void EventGameObjectsPosMoveXExecute(float timeRegulation = 0) {
-		for(int i = 0;i < executeEvenetGameObjects_[eventGameObjectsExecuteCounter_].Count; ++i) {
-			executeEvenetGameObjects_[eventGameObjectsExecuteCounter_][i].ProcessStatePosMoveXExecute(
-				timeRegulation, 
-				executeEventGameObjectsEndValue_[eventGameObjectsExecuteCounter_][i]
-				);
-		}
+	public void UpdateGameObjectsUpdateExecute(float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
+		executeState_.state_ = updateGameObjectEventManagerExecutes_[updateGameObjectsExecuteCounter_];
 
-		eventGameObjectsExecuteCounter_ += 1;
-	}
-	public void EventGameObjectsPosMoveYExecute(float timeRegulation = 0) {
-		for (int i = 0; i < executeEvenetGameObjects_[eventGameObjectsExecuteCounter_].Count; ++i) {
-			executeEvenetGameObjects_[eventGameObjectsExecuteCounter_][i].ProcessStatePosMoveYExecute(
-				timeRegulation,
-				executeEventGameObjectsEndValue_[eventGameObjectsExecuteCounter_][i]
-				);
-		}
+		executeState_.Execute(this, timeRegulation, timeFluctProcess);
 
-		eventGameObjectsExecuteCounter_ += 1;
-	}
-	public void EventGameObjectsRotMoveExecute(float timeRegulation = 0) {
-		for (int i = 0; i < executeEvenetGameObjects_[eventGameObjectsExecuteCounter_].Count; ++i) {
-			executeEvenetGameObjects_[eventGameObjectsExecuteCounter_][i].ProcessStateRotMoveExecute(
-				timeRegulation,
-				executeEventGameObjectsEndValue_[eventGameObjectsExecuteCounter_][i]
-				);
-		}
-
-		eventGameObjectsExecuteCounter_ += 1;
+		updateGameObjectsExecuteCounter_ += 1;
 	}
 
-	public void EventGameObjectsClear() {
-		eventGameObjects_.Clear();
-		eventGameObjectsEndValue_.Clear();
-		executeEvenetGameObjects_.Clear();
-		executeEventGameObjectsEndValue_.Clear();
+	public void UpdateGameObjectsClear() {
+		updateGameObjects_.Clear();
+		endVec3s_.Clear();
+		executeUpdateGameObjects_.Clear();
+		executeEndVec3s_.Clear();
+		updateGameObjectEventManagerExecutes_.Clear();
 
-		eventGameObjectsExecuteCounter_ = 0;
+		updateGameObjectsExecuteCounter_ = 0;
 	}
 }

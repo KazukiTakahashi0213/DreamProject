@@ -16,8 +16,8 @@ public class MonsterParts : MonoBehaviour {
 	private IMonsterPartsProcessState processState_ = new MonsterPartsProcessNone();
 	private IMonsterPartsProcessIdleState processIdleState_ = new MonsterPartsProcessIdleDown();
 
-	private t13.Time_fluct timeFluct_ = new t13.Time_fluct();
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private Vector3 entryPos_;
 
@@ -29,15 +29,15 @@ public class MonsterParts : MonoBehaviour {
 	public void SetProcessIdleState(IMonsterPartsProcessIdleState state) { processIdleState_ = state; }
 	public IMonsterPartsProcessIdleState GetProcessIdleState() { return processIdleState_; }
 
-	public t13.Time_fluct GetTimeFluct() { return timeFluct_; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFluct() { return timeFluct_; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public void SpriteBlinkEventSet(int times, float changeTimeRegulation) {
 		//ダメージアクション（点滅）
 		for (int i = 0; i < times; ++i) {
 			for (int j = 0; j < 2; ++j) {
-				AllEventManager.GetInstance().EventGameObjectSet(eventGameObject_);
-				AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(j == 1);
+				AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_);
+				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(j == 1);
 				AllEventManager.GetInstance().EventWaitSet(changeTimeRegulation);
 			}
 		}

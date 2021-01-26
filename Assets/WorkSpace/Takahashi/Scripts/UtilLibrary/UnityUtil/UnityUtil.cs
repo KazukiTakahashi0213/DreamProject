@@ -7,21 +7,21 @@ namespace t13 {
 
 	public class UnityUtil {
 		//moveObjectのx軸をmoveFluctで移動させる
-		static public void ObjectInFluctUpdatePosX(GameObject moveObject, Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdatePosX(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation) {
 			Vector3 objectPos = moveObject.transform.position;
 
 			objectPos.x = moveFluct.InFluct(count, objectPos.x, endValue, regulation);
 			moveObject.transform.position = objectPos;
 		}
 		//moveObjectのy軸をmoveFluctで移動させる
-		static public void ObjectInFluctUpdatePosY(GameObject moveObject, t13.Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdatePosY(GameObject moveObject, t13.TimeFluct moveFluct, float endValue, float count, float regulation) {
 			Vector3 objectPos = moveObject.transform.position;
 
 			objectPos.y = moveFluct.InFluct(count, objectPos.y, endValue, regulation);
 			moveObject.transform.position = objectPos;
 		}
 		//moveObjectのz軸をmoveFluctで移動させる
-		static public void ObjectInFluctUpdatePosZ(GameObject moveObject, t13.Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdatePosZ(GameObject moveObject, t13.TimeFluct moveFluct, float endValue, float count, float regulation) {
 			Vector3 objectPos = moveObject.transform.position;
 
 			objectPos.z = moveFluct.InFluct(count, objectPos.z, endValue, regulation);
@@ -29,24 +29,24 @@ namespace t13 {
 		}
 
 		//moveObjectのx軸をmoveFluctで回転させる
-		static public void ObjectInFluctUpdateRotX(GameObject moveObject, t13.Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdateRotX(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
 			Quaternion objectRot = moveObject.transform.rotation;
 
-			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.x, endValue, regulation);
+			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.x + addEuler, endValue, regulation);
 			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(1, 0, 0));
 		}
 		//moveObjectのy軸をmoveFluctで回転させる
-		static public void ObjectInFluctUpdateRotY(GameObject moveObject, t13.Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdateRotY(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
 			Quaternion objectRot = moveObject.transform.rotation;
 
-			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.y, endValue, regulation);
+			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.y + addEuler, endValue, regulation);
 			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 1, 0));
 		}
 		//moveObjectのz軸をmoveFluctで回転させる
-		static public void ObjectInFluctUpdateRotZ(GameObject moveObject, t13.Time_fluct moveFluct, float endValue, float count, float regulation) {
+		static public void ObjectInFluctUpdateRotZ(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
 			Quaternion objectRot = moveObject.transform.rotation;
 
-			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.z, endValue, regulation);
+			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.z + addEuler, endValue, regulation);
 			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 0, 1));
 		}
 
@@ -74,14 +74,14 @@ namespace t13 {
 		}
 
 		//fillImageをfillFluctで拡大縮小させる
-		static public void ImageInFluctUpdate(Image fillImage, t13.Time_fluct fillFluct, float endFillAmount, float count, float regulation) {
+		static public void ImageInFluctUpdate(Image fillImage, t13.TimeFluct fillFluct, float endFillAmount, float count, float regulation) {
 			float imageFill = fillImage.fillAmount;
 
 			imageFill = fillFluct.InFluct(count, imageFill, endFillAmount, regulation);
 			fillImage.fillAmount = imageFill;
 		}
 
-		static public Color32 Color32InFluctUpdateAlpha(Color32 color, Time_fluct timeFluct, float endAlpha, float count, float timeRegulation) {
+		static public Color32 Color32InFluctUpdateAlpha(Color32 color, TimeFluct timeFluct, float endAlpha, float count, float timeRegulation) {
 			float result = timeFluct.InFluct(count, color.a, endAlpha, timeRegulation);
 
 			return new Color32(color.r, color.g, color.b, (byte)result);

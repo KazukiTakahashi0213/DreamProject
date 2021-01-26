@@ -84,7 +84,7 @@ public class MonsterBattleMenuScene : MonoBehaviour, ISceneManager {
 	}
 
 	public void SceneEnd() {
-
+		magazineParts_.GetEventGameObject().addEulerVec3_ = new Vector3(0, 0, 0);
 	}
 
 	public GameObject GetGameObject() { return gameObject; }

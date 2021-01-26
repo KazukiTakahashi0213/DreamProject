@@ -6,30 +6,33 @@ public class AllEventManager {
 	//依存性注入
 	private IInputProvider inputProvider_ = new KeyBoardNormalInputProvider();
 
-	private t13.Time_counter sceneCounter_ = new t13.Time_counter();
-	private List<t13.Time_fluct> sceneFlucts_ = new List<t13.Time_fluct>();
+	private t13.TimeCounter sceneCounter_ = new t13.TimeCounter();
+	private List<t13.TimeFluct> sceneFlucts_ = new List<t13.TimeFluct>();
 	private t13.Event<AllEventManager> sceneEvent_;
 
-	public t13.Time_counter GetSceneCounter() { return sceneCounter_; }
-	public List<t13.Time_fluct> GetSceneFlucts() { return sceneFlucts_; }
+	public t13.TimeCounter GetSceneCounter() { return sceneCounter_; }
+	public List<t13.TimeFluct> GetSceneFlucts() { return sceneFlucts_; }
 	public bool EventUpdate() { return sceneEvent_.update(); }
 
 	//eventの管理メンバ
 	private EventSpriteRendererEventManager eventSpriteEventManager_ = new EventSpriteRendererEventManager();
-	private UpdateGameObjectEventManager eventGameObjectEventManager_ = new UpdateGameObjectEventManager();
+	private UpdateGameObjectEventManager updateGameObjectEventManager_ = new UpdateGameObjectEventManager();
 	private EventTextEventManager eventTextEventManager_ = new EventTextEventManager();
 	private EventHpGaugePartsEventManager eventHpGaugePartsEventManager_ = new EventHpGaugePartsEventManager();
 	private EventStatusInfoPartsEventManager eventStatusInfoPartsEventManager_ = new EventStatusInfoPartsEventManager();
 
-	private int eventRegulationExecuteCounter_ = 0;
-	private List<float> eventRegulation_ = new List<float>();
+	private int updateEventExecuteCounter_ = 0;
+	private List<float> eventTimeRegulation_ = new List<float>();
+	private List<t13.TimeFluctProcess> eventTimeFluctProcesses_ = new List<t13.TimeFluctProcess>();
+	private UpdateGameObjectEventManagerExecute updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
 
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
 
 	//EventManager
 	public void EventWaitSet(float timeRegulation) {
-		eventRegulation_.Add(timeRegulation);
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
 
 		sceneEvent_.func_add(WaitEvent);
 	}
@@ -39,9 +42,28 @@ public class AllEventManager {
 	public void EventFinishSet() {
 		sceneEvent_.func_add(EventFinishEvent);
 	}
+	public void AllUpdateEventExecute(float timeRegulation = 0, t13.TimeFluctProcess timeFluctProcess = t13.TimeFluctProcess.Liner) {
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(timeFluctProcess);
+
+		updateGameObjectEventManager_.UpdateGameObjectsExecuteSet(updateGameObjectEventManagerExecute_);
+
+		sceneEvent_.func_add(AllUpdateEventExecuteEvent);
+
+		updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
+	}
+	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
+		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
+
+		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
+
+		return true;
+	}
 	static private bool WaitEvent(AllEventManager mgr) {
-		if (mgr.sceneCounter_.measure(Time.deltaTime, mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_])) {
-			mgr.eventRegulationExecuteCounter_ += 1;
+		if (mgr.sceneCounter_.measure(Time.deltaTime, mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_])) {
+			mgr.updateEventExecuteCounter_ += 1;
 
 			return true;
 		}
@@ -56,15 +78,16 @@ public class AllEventManager {
 		return false;
 	}
 	static private bool EventFinishEvent(AllEventManager mgr) {
-		mgr.eventRegulationExecuteCounter_ = 0;
-		mgr.eventRegulation_.Clear();
+		mgr.updateEventExecuteCounter_ = 0;
+		mgr.eventTimeRegulation_.Clear();
+		mgr.eventTimeFluctProcesses_.Clear();
 
 		mgr.eventActiveExecuteCounter_ = 0;
 		mgr.eventActive_.Clear();
 
 		mgr.eventSpriteEventManager_.EventSpriteRenderersClear();
 
-		mgr.eventGameObjectEventManager_.EventGameObjectsClear();
+		mgr.updateGameObjectEventManager_.UpdateGameObjectsClear();
 
 		mgr.eventTextEventManager_.EventTextsClear();
 
@@ -84,7 +107,8 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(SpriteRenderersUpdateExecuteEvent);
 
-		eventRegulation_.Add(timeRegulation);
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
 	}
 	public void EventSpriteRenderersSetSpriteExecute() {
 		eventSpriteEventManager_.EventSpriteRenderersExecuteSet();
@@ -92,9 +116,9 @@ public class AllEventManager {
 		sceneEvent_.func_add(SpriteRenderersSetSpriteExecuteEvent);
 	}
 	static private bool SpriteRenderersUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
+		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
 
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 
@@ -106,67 +130,22 @@ public class AllEventManager {
 		return true;
 	}
 
-	//EventGameObject
-	public void EventGameObjectSet(UpdateGameObject eventGameObject, float endPos = 0) {
-		eventGameObjectEventManager_.EventGameObjectSet(eventGameObject, endPos);
+	//UpdateGameObject
+	public void UpdateGameObjectSet(UpdateGameObject updateGameObject, Vector3 endVec3 = new Vector3()) {
+		updateGameObjectEventManager_.UpdateGameObjectSet(updateGameObject, endVec3);
 	}
-	public void EventGameObjectsPosMoveXExecute(float timeRegulation = 0) {
-		eventGameObjectEventManager_.EventGameObjectsExecuteSet();
-
-		sceneEvent_.func_add(GameObjectsPosMoveXExecuteEvent);
-
-		eventRegulation_.Add(timeRegulation);
+	public void UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute setExecute) {
+		updateGameObjectEventManagerExecute_ = setExecute;
 	}
-	public void EventGameObjectsPosMoveYExecute(float timeRegulation = 0) {
-		eventGameObjectEventManager_.EventGameObjectsExecuteSet();
+	public void UpdateGameObjectsActiveSetExecute(bool setActive) {
+		updateGameObjectEventManager_.UpdateGameObjectsExecuteSet();
 
-		sceneEvent_.func_add(GameObjectsPosMoveYExecuteEvent);
-
-		eventRegulation_.Add(timeRegulation);
-	}
-	public void EventGameObjectsRotMoveExecute(float timeRegulation = 0) {
-		eventGameObjectEventManager_.EventGameObjectsExecuteSet();
-
-		sceneEvent_.func_add(GameObjectsRotMoveExecuteEvent);
-
-		eventRegulation_.Add(timeRegulation);
-	}
-	public void EventGameObjectsActiveSetExecute(bool setActive) {
-		eventGameObjectEventManager_.EventGameObjectsExecuteSet();
-
-		sceneEvent_.func_add(GameObjectsActiveSetExecuteEvent);
+		sceneEvent_.func_add(UpdateGameObjectsActiveSetExecuteEvent);
 
 		eventActive_.Add(setActive);
 	}
-	static private bool GameObjectsPosMoveXExecuteEvent(AllEventManager mgr) {
-		mgr.eventGameObjectEventManager_.EventGameObjectsPosMoveXExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
-
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
-	}
-	static private bool GameObjectsPosMoveYExecuteEvent(AllEventManager mgr) {
-		mgr.eventGameObjectEventManager_.EventGameObjectsPosMoveYExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
-
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
-	}
-	static private bool GameObjectsRotMoveExecuteEvent(AllEventManager mgr) {
-		mgr.eventGameObjectEventManager_.EventGameObjectsRotMoveExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
-
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
-	}
-	static private bool GameObjectsActiveSetExecuteEvent(AllEventManager mgr) {
-		mgr.eventGameObjectEventManager_.EventGameObjectsActiveSetExecute(mgr.eventActive_[mgr.eventActiveExecuteCounter_]);
+	static private bool UpdateGameObjectsActiveSetExecuteEvent(AllEventManager mgr) {
+		mgr.updateGameObjectEventManager_.UpdateGameObjectsActiveSetExecute(mgr.eventActive_[mgr.eventActiveExecuteCounter_]);
 
 		mgr.eventActiveExecuteCounter_ += 1;
 
@@ -182,12 +161,13 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(ContextsUpdateExecuteEvent);
 
-		eventRegulation_.Add(timeRegulation);
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
 	}
 	static private bool ContextsUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
+		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
 
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 
@@ -203,12 +183,13 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(HpGaugesUpdateExecuteEvent);
 
-		eventRegulation_.Add(timeRegulation);
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
 	}
 	static private bool HpGaugesUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventHpGaugePartsEventManager_.EventHpGaugesPartsUpdateExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
+		mgr.eventHpGaugePartsEventManager_.EventHpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
 
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 
@@ -224,12 +205,13 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(ColorUpdateExecuteEvent);
 
-		eventRegulation_.Add(timeRegulation);
+		eventTimeRegulation_.Add(timeRegulation);
+		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
 	}
 	static private bool ColorUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventStatusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_]);
+		mgr.eventStatusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
 
-		mgr.eventRegulation_[mgr.eventRegulationExecuteCounter_] -= Time.deltaTime;
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 

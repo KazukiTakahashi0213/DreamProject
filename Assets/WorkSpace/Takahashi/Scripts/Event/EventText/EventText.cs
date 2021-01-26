@@ -12,16 +12,16 @@ public class EventText : MonoBehaviour {
 
 	private EventTextProcessState processState_ = new EventTextProcessState(EventTextProcess.None);
 
-	private t13.Time_fluct timeFluct_ = new t13.Time_fluct();
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private float timeRegulation_ = 0;
 	private string updateContext_ = "";
 
 	[SerializeField] private Text text_ = null;
 
-	public t13.Time_fluct GetTimeFluct() { return timeFluct_; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFluct() { return timeFluct_; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public float GetTimeRegulation() { return timeRegulation_; }
 	public string GetUpdateContext() { return updateContext_; }

@@ -2,7 +2,7 @@
 
 namespace t13 {
 
-	public enum Time_fluctProcess {
+	public enum TimeFluctProcess {
 		None
 		, Liner
 		, Bounce
@@ -18,48 +18,48 @@ namespace t13 {
 		, Max
 	}
 
-	public class Time_fluctProcessState {
-		public Time_fluctProcessState(Time_fluctProcess setState) {
+	public class TimeFluctProcessState {
+		public TimeFluctProcessState(TimeFluctProcess setState) {
 			state_ = setState;
 		}
 
-		public Time_fluctProcess state_;
+		public TimeFluctProcess state_;
 
 		//None
-		static private float NoneIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float NoneIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			return 0;
 		}
-		static private float NoneOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float NoneOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			return 0;
 		}
-		static private float NoneInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float NoneInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			return 0;
 		}
 
 		//Liner
-		static private float LinerIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float LinerIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * count / regulation_time + timeFluct.GetStartPos_Archive();
 		}
-		static private float LinerOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float LinerOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * count / regulation_time + timeFluct.GetStartPos_Archive();
 		}
-		static private float LinerInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float LinerInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * count / regulation_time + timeFluct.GetStartPos_Archive();
 		}
 
 		//Bounce
-		static private float BounceIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BounceIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
-			Time_fluct tempTimeFluct = new Time_fluct();
-			tempTimeFluct.GetProcessState().state_ = Time_fluctProcess.Bounce;
+			TimeFluct tempTimeFluct = new TimeFluct();
+			tempTimeFluct.GetProcessState().state_ = TimeFluctProcess.Bounce;
 			float result = tempTimeFluct.OutFluct(regulation_time - count, startPos, endPos, regulation_time);
 
 			return timeFluct.GetRange() - result + timeFluct.GetStartPos_Archive();
 		}
-		static private float BounceOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BounceOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time) < (1 / 2.75f)) {
 				return timeFluct.GetRange() * (7.5625f * count * count) + timeFluct.GetStartPos_Archive();
@@ -77,18 +77,18 @@ namespace t13 {
 				return timeFluct.GetRange() * (7.5625f * (postFix) * count + .984375f) + timeFluct.GetStartPos_Archive();
 			}
 		}
-		static private float BounceInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BounceInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if (count < regulation_time / 2) {
-				Time_fluct tempTimeFluct = new Time_fluct();
-				tempTimeFluct.GetProcessState().state_ = Time_fluctProcess.Bounce;
+				TimeFluct tempTimeFluct = new TimeFluct();
+				tempTimeFluct.GetProcessState().state_ = TimeFluctProcess.Bounce;
 				float result = tempTimeFluct.InFluct(count * 2, startPos, endPos, regulation_time);
 
 				return result * .5f + timeFluct.GetStartPos_Archive();
 			}
 			else {
-				Time_fluct tempTimeFluct = new Time_fluct();
-				tempTimeFluct.GetProcessState().state_ = Time_fluctProcess.Bounce;
+				TimeFluct tempTimeFluct = new TimeFluct();
+				tempTimeFluct.GetProcessState().state_ = TimeFluctProcess.Bounce;
 				float result = tempTimeFluct.OutFluct(count * 2 - regulation_time, startPos, endPos, regulation_time);
 
 				return result * .5f + timeFluct.GetRange() * .5f + timeFluct.GetStartPos_Archive();
@@ -96,18 +96,18 @@ namespace t13 {
 		}
 
 		//Back
-		static private float BackIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BackIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			float s = 1.70158f;
 			float postFix = count /= regulation_time;
 			return timeFluct.GetRange() * (postFix) * count * ((s + 1) * count - s) + timeFluct.GetStartPos_Archive();
 		}
-		static private float BackOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BackOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			float s = 1.70158f;
 			return timeFluct.GetRange() * ((count = count / regulation_time - 1) * count * ((s + 1) * count + s) + 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float BackInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float BackInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			float s = 1.70158f;
 			if ((count /= regulation_time / 2) < 1) {
@@ -120,37 +120,37 @@ namespace t13 {
 		}
 
 		//Circ
-		static private float CircIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CircIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return -timeFluct.GetRange() * ((float)Math.Sqrt(1 - (count /= regulation_time) * count) - 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float CircOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CircOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * (float)Math.Sqrt(1 - (count = count / regulation_time - 1) * count) + timeFluct.GetStartPos_Archive();
 		}
-		static private float CircInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CircInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time / 2) < 1) return -timeFluct.GetRange() / 2 * (float)(Math.Sqrt(1 - count * count) - 1) + timeFluct.GetStartPos_Archive();
 			else return timeFluct.GetRange() / 2 * (float)(Math.Sqrt(1 - count * (count -= 2)) + 1) + timeFluct.GetStartPos_Archive();
 		}
 
 		//Cubic
-		static private float CubicIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CubicIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * (count /= regulation_time) * count * count + timeFluct.GetStartPos_Archive();
 		}
-		static private float CubicOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CubicOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * ((count = count / regulation_time - 1) * count * count + 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float CubicInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float CubicInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time / 2) < 1) return timeFluct.GetRange() / 2 * count * count * count + timeFluct.GetStartPos_Archive();
 			else return timeFluct.GetRange() / 2 * ((count -= 2) * count * count + 2) + timeFluct.GetStartPos_Archive();
 		}
 
 		//Elastic
-		static private float ElasticIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ElasticIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if (count == 0) return timeFluct.GetStartPos_Archive();
 			if ((count /= regulation_time) == 1) return timeFluct.GetStartPos_Archive() + timeFluct.GetRange();
@@ -159,9 +159,9 @@ namespace t13 {
 			float a = timeFluct.GetRange();
 			float s = p / 4;
 			float postFix = a * (float)Math.Pow(2, 10 * (count -= 1));
-			return -(postFix * (float)Math.Sin((count * regulation_time - s) * (2 * Time_fluct.PI) / p)) + timeFluct.GetStartPos_Archive();
+			return -(postFix * (float)Math.Sin((count * regulation_time - s) * (2 * TimeFluct.PI) / p)) + timeFluct.GetStartPos_Archive();
 		}
-		static private float ElasticOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ElasticOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if (count == 0) return timeFluct.GetStartPos_Archive();
 			if ((count /= regulation_time) == 1) return timeFluct.GetStartPos_Archive() + timeFluct.GetRange();
@@ -169,9 +169,9 @@ namespace t13 {
 			float p = regulation_time * .3f;
 			float a = timeFluct.GetRange();
 			float s = p / 4;
-			return (a * (float)Math.Pow(2, -10 * count) * (float)Math.Sin((count * regulation_time - s) * (2 * Time_fluct.PI) / p) + timeFluct.GetRange() + timeFluct.GetStartPos_Archive());
+			return (a * (float)Math.Pow(2, -10 * count) * (float)Math.Sin((count * regulation_time - s) * (2 * TimeFluct.PI) / p) + timeFluct.GetRange() + timeFluct.GetStartPos_Archive());
 		}
-		static private float ElasticInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ElasticInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if (count == 0) return timeFluct.GetStartPos_Archive();
 			if ((count /= regulation_time / 2) == 2) return timeFluct.GetStartPos_Archive() + timeFluct.GetRange();
@@ -182,24 +182,24 @@ namespace t13 {
 
 			if (count < 1) {
 				float postFix = a * (float)Math.Pow(2, 10 * (count -= 1));
-				return -.5f * (postFix * (float)Math.Sin((count * regulation_time - s) * (2 * Time_fluct.PI) / p)) + timeFluct.GetStartPos_Archive();
+				return -.5f * (postFix * (float)Math.Sin((count * regulation_time - s) * (2 * TimeFluct.PI) / p)) + timeFluct.GetStartPos_Archive();
 			}
 			else {
 				float postFix = a * (float)Math.Pow(2, -10 * (count -= 1));
-				return postFix * (float)Math.Sin((count * regulation_time - s) * (2 * Time_fluct.PI) / p) * .5f + timeFluct.GetRange() + timeFluct.GetStartPos_Archive();
+				return postFix * (float)Math.Sin((count * regulation_time - s) * (2 * TimeFluct.PI) / p) * .5f + timeFluct.GetRange() + timeFluct.GetStartPos_Archive();
 			}
 		}
 
 		//Expo
-		static private float ExpoIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ExpoIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return (count == 0) ? timeFluct.GetStartPos_Archive() : timeFluct.GetRange() * (float)Math.Pow(2, 10 * (count / regulation_time - 1)) + timeFluct.GetStartPos_Archive();
 		}
-		static private float ExpoOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ExpoOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return (count == regulation_time) ? timeFluct.GetStartPos_Archive() + timeFluct.GetRange() : timeFluct.GetRange() * (-(float)Math.Pow(2, -10 * count / regulation_time) + 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float ExpoInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float ExpoInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if (count == 0) return timeFluct.GetStartPos_Archive();
 			if (count == regulation_time) return timeFluct.GetStartPos_Archive() + timeFluct.GetRange();
@@ -208,67 +208,67 @@ namespace t13 {
 		}
 
 		//Quad
-		static private float QuadIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuadIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * (count /= regulation_time) * count + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuadOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuadOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return -timeFluct.GetRange() * (count /= regulation_time) * (count - 2) + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuadInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuadInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time / 2) < 1) return ((timeFluct.GetRange() / 2) * (count * count)) + timeFluct.GetStartPos_Archive();
 			return -timeFluct.GetRange() / 2 * (((count - 2) * (--count)) - 1) + timeFluct.GetStartPos_Archive();
 		}
 
 		//Quart
-		static private float QuartIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuartIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * (count /= regulation_time) * count * count * count + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuartOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuartOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return -timeFluct.GetRange() * ((count = count / regulation_time - 1) * count * count * count - 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuartInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuartInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time / 2) < 1) return timeFluct.GetRange() / 2 * count * count * count * count + timeFluct.GetStartPos_Archive();
 			return -timeFluct.GetRange() / 2 * ((count -= 2) * count * count * count - 2) + timeFluct.GetStartPos_Archive();
 		}
 
 		//Quint
-		static private float QuintIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuintIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * (count /= regulation_time) * count * count * count * count + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuintOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuintOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			return timeFluct.GetRange() * ((count = count / regulation_time - 1) * count * count * count * count + 1) + timeFluct.GetStartPos_Archive();
 		}
-		static private float QuintInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float QuintInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
 			if ((count /= regulation_time / 2) < 1) return timeFluct.GetRange() / 2 * count * count * count * count * count + timeFluct.GetStartPos_Archive();
 			return timeFluct.GetRange() / 2 * ((count -= 2) * count * count * count * count + 2) + timeFluct.GetStartPos_Archive();
 		}
 
 		//Sine
-		static private float SineIn(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float SineIn(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
-			return -timeFluct.GetRange() * (float)Math.Cos(count / regulation_time * (Time_fluct.PI / 2)) + timeFluct.GetRange() + timeFluct.GetStartPos_Archive();
+			return -timeFluct.GetRange() * (float)Math.Cos(count / regulation_time * (TimeFluct.PI / 2)) + timeFluct.GetRange() + timeFluct.GetStartPos_Archive();
 		}
-		static private float SineOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float SineOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
-			return timeFluct.GetRange() * (float)Math.Sin(count / regulation_time * (Time_fluct.PI / 2)) + timeFluct.GetStartPos_Archive();
+			return timeFluct.GetRange() * (float)Math.Sin(count / regulation_time * (TimeFluct.PI / 2)) + timeFluct.GetStartPos_Archive();
 		}
-		static private float SineInOut(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
+		static private float SineInOut(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) {
 			//計算
-			return -timeFluct.GetRange() / 2 * ((float)Math.Cos(Time_fluct.PI * count / regulation_time) - 1) + timeFluct.GetStartPos_Archive();
+			return -timeFluct.GetRange() / 2 * ((float)Math.Cos(TimeFluct.PI * count / regulation_time) - 1) + timeFluct.GetStartPos_Archive();
 		}
 
-		private delegate float FluctFunc(Time_fluctProcessState mine, Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time);
+		private delegate float FluctFunc(TimeFluctProcessState mine, TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time);
 
-		private FluctFunc[] inFlucts_ = new FluctFunc[(int)Time_fluctProcess.Max] {
+		private FluctFunc[] inFlucts_ = new FluctFunc[(int)TimeFluctProcess.Max] {
 			NoneIn
 			, LinerIn
 			, BounceIn
@@ -282,9 +282,9 @@ namespace t13 {
 			, QuintIn
 			, SineIn
 		};
-		public float InFluct(Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return inFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
+		public float InFluct(TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return inFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
 
-		private FluctFunc[] outFlucts_ = new FluctFunc[(int)Time_fluctProcess.Max] {
+		private FluctFunc[] outFlucts_ = new FluctFunc[(int)TimeFluctProcess.Max] {
 			NoneOut
 			, LinerOut
 			, BounceOut
@@ -298,9 +298,9 @@ namespace t13 {
 			, QuintOut
 			, SineOut
 		};
-		public float OutFluct(Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return outFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
+		public float OutFluct(TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return outFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
 
-		private FluctFunc[] inOutFlucts_ = new FluctFunc[(int)Time_fluctProcess.Max] {
+		private FluctFunc[] inOutFlucts_ = new FluctFunc[(int)TimeFluctProcess.Max] {
 			NoneInOut
 			, LinerInOut
 			, BounceInOut
@@ -314,7 +314,7 @@ namespace t13 {
 			, QuintInOut
 			, SineInOut
 		};
-		public float InOutFluct(Time_fluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return inOutFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
+		public float InOutFluct(TimeFluct timeFluct, float count, float startPos, float endPos, float regulation_time) { return inOutFlucts_[(int)state_](this, timeFluct, count, startPos, endPos, regulation_time); }
 	}
 
 }

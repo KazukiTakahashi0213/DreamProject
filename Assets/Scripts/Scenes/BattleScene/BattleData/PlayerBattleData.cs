@@ -37,13 +37,15 @@ public class PlayerBattleData {
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			AllEventManager.GetInstance().EventGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
-			AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(false);
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
+			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			AllEventManager.GetInstance().EventGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), 13.5f);
-			AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(0.2f);
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(13.5f, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.y, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.z));
+			//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.2f);
+			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
@@ -98,20 +100,22 @@ public class PlayerBattleData {
 			monsterDatas_[0] = monsterDatas_[changeMonsterNumber_];
 			monsterDatas_[changeMonsterNumber_] = temp;
 
-			AllEventManager.GetInstance().EventGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
-			AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(true);
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
+			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			AllEventManager.GetInstance().EventGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), 4.0f);
-			AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(0.2f);
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(4.0f, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.y, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.z));
+			//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.2f);
+			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
 		}
 
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-		AllEventManager.GetInstance().EventGameObjectSet(manager.GetCursorParts().GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectSet(manager.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(true);
+		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetCursorParts().GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 
 		AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "は　どうする？");
 		AllEventManager.GetInstance().EventTextsUpdateExecute();

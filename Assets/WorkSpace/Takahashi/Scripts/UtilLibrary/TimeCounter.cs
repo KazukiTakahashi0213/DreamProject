@@ -1,6 +1,6 @@
 ﻿namespace t13 {
 
-	public class Time_counter {
+	public class TimeCounter {
 		private float count_ = 0;
 
 		public float count() { return count_; }

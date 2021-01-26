@@ -6,47 +6,46 @@ public class UpdateGameObject : MonoBehaviour {
 	//EntryPoint
 	void Update() {
 		//メイン処理
-		processState_ = processState_.Update(this);
+		processState_.state_ = processState_.Update(this);
 	}
 
-	private IEventGameObjectProcessState processState_ = new EventGameObjectProcessNone();
+	private UpdateGameObjectProcessState processState_ = new UpdateGameObjectProcessState(UpdateGameObjectProcess.None);
 
-	private t13.Time_fluct timeFluct_ = new t13.Time_fluct();
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeFluct[] timeFlucts_ = new t13.TimeFluct[3]{
+		new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+	};
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private float timeRegulation_ = 0;
-	private float endValue_ = 0;
+	private Vector3 endVec3_ = new Vector3();
+	public Vector3 addEulerVec3_ = new Vector3(0, 0, 0);
 
-	public t13.Time_fluct GetTimeFluct() { return timeFluct_; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFlucts(int value) { return timeFlucts_[value]; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public GameObject GetGameObject() { return gameObject; }
 
 	public float GetTimeRegulation() { return timeRegulation_; }
-	public float GetEndValue() { return endValue_; }
+	public Vector3 GetEndVec3() { return endVec3_; }
 
-	public void ProcessStatePosMoveXExecute(float timeRegulation, float endValue) {
+	public void ProcessStatePosMoveExecute(float timeRegulation, Vector3 endVec3, t13.TimeFluctProcess timeFluctProcess) {
 		timeRegulation_ = timeRegulation;
-		endValue_ = endValue;
+		endVec3_ = endVec3;
+		for (int i = 0; i < timeFlucts_.Length; ++i) {
+			timeFlucts_[i].GetProcessState().state_ = timeFluctProcess;
+		}
 
-		processState_ = new EventGameObjectProcessPosMoveX();
+		processState_.state_ = UpdateGameObjectProcess.PosMove;
 	}
-	public void ProcessStatePosMoveYExecute(float timeRegulation, float endValue) {
+	public void ProcessStateRotMoveExecute(float timeRegulation, Vector3 endVec3, t13.TimeFluctProcess timeFluctProcess) {
 		timeRegulation_ = timeRegulation;
-		endValue_ = endValue;
+		endVec3_ = endVec3;
+		for (int i = 0; i < timeFlucts_.Length; ++i) {
+			timeFlucts_[i].GetProcessState().state_ = timeFluctProcess;
+		}
 
-		processState_ = new EventGameObjectProcessPosMoveY();
-	}
-	public void ProcessStatePosMoveZExecute(float timeRegulation, float endValue) {
-		timeRegulation_ = timeRegulation;
-		endValue_ = endValue;
-
-		processState_ = new EventGameObjectProcessPosMoveZ();
-	}
-	public void ProcessStateRotMoveExecute(float timeRegulation, float endValue) {
-		timeRegulation_ = timeRegulation;
-		endValue_ = endValue;
-
-		processState_ = new EventGameObjectProcessRotMove();
+		processState_.state_ = UpdateGameObjectProcess.RotMove;
 	}
 }

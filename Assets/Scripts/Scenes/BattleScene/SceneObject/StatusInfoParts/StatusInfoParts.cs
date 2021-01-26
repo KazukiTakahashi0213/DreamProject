@@ -18,8 +18,8 @@ public class StatusInfoParts : MonoBehaviour {
 	private IStatusInfoPartsProcessState processState_ = new StatusInfoPartsProcessNone();
 	private IStatusInfoPartsProcessIdleState processIdleState_ = new StatusInfoPartsProcessIdleDown();
 
-	private t13.Time_fluct timeFluct_ = new t13.Time_fluct();
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private Vector3 entryPos_;
 
@@ -33,8 +33,8 @@ public class StatusInfoParts : MonoBehaviour {
 	public void SetProcessIdleState(IStatusInfoPartsProcessIdleState state) { processIdleState_ = state; }
 	public IStatusInfoPartsProcessIdleState GetProcessIdleState() { return processIdleState_; }
 
-	public t13.Time_fluct GetTimeFluct() { return timeFluct_; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFluct() { return timeFluct_; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public void ProcessIdleStart() {
 		entryPos_ = transform.position;

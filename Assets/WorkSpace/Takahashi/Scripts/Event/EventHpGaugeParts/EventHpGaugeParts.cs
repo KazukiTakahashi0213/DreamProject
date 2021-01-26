@@ -11,8 +11,8 @@ public class EventHpGaugeParts : MonoBehaviour {
 
 	private EventHpGaugePartsProcessState processState_ = new EventHpGaugePartsProcessState(EventHpGaugePartsProcess.None);
 
-	private t13.Time_fluct timeFluct_ = new t13.Time_fluct();
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private float timeRegulation_ = 0;
 	private IMonsterData referMonsterData_ = null;
@@ -20,8 +20,8 @@ public class EventHpGaugeParts : MonoBehaviour {
 
 	[SerializeField] private HpGaugeParts hpGaugeParts_ = null;
 
-	public t13.Time_fluct GetTimeFluct() { return timeFluct_; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFluct() { return timeFluct_; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public float GetTimeRegulation() { return timeRegulation_; }
 	public IMonsterData GetReferMonsterData() { return referMonsterData_; }

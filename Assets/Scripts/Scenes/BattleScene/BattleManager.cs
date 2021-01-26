@@ -257,14 +257,16 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	public float GetEventWaitTime() { return EventWaitTime_; }
 
 	void OpeningEventSet() {
-		AllEventManager.GetInstance().EventGameObjectSet(enemyMonsterParts_.GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectSet(playerMonsterParts_.GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(false);
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyMonsterParts_.GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerMonsterParts_.GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
 
 		//プレイヤーとエネミーの入場
-		AllEventManager.GetInstance().EventGameObjectSet(enemyParts_.GetEventGameObject(), 3.5f);
-		AllEventManager.GetInstance().EventGameObjectSet(playerParts_.GetEventGameObject(), -4.5f);
-		AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(2.0f);
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
+		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(2.0f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(2.0f);
 		{
 			//文字列の設定
 			EnemyTrainerData enemyTrainerData = EnemyTrainerData.getInstance();
@@ -285,14 +287,18 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecute(EventContextUpdateTime_);
 		}
 		//エネミーの退場
-		AllEventManager.GetInstance().EventGameObjectSet(enemyParts_.GetEventGameObject(), 3.5f + 9.5f);
-		AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(1.0f);
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f + 9.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
+		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(1.0f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
 		//エネミーモンスターの登場
-		AllEventManager.GetInstance().EventGameObjectSet(enemyMonsterParts_.GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(true);
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyMonsterParts_.GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 		//エネミーモンスターのインフォメーションの入場
-		AllEventManager.GetInstance().EventGameObjectSet(enemyStatusInfoParts_.GetEventGameObject(), -3.5f);
-		AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(0.4f);
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyStatusInfoParts_.GetEventGameObject(), new Vector3(-3.5f, enemyStatusInfoParts_.GetEventGameObject().transform.position.y, enemyStatusInfoParts_.GetEventGameObject().transform.position.z));
+		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.4f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.4f);
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(EventWaitTime_);
 		{
@@ -304,14 +310,18 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecute(EventContextUpdateTime_);
 		}
 		//プレイヤーの退場
-		AllEventManager.GetInstance().EventGameObjectSet(playerParts_.GetEventGameObject(), -4.5f - 9.5f);
-		AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(1.5f);
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f - 9.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
+		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(1.5f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(1.5f);
 		//プレイヤーモンスターの登場
-		AllEventManager.GetInstance().EventGameObjectSet(playerMonsterParts_.GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(true);
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerMonsterParts_.GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 		//プレイヤーモンスターのインフォメーションの入場
-		AllEventManager.GetInstance().EventGameObjectSet(playerStatusInfoParts_.GetEventGameObject(), 4.0f);
-		AllEventManager.GetInstance().EventGameObjectsPosMoveXExecute(0.4f);
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerStatusInfoParts_.GetEventGameObject(), new Vector3(4.0f, playerStatusInfoParts_.GetEventGameObject().transform.position.y, playerStatusInfoParts_.GetEventGameObject().transform.position.z));
+		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.4f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.4f);
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(EventWaitTime_);
 		{
@@ -323,9 +333,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecute();
 		}
 		//コマンドの選択肢とカーソルの出現
-		AllEventManager.GetInstance().EventGameObjectSet(novelWindowParts_.GetCommandParts().GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectSet(cursorParts_.GetEventGameObject());
-		AllEventManager.GetInstance().EventGameObjectsActiveSetExecute(true);
+		AllEventManager.GetInstance().UpdateGameObjectSet(novelWindowParts_.GetCommandParts().GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectSet(cursorParts_.GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 		//イベントの最後
 		AllEventManager.GetInstance().EventFinishSet();
 	}

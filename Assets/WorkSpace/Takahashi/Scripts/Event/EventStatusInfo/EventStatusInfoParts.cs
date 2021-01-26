@@ -12,23 +12,23 @@ public class EventStatusInfoParts : MonoBehaviour {
 
 	private EventStatusInfoPartsProcessState processState_ = new EventStatusInfoPartsProcessState(EventStatusInfoPartsProcess.None);
 
-	private t13.Time_fluct[] timeFlucts_ = new t13.Time_fluct[6] {
-		new t13.Time_fluct()
-		, new t13.Time_fluct()
-		, new t13.Time_fluct()
-		, new t13.Time_fluct()
-		, new t13.Time_fluct()
-		, new t13.Time_fluct()
+	private t13.TimeFluct[] timeFlucts_ = new t13.TimeFluct[6] {
+		new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
 	};
-	private t13.Time_counter timeCounter_ = new t13.Time_counter();
+	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private float timeRegulation_ = 0;
 	private Color32 endColor_ = new Color32();
 
 	[SerializeField] private StatusInfoParts statusInfoParts_ = null;
 
-	public t13.Time_fluct GetTimeFlucts(int number) { return timeFlucts_[number]; }
-	public t13.Time_counter GetTimeCounter() { return timeCounter_; }
+	public t13.TimeFluct GetTimeFlucts(int number) { return timeFlucts_[number]; }
+	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public float GetTimeRegulation() { return timeRegulation_; }
 	public Color32 GetEndColor() { return endColor_; }

@@ -15,21 +15,25 @@ public class MagazineParts : MonoBehaviour {
 	public UpdateGameObject GetEventGameObject() { return eventGameObject_; }
 
 	public void UpRollMagazineParts() {
-		AllEventManager.GetInstance().EventGameObjectSet(eventGameObject_, transform.rotation.eulerAngles.z + (360.0f / holeNumber_));
+		AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_, new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + (360.0f / holeNumber_)));
 
 		for(int i = 0;i < monsterSDsParts_.Count; ++i) {
-			AllEventManager.GetInstance().EventGameObjectSet(monsterSDsParts_[i].GetEventGameObject(), monsterSDsParts_[i].transform.rotation.eulerAngles.z + 0.0f);
+			AllEventManager.GetInstance().UpdateGameObjectSet(monsterSDsParts_[i].GetEventGameObject(), new Vector3(monsterSDsParts_[i].transform.rotation.eulerAngles.x, monsterSDsParts_[i].transform.rotation.eulerAngles.y, monsterSDsParts_[i].transform.rotation.eulerAngles.z + 0.0f));
 		}
 
-		AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
+		//AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosRot);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 	}
 	public void DownRollMagazineParts() {
-		AllEventManager.GetInstance().EventGameObjectSet(eventGameObject_, transform.rotation.eulerAngles.z + -(360.0f / holeNumber_));
+		AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_, new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + -(360.0f / holeNumber_)));
 
 		for (int i = 0; i < monsterSDsParts_.Count; ++i) {
-			AllEventManager.GetInstance().EventGameObjectSet(monsterSDsParts_[i].GetEventGameObject(), monsterSDsParts_[i].transform.rotation.eulerAngles.z + 360.0f);
+			AllEventManager.GetInstance().UpdateGameObjectSet(monsterSDsParts_[i].GetEventGameObject(), new Vector3(monsterSDsParts_[i].transform.rotation.eulerAngles.x, monsterSDsParts_[i].transform.rotation.eulerAngles.y, monsterSDsParts_[i].transform.rotation.eulerAngles.z + 0.0f));
 		}
 
-		AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
+		//AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosRot);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 	}
 }

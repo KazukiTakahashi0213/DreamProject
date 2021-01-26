@@ -2,7 +2,6 @@
 
 namespace t13 {
 
-	//transfer
 	class Event<T> {
 		public Event(T obj) {
 			object_ = obj;
