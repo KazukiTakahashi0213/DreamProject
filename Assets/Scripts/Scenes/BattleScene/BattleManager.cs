@@ -23,7 +23,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		{
 			//外部でする処理
 			//データの生成
-			IMonsterData md = new MonsterData(new MonsterTribesData(1), 0, 50);
+			IMonsterData md = new MonsterData(new MonsterTribesData(4), 0, 50);
 			//技の取得
 			md.SkillAdd(new SkillData(1));
 			md.SkillAdd(new SkillData(2));
@@ -47,7 +47,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		{
 			//外部でする処理
 			//データの生成
-			IMonsterData md = new MonsterData(new MonsterTribesData(2), 0, 50);
+			IMonsterData md = new MonsterData(new MonsterTribesData(3), 0, 50);
 			//技の取得
 			md.SkillAdd(new SkillData(1));
 			md.SkillAdd(new SkillData(2));
@@ -57,7 +57,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			PlayerBattleData.GetInstance().monsterAdd(md);
 
 			//データの生成
-			IMonsterData md2 = new MonsterData(new MonsterTribesData(1), 0, 50);
+			IMonsterData md2 = new MonsterData(new MonsterTribesData(4), 0, 50);
 			//技の取得
 			md2.SkillAdd(new SkillData(4));
 			md2.SkillAdd(new SkillData(3));
