@@ -84,8 +84,9 @@ public class EffectTypeState {
 
 		//ヒットポイントのゲージの変動イベントの設定
 		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
-		AllEventManager.GetInstance().EventHpGaugeSet(mgr.GetEnemyStatusInfoParts().GetFrameParts().GetEventHpGaugeParts(), hpGaugeFillAmount);
-		AllEventManager.GetInstance().EventHpGaugesUpdateExecute(0.5f);
+		AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetEnemyStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount);
+		AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
@@ -172,8 +173,10 @@ public class EffectTypeState {
 
 		//ヒットポイントのゲージの変動イベントの設定
 		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
-		AllEventManager.GetInstance().EventHpGaugeSet(mgr.GetPlayerStatusInfoParts().GetFrameParts().GetEventHpGaugeParts(), hpGaugeFillAmount, defenseMonsterData);
-		AllEventManager.GetInstance().EventHpGaugesUpdateExecute(0.5f);
+		AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetPlayerStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, defenseMonsterData);
+		AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
+		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		if (critical > 1.0f) {

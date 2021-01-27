@@ -30,7 +30,7 @@ public class UpdateGameObject : MonoBehaviour {
 	public float GetTimeRegulation() { return timeRegulation_; }
 	public Vector3 GetEndVec3() { return endVec3_; }
 
-	public void ProcessStatePosMoveExecute(float timeRegulation, Vector3 endVec3, t13.TimeFluctProcess timeFluctProcess) {
+	public void ProcessStatePosMoveExecute(float timeRegulation, t13.TimeFluctProcess timeFluctProcess, Vector3 endVec3) {
 		timeRegulation_ = timeRegulation;
 		endVec3_ = endVec3;
 		for (int i = 0; i < timeFlucts_.Length; ++i) {
@@ -39,7 +39,7 @@ public class UpdateGameObject : MonoBehaviour {
 
 		processState_.state_ = UpdateGameObjectProcess.PosMove;
 	}
-	public void ProcessStateRotMoveExecute(float timeRegulation, Vector3 endVec3, t13.TimeFluctProcess timeFluctProcess) {
+	public void ProcessStateRotMoveExecute(float timeRegulation, t13.TimeFluctProcess timeFluctProcess, Vector3 endVec3) {
 		timeRegulation_ = timeRegulation;
 		endVec3_ = endVec3;
 		for (int i = 0; i < timeFlucts_.Length; ++i) {

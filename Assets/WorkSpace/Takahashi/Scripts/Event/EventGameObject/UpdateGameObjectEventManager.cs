@@ -12,11 +12,11 @@ public class UpdateGameObjectEventManager {
 	private List<List<Vector3>> executeEndVec3s_ = new List<List<Vector3>>();
 	private List<UpdateGameObjectEventManagerExecute> updateGameObjectEventManagerExecutes_ = new List<UpdateGameObjectEventManagerExecute>();
 
+	public UpdateGameObjectEventManagerExecuteState GetExecuteState() { return executeState_; }
+
 	public UpdateGameObject GetExecuteUpdateGameObjects(int value) { return executeUpdateGameObjects_[updateGameObjectsExecuteCounter_][value]; }
 	public int GetExecuteUpdateGameObjectsCount() { return executeUpdateGameObjects_[updateGameObjectsExecuteCounter_].Count; }
 	public Vector3 GetExecuteEndVec3s(int value) { return executeEndVec3s_[updateGameObjectsExecuteCounter_][value]; }
-
-	public UpdateGameObjectEventManagerExecuteState GetExecuteState() { return executeState_; }
 
 	public void UpdateGameObjectSet(UpdateGameObject updateGameObject, Vector3 endValue) {
 		updateGameObjects_.Add(updateGameObject);

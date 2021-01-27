@@ -70,8 +70,9 @@ public class PlayerBattleData {
 			//HPをTextに反映
 			//HPゲージの調整
 			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(md.RealHitPoint(), md.nowHitPoint_, 1);
-			AllEventManager.GetInstance().EventHpGaugeSet(manager.GetPlayerStatusInfoParts().GetFrameParts().GetEventHpGaugeParts(), hpGaugeFillAmount, md);
-			AllEventManager.GetInstance().EventHpGaugesUpdateExecute();
+			AllEventManager.GetInstance().HpGaugePartsSet(manager.GetPlayerStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, md);
+			AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 
 			//技をTextに反映
 			for (int i = 0; i < 4; ++i) {

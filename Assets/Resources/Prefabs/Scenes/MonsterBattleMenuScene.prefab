@@ -1529,7 +1529,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4480848423132983160}
   - component: {fileID: 6430021406690563237}
-  - component: {fileID: 1460755240048248569}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -1567,20 +1566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 1124351042768169494}
   hpGaugeParts_: {fileID: 4830493492463261100}
-  eventHpGaugeParts_: {fileID: 1460755240048248569}
---- !u!114 &1460755240048248569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411447440010073465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 4830493492463261100}
+  eventHpGaugeParts_: {fileID: 4830493492463261100}
 --- !u!1 &1455298370679516752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,7 +1758,6 @@ GameObject:
   - component: {fileID: 8247927374931336744}
   - component: {fileID: 7441483594714333038}
   - component: {fileID: 6798470834968604937}
-  - component: {fileID: 1337179204201280278}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -1836,20 +1821,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1337179204201280278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571418798727400645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 6798470834968604937}
-  infoText_: {fileID: 0}
 --- !u!1 &1601977013185685322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,7 +2201,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1849529881981154340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 968289555137358623}
@@ -2277,7 +2248,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2210716090228742098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 8462748508231198287}
@@ -2665,7 +2636,6 @@ GameObject:
   - component: {fileID: 5565689386571991670}
   - component: {fileID: 6787798165165433980}
   - component: {fileID: 7983181284603840513}
-  - component: {fileID: 2377221241270640248}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -2729,20 +2699,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2377221241270640248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2632174092887442103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 7983181284603840513}
-  infoText_: {fileID: 0}
 --- !u!1 &2678413129933253725
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,7 +3052,6 @@ GameObject:
   - component: {fileID: 2381513182494747149}
   - component: {fileID: 7537770227121398558}
   - component: {fileID: 8462748508231198287}
-  - component: {fileID: 8424413471468438586}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -3160,20 +3115,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8424413471468438586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246087610120580075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 8462748508231198287}
-  infoText_: {fileID: 0}
 --- !u!1 &3355246630917132082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3265,7 +3206,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2191838153557102402}
   - component: {fileID: 4038619047264673528}
-  - component: {fileID: 8555857820025897873}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -3303,20 +3243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3111319518205753038}
   hpGaugeParts_: {fileID: 4419747201058239830}
-  eventHpGaugeParts_: {fileID: 8555857820025897873}
---- !u!114 &8555857820025897873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3400375570990334659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 4419747201058239830}
+  eventHpGaugeParts_: {fileID: 4419747201058239830}
 --- !u!1 &3642415394036447564
 GameObject:
   m_ObjectHideFlags: 0
@@ -3647,7 +3574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &2898309611175160518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5078,7 +5005,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7980475198784874984}
   - component: {fileID: 395545606514656155}
-  - component: {fileID: 4960335062912592750}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -5116,20 +5042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 2446634532271830282}
   hpGaugeParts_: {fileID: 4371876439326986621}
-  eventHpGaugeParts_: {fileID: 4960335062912592750}
---- !u!114 &4960335062912592750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5264660419203896338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 4371876439326986621}
+  eventHpGaugeParts_: {fileID: 4371876439326986621}
 --- !u!1 &5314175219850436881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5300,7 +5213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5476692374947365135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 6798470834968604937}
@@ -5316,7 +5229,6 @@ GameObject:
   - component: {fileID: 4282223289288471260}
   - component: {fileID: 7054088195408814876}
   - component: {fileID: 4233290640095676849}
-  - component: {fileID: 5327993432795830637}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -5380,20 +5292,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5327993432795830637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5495341610466666457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 4233290640095676849}
-  infoText_: {fileID: 0}
 --- !u!1 &5495590510379476576
 GameObject:
   m_ObjectHideFlags: 0
@@ -5555,7 +5453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &1790035757461858641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6191,7 +6089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &6460960959207280050
 GameObject:
   m_ObjectHideFlags: 0
@@ -6302,7 +6200,6 @@ GameObject:
   - component: {fileID: 6236750188109198051}
   - component: {fileID: 3857142621337746432}
   - component: {fileID: 968289555137358623}
-  - component: {fileID: 5922403965264021437}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -6366,20 +6263,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5922403965264021437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6606397766733715479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 968289555137358623}
-  infoText_: {fileID: 0}
 --- !u!1 &6706493068334202171
 GameObject:
   m_ObjectHideFlags: 0
@@ -6705,7 +6588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &4313477355748544843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6903,7 +6786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &7078113761461423322
 GameObject:
   m_ObjectHideFlags: 0
@@ -6914,7 +6797,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2196757751403510855}
   - component: {fileID: 245135279339059478}
-  - component: {fileID: 2591392200377214596}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -6952,20 +6834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3528771547539529756}
   hpGaugeParts_: {fileID: 196948138626844264}
-  eventHpGaugeParts_: {fileID: 2591392200377214596}
---- !u!114 &2591392200377214596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7078113761461423322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 196948138626844264}
+  eventHpGaugeParts_: {fileID: 196948138626844264}
 --- !u!1 &7218057268560138212
 GameObject:
   m_ObjectHideFlags: 0
@@ -7081,7 +6950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &4063188544440610917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7137,7 +7006,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7418247362597637336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 4233290640095676849}
@@ -7209,7 +7078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &6002011705454806890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7413,7 +7282,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3546216980324299693}
   - component: {fileID: 9054312226555193104}
-  - component: {fileID: 716650641326238270}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -7451,20 +7319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 6844491171618865024}
   hpGaugeParts_: {fileID: 1802973494853113763}
-  eventHpGaugeParts_: {fileID: 716650641326238270}
---- !u!114 &716650641326238270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7485355796075729736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 1802973494853113763}
+  eventHpGaugeParts_: {fileID: 1802973494853113763}
 --- !u!1 &7531728168273534315
 GameObject:
   m_ObjectHideFlags: 0
@@ -7524,7 +7379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &7788320524208696741
 GameObject:
   m_ObjectHideFlags: 0
@@ -8550,7 +8405,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8641082169431071670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 7983181284603840513}
@@ -8883,7 +8738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 9040920041867266316}
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &9091377172741708483
 GameObject:
   m_ObjectHideFlags: 0

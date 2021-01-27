@@ -12,11 +12,11 @@ public class EventSpriteRendererEventManager {
 	private List<List<List<Sprite>>> executeAnimeSprites_ = new List<List<List<Sprite>>>();
 	private List<EventSpriteRendererEventManagerExecute> eventSpriteRendererEventManagerExecutes_ = new List<EventSpriteRendererEventManagerExecute>();
 
+	public EventSpriteRendererEventManagerExecuteState GetExecuteState() { return executeState_; }
+
 	public EventSpriteRenderer GetExecuteEventSpriteRenderers(int value) { return executeEvenetSpriteRenderers_[eventSpriteRenderersExecuteCounter_][value]; }
 	public int GetExecuteEventSpriteRenderersCount() { return executeEvenetSpriteRenderers_[eventSpriteRenderersExecuteCounter_].Count; }
 	public List<Sprite> GetExecuteAnimeSprites(int value) { return executeAnimeSprites_[eventSpriteRenderersExecuteCounter_][value]; }
-
-	public EventSpriteRendererEventManagerExecuteState GetExecuteState() { return executeState_; }
 
 	public void EventSpriteRendererSet(EventSpriteRenderer eventSpriteRenderers, List<Sprite> sprites) {
 		eventSpriteRenderers_.Add(eventSpriteRenderers);

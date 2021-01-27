@@ -26,8 +26,8 @@ public class UpdateGameObjectEventManagerExecuteState {
 		for (int i = 0; i < updateGameObjectEventManager.GetExecuteUpdateGameObjectsCount(); ++i) {
 			updateGameObjectEventManager.GetExecuteUpdateGameObjects(i).ProcessStatePosMoveExecute(
 				timeRegulation,
-				updateGameObjectEventManager.GetExecuteEndVec3s(i),
-				timeFluctProcess
+				timeFluctProcess,
+				updateGameObjectEventManager.GetExecuteEndVec3s(i)
 				);
 		}
 	}
@@ -37,8 +37,8 @@ public class UpdateGameObjectEventManagerExecuteState {
 		for (int i = 0; i < updateGameObjectEventManager.GetExecuteUpdateGameObjectsCount(); ++i) {
 			updateGameObjectEventManager.GetExecuteUpdateGameObjects(i).ProcessStateRotMoveExecute(
 				timeRegulation,
-				updateGameObjectEventManager.GetExecuteEndVec3s(i),
-				timeFluctProcess
+				timeFluctProcess,
+				updateGameObjectEventManager.GetExecuteEndVec3s(i)
 				);
 		}
 	}

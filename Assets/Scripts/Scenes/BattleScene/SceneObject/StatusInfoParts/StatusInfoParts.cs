@@ -69,6 +69,6 @@ public class StatusInfoParts : MonoBehaviour {
 		//HPをTextに反映
 		//HPゲージの調整
 		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(monsterData.RealHitPoint(), monsterData.nowHitPoint_, 1);
-		frameParts_.GetEventHpGaugeParts().ProcessStateGaugeUpdateExecute(0, monsterData, hpGaugeFillAmount);
+		frameParts_.GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, monsterData, hpGaugeFillAmount);
 	}
 }

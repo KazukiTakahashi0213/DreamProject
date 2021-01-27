@@ -481,7 +481,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1002436162175490055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 7015411404269178796}
@@ -678,6 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &1253482118753812429
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,6 +921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &7272203007403669139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,6 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &1955021336531901924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,6 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &2038559031502450167
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,6 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!114 &7345561624590108165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2225,6 +2230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &3132484740278774903
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,7 +2880,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4527701529333649933}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gauge_: {fileID: 7015411404791939051}
@@ -3111,6 +3117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &5291678200516838356
 GameObject:
   m_ObjectHideFlags: 0
@@ -4047,7 +4054,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7015411403230529949}
   - component: {fileID: 2296277590027012273}
-  - component: {fileID: 1629017139059655499}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -4085,20 +4091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 2401703241875922602}
   hpGaugeParts_: {fileID: 8067033440457922405}
-  eventHpGaugeParts_: {fileID: 1629017139059655499}
---- !u!114 &1629017139059655499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7015411403230529950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 8067033440457922405}
+  eventHpGaugeParts_: {fileID: 8067033440457922405}
 --- !u!1 &7015411403338392492
 GameObject:
   m_ObjectHideFlags: 0
@@ -4394,6 +4387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &7015411403748400618
 GameObject:
   m_ObjectHideFlags: 0
@@ -4607,6 +4601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
 --- !u!1 &7015411404269178798
 GameObject:
   m_ObjectHideFlags: 0
@@ -4951,7 +4946,6 @@ GameObject:
   - component: {fileID: 7015411404791939052}
   - component: {fileID: 7015411404791939050}
   - component: {fileID: 7015411404791939051}
-  - component: {fileID: 4546246148621453554}
   m_Layer: 5
   m_Name: HpGaugeImage
   m_TagString: Untagged
@@ -5015,20 +5009,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4546246148621453554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7015411404791939053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 010a24d54a1258b40ba5f20108908606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gauge_: {fileID: 7015411404791939051}
-  infoText_: {fileID: 0}
 --- !u!1 &7015411404802513400
 GameObject:
   m_ObjectHideFlags: 0
@@ -5258,7 +5238,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7015411405211440951}
   - component: {fileID: 2322170537404391221}
-  - component: {fileID: 2302653943041041919}
   m_Layer: 0
   m_Name: FrameParts
   m_TagString: Untagged
@@ -5296,20 +5275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3965541093788550203}
   hpGaugeParts_: {fileID: 6975935344925791682}
-  eventHpGaugeParts_: {fileID: 2302653943041041919}
---- !u!114 &2302653943041041919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7015411405211440952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ddc11071e7d06746a67371eb97a5b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGaugeParts_: {fileID: 6975935344925791682}
+  eventHpGaugeParts_: {fileID: 6975935344925791682}
 --- !u!1 &7551085838089093463
 GameObject:
   m_ObjectHideFlags: 0
@@ -6350,3 +6316,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}
