@@ -5,7 +5,7 @@ using UnityEngine;
 public enum UpdateGameObjectEventManagerExecute {
 	None
 	, PosMove
-	, PosRot
+	, RotMove
 	, Max
 }
 

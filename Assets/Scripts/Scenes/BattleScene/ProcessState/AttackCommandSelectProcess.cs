@@ -27,14 +27,17 @@ public class AttackCommandSelectProcess : IProcessState {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.LeftSelect(mgr);
 		}
 		else if (mgr.GetInputProvider().SelectEnter()) {
-			mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
-			mgr.GetPlayerMonsterParts().ProcessIdleEnd();
-
-			//ppの消費
 			ISkillData playerSkillData = PlayerBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.playerSelectSkillNumber_);
-			playerSkillData.nowPlayPoint_ -= 1;
 
-			return mgr.nowAttackCommandState_.Execute(mgr);
+			if (playerSkillData.nowPlayPoint_ > 0) {
+				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
+				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
+
+				//ppの消費
+				playerSkillData.nowPlayPoint_ -= 1;
+
+				return mgr.nowAttackCommandState_.Execute(mgr);
+			}
 		}
 		else if (mgr.GetInputProvider().SelectBack()) {
 			mgr.ChangeUiCommand();

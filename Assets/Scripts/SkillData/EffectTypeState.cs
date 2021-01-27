@@ -27,9 +27,6 @@ public class EffectTypeState {
 
 	//Attack
 	static private void AttackExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//ランク補正の計算
 		float monsterHitRateValue = 0;
 		{
@@ -48,7 +45,7 @@ public class EffectTypeState {
 
 		//攻撃のヒット判定
 		//技の命中率×命中補正値M×ランク補正
-		bool skillHit = rand.Next(0, 100) < (int)(attackSkillData.hitRateValue_ * (4096 / 4096) * monsterHitRateValue);
+		bool skillHit = AllSceneManager.GetInstance().GetRandom().Next(0, 100) < (int)(attackSkillData.hitRateValue_ * (4096 / 4096) * monsterHitRateValue);
 
 		//攻撃がはずれた時の説明
 		if (!skillHit) {
@@ -71,13 +68,13 @@ public class EffectTypeState {
 		//急所の判定
 		float critical = 1;
 		if (attackSkillData.criticalParameterRank_ <= 0) {
-			if (rand.Next(0, 24) == 13) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 24) == 13) critical = 1.5f;
 		}
 		else if (attackSkillData.criticalParameterRank_ == 1) {
-			if (rand.Next(0, 8) == 4) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 8) == 4) critical = 1.5f;
 		}
 		else if (attackSkillData.criticalParameterRank_ == 2) {
-			if (rand.Next(0, 2) == 0) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 2) == 0) critical = 1.5f;
 		}
 		else critical = 1.5f;
 
@@ -118,9 +115,6 @@ public class EffectTypeState {
 		}
 	}
 	static private void AttackExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//ランク補正の計算
 		float monsterHitRateValue = 0;
 		{
@@ -139,7 +133,7 @@ public class EffectTypeState {
 
 		//攻撃のヒット判定
 		//技の命中率×命中補正値M×ランク補正
-		bool skillHit = rand.Next(0, 100) < (int)(attackSkillData.hitRateValue_ * (4096 / 4096) * monsterHitRateValue);
+		bool skillHit = AllSceneManager.GetInstance().GetRandom().Next(0, 100) < (int)(attackSkillData.hitRateValue_ * (4096 / 4096) * monsterHitRateValue);
 
 		//攻撃がはずれた時の説明
 		if (!skillHit) {
@@ -157,13 +151,13 @@ public class EffectTypeState {
 		//急所の判定
 		float critical = 1;
 		if (attackSkillData.criticalParameterRank_ <= 0) {
-			if (rand.Next(0, 24) == 13) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 24) == 13) critical = 1.5f;
 		}
 		else if (attackSkillData.criticalParameterRank_ == 1) {
-			if (rand.Next(0, 8) == 4) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 8) == 4) critical = 1.5f;
 		}
 		else if (attackSkillData.criticalParameterRank_ == 2) {
-			if (rand.Next(0, 2) == 0) critical = 1.5f;
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 2) == 0) critical = 1.5f;
 		}
 		else critical = 1.5f;
 

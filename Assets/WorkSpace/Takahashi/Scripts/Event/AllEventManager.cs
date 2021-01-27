@@ -25,6 +25,7 @@ public class AllEventManager {
 	private List<float> eventTimeRegulation_ = new List<float>();
 	private List<t13.TimeFluctProcess> eventTimeFluctProcesses_ = new List<t13.TimeFluctProcess>();
 	private UpdateGameObjectEventManagerExecute updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
+	private EventSpriteRendererEventManagerExecute eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
@@ -47,13 +48,16 @@ public class AllEventManager {
 		eventTimeFluctProcesses_.Add(timeFluctProcess);
 
 		updateGameObjectEventManager_.UpdateGameObjectsExecuteSet(updateGameObjectEventManagerExecute_);
+		eventSpriteEventManager_.EventSpriteRenderersExecuteSet(eventSpriteRendererEventManagerExecute_);
 
 		sceneEvent_.func_add(AllUpdateEventExecuteEvent);
 
 		updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
+		eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 	}
 	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 
 		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
@@ -102,27 +106,13 @@ public class AllEventManager {
 	public void EventSpriteRendererSet(EventSpriteRenderer eventSprite, List<Sprite> sprites) {
 		eventSpriteEventManager_.EventSpriteRendererSet(eventSprite, sprites);
 	}
-	public void EventSpriteRenderersUpdateExecute(float timeRegulation = 0) {
-		eventSpriteEventManager_.EventSpriteRenderersExecuteSet();
-
-		sceneEvent_.func_add(SpriteRenderersUpdateExecuteEvent);
-
-		eventTimeRegulation_.Add(timeRegulation);
-		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
+	public void EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute setExecute) {
+		eventSpriteRendererEventManagerExecute_ = setExecute;
 	}
 	public void EventSpriteRenderersSetSpriteExecute() {
 		eventSpriteEventManager_.EventSpriteRenderersExecuteSet();
 
 		sceneEvent_.func_add(SpriteRenderersSetSpriteExecuteEvent);
-	}
-	static private bool SpriteRenderersUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
-
-		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
 	}
 	static private bool SpriteRenderersSetSpriteExecuteEvent(AllEventManager mgr) {
 		mgr.eventSpriteEventManager_.EventSpriteRenderersSetSpriteExecute();

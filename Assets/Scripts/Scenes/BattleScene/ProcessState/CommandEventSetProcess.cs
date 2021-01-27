@@ -16,9 +16,6 @@ public class CommandEventSetProcess : IProcessState {
 		//TODO
 		//状態異常処理の表示の実装
 
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//現在、場に出ているモンスターのデータの取得
 		IMonsterData enemyMonsterData = EnemyBattleData.GetInstance().GetMonsterDatas(0);
 		IMonsterData playerMonsterData = PlayerBattleData.GetInstance().GetMonsterDatas(0);
@@ -48,7 +45,7 @@ public class CommandEventSetProcess : IProcessState {
 			EnemySkillResultSet(mgr, enemyMonsterData, enemySkillData, playerMonsterData);
 		}
 		else if (enemyMonsterData.RealSpeed() == playerMonsterData.RealSpeed()) {
-			if (rand.Next(0, 2) == 0) {
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 2) == 0) {
 				//プレイヤーの戦闘処理
 				PlayerSkillResultSet(mgr, playerMonsterData, playerSkillData, enemyMonsterData);
 				//エネミーの戦闘処理
@@ -85,9 +82,6 @@ public class CommandEventSetProcess : IProcessState {
 
 	//HACK 同じ事をしている
 	private void EnemySkillResultSet(BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//エネミーの文字列の設定
 		string skillUseContext = "あいての　" + attackMonsterData.uniqueName_ + "の\n"
 			+ attackSkillData.skillNname_ + "！";
@@ -100,7 +94,7 @@ public class CommandEventSetProcess : IProcessState {
 		attackSkillData.effectType_.ExecuteEnemyEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
 
 		//追加効果の判定
-		bool optionEffectTrigger = rand.Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
+		bool optionEffectTrigger = AllSceneManager.GetInstance().GetRandom().Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
 
 		//追加効果の処理
 		if (optionEffectTrigger) {
@@ -112,9 +106,6 @@ public class CommandEventSetProcess : IProcessState {
 		}
 	}
 	private void PlayerSkillResultSet(BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//プレイヤーの文字列の設定
 		string skillUseContext = attackMonsterData.uniqueName_ + "の\n"
 			+ attackSkillData.skillNname_ + "！";
@@ -127,7 +118,7 @@ public class CommandEventSetProcess : IProcessState {
 		attackSkillData.effectType_.ExecutePlayerEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
 
 		//追加効果の判定
-		bool optionEffectTrigger = rand.Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
+		bool optionEffectTrigger = AllSceneManager.GetInstance().GetRandom().Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
 
 		//追加効果の処理
 		if (optionEffectTrigger) {

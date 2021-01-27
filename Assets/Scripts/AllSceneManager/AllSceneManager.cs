@@ -81,6 +81,10 @@ public class AllSceneManager : MonoBehaviour {
 	private bool SceneActive_ = true;
 	private SceneState nextSceneState_;
 
+	private System.Random random = new System.Random();
+
+	public System.Random GetRandom() { return random; }
+
 	public void SceneChange(SceneState nextScene, SceneChangeMode sceneChangeMode) {
 		SceneActive_ = false;
 

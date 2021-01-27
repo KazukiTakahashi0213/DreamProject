@@ -36,8 +36,4 @@ public class EventSpriteRenderer : MonoBehaviour {
 
 		processState_.state_ = EventSpriteRendererProcess.Anime;
 	}
-	public void SetSpriteExecute(Sprite sprite) {
-		spriteRenderer_.sprite = sprite;
-
-	}
 }

@@ -22,7 +22,7 @@ public class MagazineParts : MonoBehaviour {
 		}
 
 		//AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
-		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosRot);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.RotMove);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 	}
 	public void DownRollMagazineParts() {
@@ -33,7 +33,7 @@ public class MagazineParts : MonoBehaviour {
 		}
 
 		//AllEventManager.GetInstance().EventGameObjectsRotMoveExecute(0.5f);
-		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosRot);
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.RotMove);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 	}
 }

@@ -82,9 +82,6 @@ public class MonsterData : IMonsterData {
 	///メイン計算式
 	/// </summary>
 	static public int BattleDamageCalculate(IMonsterData attackMonster, IMonsterData defenseMonster, ISkillData attackSkill) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//乱数の値
 		float[] randomValue = new float[16] {
 			0.85f, 0.86f, 0.87f, 0.88f, 0.89f,
@@ -93,7 +90,7 @@ public class MonsterData : IMonsterData {
 			};
 
 		//乱数
-		float randomResult = randomValue[rand.Next(0, 16)];
+		float randomResult = randomValue[AllSceneManager.GetInstance().GetRandom().Next(0, 16)];
 
 		//モンスターのタイプと技のタイプの一致か否か
 		float typeMatch = 1;
@@ -145,9 +142,6 @@ public class MonsterData : IMonsterData {
 	///乱数平均、急所なし、計算式
 	/// </summary>
 	static public int TestDamageCalculate(IMonsterData attackMonster, IMonsterData defenseMonster, ISkillData attackSkill) {
-		//ランダムシード
-		System.Random rand = new System.Random();
-
 		//乱数
 		float randomResult = 9.5f;
 

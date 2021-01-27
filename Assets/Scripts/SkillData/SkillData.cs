@@ -85,6 +85,8 @@ public class SkillData : ISkillData {
 
 	public void Animetion(EffectParts targetEffectParts) {
 		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_);
-		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecute(0.35f);
+		//AllEventManager.GetInstance().EventSpriteRenderersUpdateExecute(0.35f);
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 	}
 }
