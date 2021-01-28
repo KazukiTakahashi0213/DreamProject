@@ -42,7 +42,7 @@ public class EventSpriteRendererEventManager {
 	public void EventSpriteRenderersUpdateExecute(float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
 		executeState_.state_ = eventSpriteRendererEventManagerExecutes_[eventSpriteRenderersExecuteCounter_];
 
-		executeState_.Execute(this, timeRegulation);
+		executeState_.Execute(this, timeRegulation, timeFluctProcess);
 
 		eventSpriteRenderersExecuteCounter_ += 1;
 	}

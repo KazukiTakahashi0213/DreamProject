@@ -67,7 +67,8 @@ public class CommandEventSetProcess : IProcessState {
 
 		//白紙に
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), " ");
-		AllEventManager.GetInstance().EventTextsUpdateExecute();
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute();
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(0.5f);
 
@@ -87,7 +88,9 @@ public class CommandEventSetProcess : IProcessState {
 			+ attackSkillData.skillNname_ + "！";
 
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), skillUseContext);
-		AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		//技のイベントの設定
@@ -111,7 +114,9 @@ public class CommandEventSetProcess : IProcessState {
 			+ attackSkillData.skillNname_ + "！";
 
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), skillUseContext);
-		AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		//技のイベントの設定
@@ -145,7 +150,9 @@ public class CommandEventSetProcess : IProcessState {
 
 				//文字列のイベント
 				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), parameterRankContext);
-				AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 			}
 		}
@@ -164,7 +171,9 @@ public class CommandEventSetProcess : IProcessState {
 
 				//文字列のイベント
 				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "あいての　" + parameterRankContext);
-				AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 			}
 		}
@@ -184,7 +193,9 @@ public class CommandEventSetProcess : IProcessState {
 
 				//文字列のイベント
 				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
-				AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 			}
 		}
@@ -203,7 +214,9 @@ public class CommandEventSetProcess : IProcessState {
 
 				//文字列のイベント
 				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "あいての　" + abnormalStateContext);
-				AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 			}
 		}

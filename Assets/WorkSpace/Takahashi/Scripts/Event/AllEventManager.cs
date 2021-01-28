@@ -27,6 +27,7 @@ public class AllEventManager {
 	private UpdateGameObjectEventManagerExecute updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
 	private EventSpriteRendererEventManagerExecute eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 	private HpGaugePartsEventManagerExecute hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
+	private EventTextEventManagerExecute eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
 
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
@@ -51,17 +52,20 @@ public class AllEventManager {
 		updateGameObjectEventManager_.UpdateGameObjectsExecuteSet(updateGameObjectEventManagerExecute_);
 		eventSpriteEventManager_.EventSpriteRenderersExecuteSet(eventSpriteRendererEventManagerExecute_);
 		hpGaugePartsEventManager_.HpGaugesPartsExecuteSet(hpGaugePartsEventManagerExecute_);
+		eventTextEventManager_.EventTextsExecuteSet(eventTextEventManagerExecute_);
 
 		sceneEvent_.func_add(AllUpdateEventExecuteEvent);
 
 		updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
 		eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 		hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
+		eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
 	}
 	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.hpGaugePartsEventManager_.HpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 
 		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
@@ -150,22 +154,8 @@ public class AllEventManager {
 	public void EventTextSet(EventText eventText, string setStr) {
 		eventTextEventManager_.EventTextSet(eventText, setStr);
 	}
-	public void EventTextsUpdateExecute(float timeRegulation = 0) {
-		eventTextEventManager_.EventTextsExecuteSet();
-
-		sceneEvent_.func_add(ContextsUpdateExecuteEvent);
-
-		eventTimeRegulation_.Add(timeRegulation);
-		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
-	}
-	static private bool ContextsUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
-
-		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
+	public void EventTextsUpdateExecuteSet(EventTextEventManagerExecute setExecute) {
+		eventTextEventManagerExecute_ = setExecute;
 	}
 
 	//HpGaugeParts

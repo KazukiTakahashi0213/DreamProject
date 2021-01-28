@@ -16,12 +16,12 @@ public class EventSpriteRendererEventManagerExecuteState {
 	public EventSpriteRendererEventManagerExecute state_;
 
 	//None
-	static private void NoneExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation) {
+	static private void NoneExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
 
 	}
 
 	//Anime
-	static private void AnimeExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation) {
+	static private void AnimeExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
 		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderersCount(); ++i) {
 			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers(i).ProcessStateAnimeExecute(
 				timeRegulation / eventSpriteRendererEventManager.GetExecuteAnimeSprites(i).Count
@@ -30,11 +30,11 @@ public class EventSpriteRendererEventManagerExecuteState {
 		}
 	}
 
-	private delegate void ExecuteFunc(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation);
+	private delegate void ExecuteFunc(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess);
 
 	private ExecuteFunc[] executeFuncs_ = new ExecuteFunc[(int)EventSpriteRendererEventManagerExecute.Max] {
 		NoneExecute
 		, AnimeExecute
 	};
-	public void Execute(EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation) { executeFuncs_[(int)state_](this, eventSpriteRendererEventManager, timeRegulation); }
+	public void Execute(EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) { executeFuncs_[(int)state_](this, eventSpriteRendererEventManager, timeRegulation, timeFluctProcess); }
 }

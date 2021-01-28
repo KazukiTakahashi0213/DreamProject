@@ -21,7 +21,8 @@ public class CommandEscape : ICommandState {
 	public IProcessState Execute(BattleManager mgr) {
 		//文字列の設定
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "いまは　にげられない！");
-		AllEventManager.GetInstance().EventTextsUpdateExecute(0.4f);
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
 		//イベントの最後
 		AllEventManager.GetInstance().EventFinishSet();
 

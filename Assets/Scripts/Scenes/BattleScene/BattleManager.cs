@@ -273,7 +273,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			string context = enemyTrainerData.job() + "の　" + enemyTrainerData.name() + "が\nしょうぶを　しかけてきた！";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);
-			AllEventManager.GetInstance().EventTextsUpdateExecute(EventContextUpdateTime_);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(EventContextUpdateTime_);
 		}
 		//Enterの押下待ち
 		AllEventManager.GetInstance().EventWaitEnterSelectSet();
@@ -284,7 +285,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			string context = enemyTrainerData.job() + "の　" + enemyTrainerData.name() + "は\n" + enemyFirstMonsterName + "を　くりだした！";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);
-			AllEventManager.GetInstance().EventTextsUpdateExecute(EventContextUpdateTime_);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(EventContextUpdateTime_);
 		}
 		//エネミーの退場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f + 9.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
@@ -307,7 +309,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			string context = "ゆけっ！　" + playerFirstMonsterName + "！";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);
-			AllEventManager.GetInstance().EventTextsUpdateExecute(EventContextUpdateTime_);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(EventContextUpdateTime_);
 		}
 		//プレイヤーの退場
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f - 9.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
@@ -330,7 +333,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			string context = playerFirstMonsterName + "は　どうする？";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);
-			AllEventManager.GetInstance().EventTextsUpdateExecute();
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 		}
 		//コマンドの選択肢とカーソルの出現
 		AllEventManager.GetInstance().UpdateGameObjectSet(novelWindowParts_.GetCommandParts().GetEventGameObject());

@@ -50,7 +50,9 @@ public class EffectTypeState {
 		//攻撃がはずれた時の説明
 		if (!skillHit) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "しかし　" + attackMonsterData.uniqueName_ + "の\nこうげきは　はずれた！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(1.0f);
 
 			return;
@@ -93,25 +95,33 @@ public class EffectTypeState {
 		if (critical > 1.0f) {
 			//急所の説明
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 
 		//効果の説明
 		if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
 			&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ないようだ・・・");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 	}
@@ -139,7 +149,9 @@ public class EffectTypeState {
 		//攻撃がはずれた時の説明
 		if (!skillHit) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "しかし　あいての　" + attackMonsterData.uniqueName_ + "の\nこうげきは　はずれた！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(1.0f);
 
 			return;
@@ -182,25 +194,33 @@ public class EffectTypeState {
 		if (critical > 1.0f) {
 			//急所の説明
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 
 		//効果の説明
 		if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
 			&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかが　ないようだ・・・");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(mgr.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 		}
 	}

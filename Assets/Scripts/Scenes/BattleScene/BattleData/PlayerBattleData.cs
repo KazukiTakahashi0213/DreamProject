@@ -33,7 +33,8 @@ public class PlayerBattleData {
 
 			AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "\n"
 				+ "もどれ！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(manager.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
@@ -50,7 +51,8 @@ public class PlayerBattleData {
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 			AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), "ゆけ！　" + md.uniqueName_ + "！");
-			AllEventManager.GetInstance().EventTextsUpdateExecute(manager.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
@@ -65,7 +67,8 @@ public class PlayerBattleData {
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
 			AllEventManager.GetInstance().EventTextSet(manager.GetPlayerStatusInfoParts().GetBaseParts().GetInfoEventText(), monsterViewName + "　　Lｖ" + t13.Utility.HarfSizeForFullSize(md.level_.ToString()));
-			AllEventManager.GetInstance().EventTextsUpdateExecute();
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			//HPをTextに反映
 			//HPゲージの調整
@@ -78,7 +81,8 @@ public class PlayerBattleData {
 			for (int i = 0; i < 4; ++i) {
 				AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i), "　" + t13.Utility.StringFullSpaceBackTamp(md.GetSkillDatas(i).skillNname_, 7));
 			}
-			AllEventManager.GetInstance().EventTextsUpdateExecute();
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			//文字の色の変更
 			for (int i = 0; i < 4; ++i) {
@@ -119,7 +123,8 @@ public class PlayerBattleData {
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 
 		AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "は　どうする？");
-		AllEventManager.GetInstance().EventTextsUpdateExecute();
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute();
 
 		AllEventManager.GetInstance().EventFinishSet();
 
