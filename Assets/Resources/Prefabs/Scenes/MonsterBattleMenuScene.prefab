@@ -1566,7 +1566,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 1124351042768169494}
   hpGaugeParts_: {fileID: 4830493492463261100}
-  eventHpGaugeParts_: {fileID: 4830493492463261100}
 --- !u!1 &1455298370679516752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3243,7 +3242,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3111319518205753038}
   hpGaugeParts_: {fileID: 4419747201058239830}
-  eventHpGaugeParts_: {fileID: 4419747201058239830}
 --- !u!1 &3642415394036447564
 GameObject:
   m_ObjectHideFlags: 0
@@ -3424,11 +3422,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventStatusInfosParts_:
-  - {fileID: 4063188544440610917}
-  - {fileID: 6002011705454806890}
-  - {fileID: 4313477355748544843}
-  - {fileID: 2898309611175160518}
-  - {fileID: 1790035757461858641}
+  - {fileID: 4009292635973655254}
+  - {fileID: 1724149013987221342}
+  - {fileID: 5673847216355317682}
+  - {fileID: 2334609293176505256}
+  - {fileID: 2384369499264819498}
 --- !u!1 &3937860358765974450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3518,7 +3516,6 @@ GameObject:
   - component: {fileID: 2526970764606138290}
   - component: {fileID: 2334609293176505256}
   - component: {fileID: 5113549016857779751}
-  - component: {fileID: 2898309611175160518}
   m_Layer: 0
   m_Name: StatusInfoParts3
   m_TagString: Untagged
@@ -3553,7 +3550,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3954463413240907386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 245135279339059478}
@@ -3575,19 +3572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addEulerVec3_: {x: 0, y: 0, z: 0}
---- !u!114 &2898309611175160518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3954463413240907386}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4003864a46bc8324caf999bb86fabdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusInfoParts_: {fileID: 2334609293176505256}
 --- !u!1 &4031267570748708940
 GameObject:
   m_ObjectHideFlags: 0
@@ -5042,7 +5026,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 2446634532271830282}
   hpGaugeParts_: {fileID: 4371876439326986621}
-  eventHpGaugeParts_: {fileID: 4371876439326986621}
 --- !u!1 &5314175219850436881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5397,7 +5380,6 @@ GameObject:
   - component: {fileID: 350820688321486577}
   - component: {fileID: 2384369499264819498}
   - component: {fileID: 5634207193931318198}
-  - component: {fileID: 1790035757461858641}
   m_Layer: 0
   m_Name: StatusInfoParts4
   m_TagString: Untagged
@@ -5432,7 +5414,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5596002749613454672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 9054312226555193104}
@@ -5454,19 +5436,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addEulerVec3_: {x: 0, y: 0, z: 0}
---- !u!114 &1790035757461858641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5596002749613454672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4003864a46bc8324caf999bb86fabdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusInfoParts_: {fileID: 2384369499264819498}
 --- !u!1 &5604997586771038269
 GameObject:
   m_ObjectHideFlags: 0
@@ -6532,7 +6501,6 @@ GameObject:
   - component: {fileID: 4849447784521686654}
   - component: {fileID: 5673847216355317682}
   - component: {fileID: 5098202931648268678}
-  - component: {fileID: 4313477355748544843}
   m_Layer: 0
   m_Name: StatusInfoParts2
   m_TagString: Untagged
@@ -6567,7 +6535,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6864330472540881468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 4038619047264673528}
@@ -6589,19 +6557,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addEulerVec3_: {x: 0, y: 0, z: 0}
---- !u!114 &4313477355748544843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6864330472540881468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4003864a46bc8324caf999bb86fabdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusInfoParts_: {fileID: 5673847216355317682}
 --- !u!1 &6909925754740715602
 GameObject:
   m_ObjectHideFlags: 0
@@ -6834,7 +6789,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3528771547539529756}
   hpGaugeParts_: {fileID: 196948138626844264}
-  eventHpGaugeParts_: {fileID: 196948138626844264}
 --- !u!1 &7218057268560138212
 GameObject:
   m_ObjectHideFlags: 0
@@ -6894,7 +6848,6 @@ GameObject:
   - component: {fileID: 3554071022954657360}
   - component: {fileID: 4009292635973655254}
   - component: {fileID: 2521327964041225813}
-  - component: {fileID: 4063188544440610917}
   m_Layer: 0
   m_Name: StatusInfoParts0
   m_TagString: Untagged
@@ -6929,7 +6882,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7341397411395644758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 6430021406690563237}
@@ -6951,19 +6904,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addEulerVec3_: {x: 0, y: 0, z: 0}
---- !u!114 &4063188544440610917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7341397411395644758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4003864a46bc8324caf999bb86fabdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusInfoParts_: {fileID: 4009292635973655254}
 --- !u!1 &7418247362597637336
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,7 +6962,6 @@ GameObject:
   - component: {fileID: 4591866226720469338}
   - component: {fileID: 1724149013987221342}
   - component: {fileID: 6770842153638503509}
-  - component: {fileID: 6002011705454806890}
   m_Layer: 0
   m_Name: StatusInfoParts1
   m_TagString: Untagged
@@ -7057,7 +6996,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7420345909330951466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 395545606514656155}
@@ -7079,19 +7018,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addEulerVec3_: {x: 0, y: 0, z: 0}
---- !u!114 &6002011705454806890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7420345909330951466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4003864a46bc8324caf999bb86fabdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusInfoParts_: {fileID: 1724149013987221342}
 --- !u!1 &7442797170779008899
 GameObject:
   m_ObjectHideFlags: 0
@@ -7319,7 +7245,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 6844491171618865024}
   hpGaugeParts_: {fileID: 1802973494853113763}
-  eventHpGaugeParts_: {fileID: 1802973494853113763}
 --- !u!1 &7531728168273534315
 GameObject:
   m_ObjectHideFlags: 0

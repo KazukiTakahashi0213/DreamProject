@@ -19,7 +19,7 @@ public class AllEventManager {
 	private UpdateGameObjectEventManager updateGameObjectEventManager_ = new UpdateGameObjectEventManager();
 	private EventTextEventManager eventTextEventManager_ = new EventTextEventManager();
 	private HpGaugePartsEventManager hpGaugePartsEventManager_ = new HpGaugePartsEventManager();
-	private EventStatusInfoPartsEventManager eventStatusInfoPartsEventManager_ = new EventStatusInfoPartsEventManager();
+	private StatusInfoPartsEventManager statusInfoPartsEventManager_ = new StatusInfoPartsEventManager();
 
 	private int updateEventExecuteCounter_ = 0;
 	private List<float> eventTimeRegulation_ = new List<float>();
@@ -28,6 +28,7 @@ public class AllEventManager {
 	private EventSpriteRendererEventManagerExecute eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 	private HpGaugePartsEventManagerExecute hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
 	private EventTextEventManagerExecute eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
+	private StatusInfoPartsEventManagerExecute statusInfoPartsEventManagerExecute_ = StatusInfoPartsEventManagerExecute.None;
 
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
@@ -53,6 +54,7 @@ public class AllEventManager {
 		eventSpriteEventManager_.EventSpriteRenderersExecuteSet(eventSpriteRendererEventManagerExecute_);
 		hpGaugePartsEventManager_.HpGaugesPartsExecuteSet(hpGaugePartsEventManagerExecute_);
 		eventTextEventManager_.EventTextsExecuteSet(eventTextEventManagerExecute_);
+		statusInfoPartsEventManager_.EventStatusInfosPartsExecuteSet(statusInfoPartsEventManagerExecute_);
 
 		sceneEvent_.func_add(AllUpdateEventExecuteEvent);
 
@@ -60,12 +62,14 @@ public class AllEventManager {
 		eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 		hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
 		eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
+		statusInfoPartsEventManagerExecute_ = StatusInfoPartsEventManagerExecute.None;
 	}
 	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.hpGaugePartsEventManager_.HpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 
 		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
 
@@ -105,7 +109,7 @@ public class AllEventManager {
 
 		mgr.hpGaugePartsEventManager_.HpGaugesPartsClear();
 
-		mgr.eventStatusInfoPartsEventManager_.EventStatusInfosPartsClear();
+		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsClear();
 
 		return mgr.sceneEvent_.event_finish();
 	}
@@ -166,26 +170,12 @@ public class AllEventManager {
 		hpGaugePartsEventManagerExecute_ = setExecute;
 	}
 
-	//EventStatusInfoParts
-	public void EventStatusInfoPartsSet(EventStatusInfoParts eventStatusInfoParts, Color32 setColor) {
-		eventStatusInfoPartsEventManager_.EventStatusInfoPartsSet(eventStatusInfoParts, setColor);
+	//StatusInfoParts
+	public void EventStatusInfoPartsSet(StatusInfoParts eventStatusInfoParts, Color32 setColor) {
+		statusInfoPartsEventManager_.EventStatusInfoPartsSet(eventStatusInfoParts, setColor);
 	}
-	public void EventStatusInfosPartsUpdateExecute(float timeRegulation = 0) {
-		eventStatusInfoPartsEventManager_.EventStatusInfosPartsExecuteSet();
-
-		sceneEvent_.func_add(ColorUpdateExecuteEvent);
-
-		eventTimeRegulation_.Add(timeRegulation);
-		eventTimeFluctProcesses_.Add(t13.TimeFluctProcess.None);
-	}
-	static private bool ColorUpdateExecuteEvent(AllEventManager mgr) {
-		mgr.eventStatusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_]);
-
-		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
+	public void StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute setExecute) {
+		statusInfoPartsEventManagerExecute_ = setExecute;
 	}
 
 	//シングルトン

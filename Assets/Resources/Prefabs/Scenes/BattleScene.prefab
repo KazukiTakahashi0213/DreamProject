@@ -4091,7 +4091,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 2401703241875922602}
   hpGaugeParts_: {fileID: 8067033440457922405}
-  eventHpGaugeParts_: {fileID: 8067033440457922405}
 --- !u!1 &7015411403338392492
 GameObject:
   m_ObjectHideFlags: 0
@@ -4366,7 +4365,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7015411403727338667}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 2322170537404391221}
@@ -4374,7 +4373,7 @@ MonoBehaviour:
   firstAbnormalStateInfoParts_: {fileID: 4822449485870000416}
   secondAbnormalStateInfoParts_: {fileID: 7968192401891853780}
   eventGameObject_: {fileID: 8007807735846462813}
-  idleTimeRegulation_: 0.3
+  idleTimeRegulation_: 0.5
 --- !u!114 &8007807735846462813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4580,7 +4579,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7015411403938448348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a623c8a3be2df5b449ef964313841251, type: 3}
+  m_Script: {fileID: 11500000, guid: b51af192e43596d4682dbe95808c65dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameParts_: {fileID: 2296277590027012273}
@@ -5275,7 +5274,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameSprite_: {fileID: 3965541093788550203}
   hpGaugeParts_: {fileID: 6975935344925791682}
-  eventHpGaugeParts_: {fileID: 6975935344925791682}
 --- !u!1 &7551085838089093463
 GameObject:
   m_ObjectHideFlags: 0

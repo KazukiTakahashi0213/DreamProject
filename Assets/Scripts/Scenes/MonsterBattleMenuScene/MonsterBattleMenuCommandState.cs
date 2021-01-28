@@ -45,7 +45,7 @@ public class MonsterBattleMenuCommandState {
 		AllEventManager.GetInstance().EventFinishSet();
 		manager.GetBulletParts().UpRollStatusInfoParts(manager.selectMonsterNumber_);
 
-		manager.GetBulletParts().GetEventStatusInfosParts(manager.GetBulletParts().GetEventStatusInfosPartsSize() - 1).GetStatusInfoParts().MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
+		manager.GetBulletParts().GetEventStatusInfosParts(manager.GetBulletParts().GetEventStatusInfosPartsSize() - 1).MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
 
 		manager.selectMonsterNumber_ -= 1;
 
@@ -60,7 +60,7 @@ public class MonsterBattleMenuCommandState {
 		AllEventManager.GetInstance().EventFinishSet();
 		manager.GetBulletParts().DownRollStatusInfoParts(manager.selectMonsterNumber_);
 
-		manager.GetBulletParts().GetEventStatusInfosParts(0).GetStatusInfoParts().MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
+		manager.GetBulletParts().GetEventStatusInfosParts(0).MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
 
 		manager.selectMonsterNumber_ += 1;
 
