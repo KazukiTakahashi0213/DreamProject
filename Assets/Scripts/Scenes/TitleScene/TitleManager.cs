@@ -5,12 +5,13 @@ using UnityEngine;
 public class TitleManager : MonoBehaviour, ISceneManager {
 
 	IInputProvider input = new KeyBoardNormalInputProvider();
+
 	public void SceneStart() {
 
 	}
 
 	public void SceneUpdate() {
-		if (Input.anyKeyDown) {
+		if (input.SelectEnter()) {
 			AllSceneManager.GetInstance().SceneChange(SceneState.SaveDataSelect, SceneChangeMode.Change);
 		}
 	}
