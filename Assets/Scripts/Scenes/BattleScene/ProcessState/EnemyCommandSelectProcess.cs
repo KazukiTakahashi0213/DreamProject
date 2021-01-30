@@ -12,8 +12,46 @@ public class EnemyCommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		//タイプ相性の測定
+		int[] typeSimillarResult = new int[3] { 0, 0, 0 };
+		int[] monsterNumbers = new int[3] { 0, 1, 2 };
+
+		for (int i = 0; i < EnemyBattleData.GetInstance().GetMonsterDatasLength(); ++i) {
+			//戦えたら、None以外だったら
+			if (EnemyBattleData.GetInstance().GetMonsterDatas(i).battleActive_
+				&& EnemyBattleData.GetInstance().GetMonsterDatas(i).tribesData_.monsterNumber_ != 0) {
+				{
+					int simillarResult = PlayerBattleData.GetInstance().GetMonsterDatas(0).ElementSimillarCheckerForValue(EnemyBattleData.GetInstance().GetMonsterDatas(i).tribesData_.firstElement_);
+
+					if (simillarResult == 0) typeSimillarResult[i] += 3;
+					else if (simillarResult == 1) typeSimillarResult[i] += 1;
+					else if (simillarResult == 2) typeSimillarResult[i] += 0;
+					else if (simillarResult == 3) typeSimillarResult[i] += 2;
+				}
+				{
+					int simillarResult = PlayerBattleData.GetInstance().GetMonsterDatas(0).ElementSimillarCheckerForValue(EnemyBattleData.GetInstance().GetMonsterDatas(i).tribesData_.secondElement_);
+
+					if (simillarResult == 0) typeSimillarResult[i] += 3;
+					else if (simillarResult == 1) typeSimillarResult[i] += 1;
+					else if (simillarResult == 2) typeSimillarResult[i] += 0;
+					else if (simillarResult == 3) typeSimillarResult[i] += 2;
+				}
+			}
+		}
+
+		//先頭のモンスターの相性が悪かったら
+		if(typeSimillarResult[0] < 4) {
+			t13.Utility.SimpleHiSort2Index(typeSimillarResult, monsterNumbers);
+
+			EnemyBattleData.GetInstance().changeMonsterNumber_ = monsterNumbers[0];
+
+			if (EnemyBattleData.GetInstance().changeMonsterNumber_ > 0) {
+				EnemyBattleData.GetInstance().changeMonsterActive_ = true;
+			}
+		}
+
 		//現在、場に出ているモンスターのデータの取得
-		IMonsterData enemyMD = EnemyBattleData.GetInstance().GetMonsterDatas(0);
+		IMonsterData enemyMD = EnemyBattleData.GetInstance().GetMonsterDatas(EnemyBattleData.GetInstance().changeMonsterNumber_);
 		IMonsterData playerMD = PlayerBattleData.GetInstance().GetMonsterDatas(0);
 
 		const int EFFECT_ATTACK_SIZE = 4;

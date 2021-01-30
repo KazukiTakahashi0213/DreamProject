@@ -13,12 +13,14 @@ public class MonsterData : IMonsterData {
 		level_ = level;
 		uniqueName_ = monsterTribes.monsterName_;
 		nowHitPoint_ = RealHitPoint();
+		battleActive_ = true;
 	}
 
 	public int exp_ { get; }
 	public int level_ { get; }
 	public string uniqueName_ { get; set; }
 	public int nowHitPoint_ { get; set; }
+	public bool battleActive_ { get; set; }
 
 	//技
 	private const int SKILL_MAX_SIZE = 4;
@@ -68,6 +70,23 @@ public class MonsterData : IMonsterData {
 
 	public float ElementSimillarChecker(ElementTypeState checkElementType) {
 		return elementSimillar_[(int)tribesData_.firstElement_.state_, (int)checkElementType.state_] * elementSimillar_[(int)tribesData_.secondElement_.state_, (int)checkElementType.state_];
+	}
+
+	public int ElementSimillarCheckerForValue(ElementTypeState checkElementType) {
+		float checkResult = ElementSimillarChecker(checkElementType);
+
+		if (checkResult > 1.0f) {
+			return 0;
+		}
+		else if (checkResult < 1.0f
+			&& checkResult > 0) {
+			return 1;
+		}
+		else if (checkResult < 0.1f) {
+			return 2;
+		}
+
+		return 3;
 	}
 
 	private const int ELEMENT_MAX_SIZE = 5;

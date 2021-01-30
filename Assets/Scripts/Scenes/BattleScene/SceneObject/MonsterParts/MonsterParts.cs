@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class MonsterParts : MonoBehaviour {
 	//EntryPoint
-	private void Update() {
+	void Start() {
+		//初期位置の保存
+		entryPosY_ = transform.position.y;
+	}
+
+	void Update() {
 		processState_ = processState_.Update(this);
 	}
 
@@ -19,7 +24,7 @@ public class MonsterParts : MonoBehaviour {
 	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
 	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
-	private Vector3 entryPos_;
+	private float entryPosY_;
 
 	public SpriteRenderer GetMonsterSprite() { return monsterSprite_; }
 	public EventSpriteRenderer GetEventMonsterSprite() { return eventMonsterSprite_; }
@@ -44,14 +49,14 @@ public class MonsterParts : MonoBehaviour {
 	}
 
 	public void ProcessIdleStart() {
-		entryPos_ = transform.position;
-
 		processState_ = new MonsterPartsProcessIdle();
 	}
 	public void ProcessIdleEnd() {
-		t13.UnityUtil.ObjectPosMove(GetEventGameObject().GetGameObject(), entryPos_);
+		t13.UnityUtil.ObjectPosMove(gameObject, new Vector3(transform.position.x, entryPosY_, transform.position.z));
 
 		processIdleState_ = new MonsterPartsProcessIdleDown();
+
+		timeCounter_.reset();
 
 		processState_ = new MonsterPartsProcessNone();
 	}

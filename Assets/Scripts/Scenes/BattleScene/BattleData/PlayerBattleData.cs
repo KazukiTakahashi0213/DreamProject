@@ -8,6 +8,7 @@ public class PlayerBattleData {
 
 		monsterDatas_[haveMonsterSize_] = addMonster;
 		haveMonsterSize_ += 1;
+		battleActiveMonsterSize_ += 1;
 	}
 
 	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
@@ -23,30 +24,104 @@ public class PlayerBattleData {
 		, new MonsterData(new MonsterTribesData(0), 0, 50)
 	};
 
+	//戦えるモンスターの数
+	private int battleActiveMonsterSize_ = 0;
+
+	//交換するか否かのフラグ
 	public bool changeMonsterActive_ = false;
 	//交換する手持ちの番号
 	public int changeMonsterNumber_ = 0;
-	//交換処理
-	public void MonsterChangeEventSet(BattleManager manager) {
-		if(changeMonsterNumber_ > 0) {
-			IMonsterData md = monsterDatas_[changeMonsterNumber_];
 
-			AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "\n"
-				+ "もどれ！");
+	//共通のDP
+	public int dreamPoint_ = 0;
+
+	//倒れた時の処理
+	public void MonsterDownEventSet(BattleManager manager) {
+		battleActiveMonsterSize_ -= 1;
+
+		//戦闘のモンスターをダウンさせる
+		monsterDatas_[0].battleActive_ = false;
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(1.0f);
+
+		//モンスターの画像の非表示
+		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
+		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+		//モンスターのステータスインフォの退場
+		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(13.5f, manager.GetPlayerStatusInfoParts().transform.position.y, manager.GetPlayerStatusInfoParts().transform.position.z));
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
+
+		//文字列の処理
+		AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "は　たおれた！");
+		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+		if (battleActiveMonsterSize_ == 0) {
+			//文字列の処理
+			AllEventManager.GetInstance().EventTextSet(
+				manager.GetNovelWindowParts().GetEventText()
+				, EnemyTrainerData.GetInstance().job() + "の　" + EnemyTrainerData.GetInstance().name() + "\n"
+				+ "との　しょうぶに　まけた");
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
-			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+			//Enterキー
+			AllEventManager.GetInstance().EventWaitEnterSelectSet();
 
-			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
-			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
-
-			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
-
-			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(13.5f, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.y, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.z));
-			//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.2f);
+			//エネミーの入場
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyParts().GetEventGameObject(), new Vector3(7.5f, manager.GetEnemyParts().transform.position.y, manager.GetEnemyParts().transform.position.z));
 			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
-			AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
+
+			//Enterキー
+			AllEventManager.GetInstance().EventWaitEnterSelectSet();
+
+			AllEventManager.GetInstance().EventFinishSet();
+
+			return;
+		}
+
+		//シーンの切り替え
+		AllEventManager.GetInstance().SceneChangeEventSet(SceneState.MonsterBattleMenu, SceneChangeMode.Slide);
+	}
+
+	//交換処理
+	public void MonsterChangeEventSet(BattleManager manager) {
+		//モンスターの変更が行われていたら
+		if (changeMonsterNumber_ > 0) {
+			IMonsterData md = monsterDatas_[changeMonsterNumber_];
+
+			AllEventManager.GetInstance().EventStatusInfoPartsSet(manager.GetPlayerStatusInfoParts(), new Color32(0, 0, 0, 0));
+			AllEventManager.GetInstance().StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute.IdleMoveEnd);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//先頭がダウンしていなかったら
+			if (monsterDatas_[0].battleActive_ == true) {
+				AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "\n"
+					+ "もどれ！");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+				AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
+				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
+
+				AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+				AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(13.5f, manager.GetPlayerStatusInfoParts().transform.position.y, manager.GetPlayerStatusInfoParts().transform.position.z));
+				AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+				AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
+			}
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
@@ -56,14 +131,12 @@ public class PlayerBattleData {
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			{
-				//画像の設定
-				List<Sprite> sprites = new List<Sprite>();
-				sprites.Add(md.tribesData_.backTex_);
-				//manager.GetPlayerMonsterParts().GetMonsterSprite().sprite = md.tribesData_.backTex_;
-				AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
-				AllEventManager.GetInstance().EventSpriteRenderersSetSpriteExecute();
-			}
+			//画像の設定
+			List<Sprite> sprites = new List<Sprite>();
+			sprites.Add(md.tribesData_.backTex_);
+			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
+			AllEventManager.GetInstance().EventSpriteRenderersSetSpriteExecute();
+
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
 			AllEventManager.GetInstance().EventTextSet(manager.GetPlayerStatusInfoParts().GetBaseParts().GetInfoEventText(), monsterViewName + "　　Lｖ" + t13.Utility.HarfSizeForFullSize(md.level_.ToString()));
@@ -82,7 +155,7 @@ public class PlayerBattleData {
 				AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i), "　" + t13.Utility.StringFullSpaceBackTamp(md.GetSkillDatas(i).skillNname_, 7));
 			}
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 
 			//文字の色の変更
 			for (int i = 0; i < 4; ++i) {
@@ -110,30 +183,19 @@ public class PlayerBattleData {
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(4.0f, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.y, manager.GetPlayerStatusInfoParts().GetEventGameObject().transform.position.z));
-			//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.2f);
+			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerStatusInfoParts().GetEventGameObject(), new Vector3(4.0f, manager.GetPlayerStatusInfoParts().transform.position.y, manager.GetPlayerStatusInfoParts().transform.position.z));
 			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
 			AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
 		}
-
+		
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
-
-		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetCursorParts().GetEventGameObject());
-		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
-		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
-
-		AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), monsterDatas_[0].uniqueName_ + "は　どうする？");
-		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-		AllEventManager.GetInstance().AllUpdateEventExecute();
-
-		AllEventManager.GetInstance().EventFinishSet();
 
 		manager.ActiveUiCommand();
 		manager.InactiveUiCommand();
 
 		manager.SetInputProvider(new KeyBoardInactiveInputProvider());
 
-		changeMonsterActive_ = false;
+		changeMonsterNumber_ = 0;
 	}
 
 	//シングルトン

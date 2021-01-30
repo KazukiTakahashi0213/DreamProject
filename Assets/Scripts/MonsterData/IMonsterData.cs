@@ -9,6 +9,8 @@ public interface IMonsterData {
 	int level_ { get; }
 	string uniqueName_ { get; set; }
 	int nowHitPoint_ { get; set; }
+	bool battleActive_ { get; set; }
+
 	ISkillData GetSkillDatas(int number);
 	int GetSkillSize();
 
@@ -22,4 +24,5 @@ public interface IMonsterData {
 	void SkillSet(SkillData setSkill, int number);
 
 	float ElementSimillarChecker(ElementTypeState checkElementType);
+	int ElementSimillarCheckerForValue(ElementTypeState checkElementType);
 }

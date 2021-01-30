@@ -85,6 +85,76 @@ namespace t13 {
 
 			return retStr;
 		}
+
+		//大きい順にソート
+		static public void SimpleHiSort(int[] index) {
+			for (int i = 0; i < index.Length - 1; ++i) {
+				for (int j = i + 1; j < index.Length; ++j) {
+					if (index[i] < index[j]) {
+						int tmp = index[i];
+						index[i] = index[j];
+						index[j] = tmp;
+					}
+				}
+			}
+		}
+		static public void SimpleHiSort(float[] index) {
+			for (int i = 0; i < index.Length - 1; ++i) {
+				for (int j = i + 1; j < index.Length; ++j) {
+					if (index[i] < index[j]) {
+						float tmp = index[i];
+						index[i] = index[j];
+						index[j] = tmp;
+					}
+				}
+			}
+		}
+
+		//小さい順にソート
+		static public void SimpleLowSort<T>(int[] index) {
+			for (int i = 0; i < index.Length - 1; ++i) {
+				for (int j = i + 1; j < index.Length; ++j) {
+					if (index[i] > index[j]) {
+						int tmp = index[i];
+						index[i] = index[j];
+						index[j] = tmp;
+					}
+				}
+			}
+		}
+		static public void SimpleLowSort(float[] index) {
+			for (int i = 0; i < index.Length - 1; ++i) {
+				for (int j = i + 1; j < index.Length; ++j) {
+					if (index[i] > index[j]) {
+						float tmp = index[i];
+						index[i] = index[j];
+						index[j] = tmp;
+					}
+				}
+			}
+		}
+
+
+		//大きい順に２次元配列をソート
+		static public void SimpleHiSort2Index(int[] mainIndex, int[] subIndex) {
+			for (int i = 0; i < mainIndex.Length - 1; ++i) {
+				for (int j = i + 1; j < mainIndex.Length; ++j) {
+					if (mainIndex[i] < mainIndex[j]) {
+						{
+							int tmp = mainIndex[i];
+							mainIndex[i] = mainIndex[j];
+							mainIndex[j] = tmp;
+						}
+						{
+							int tmp = subIndex[i];
+							subIndex[i] = subIndex[j];
+							subIndex[j] = tmp;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 }

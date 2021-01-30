@@ -34,7 +34,7 @@ public class HpGaugePartsProcessState {
 				);
 
 			//InfoTextの変更
-			if (hpGaugeParts.GetReferMonsterData() != null) {
+			if (hpGaugeParts.GetInfoText() != null) {
 				Text infoText = hpGaugeParts.GetInfoText();
 				IMonsterData monsterData = hpGaugeParts.GetReferMonsterData();
 
@@ -74,7 +74,7 @@ public class HpGaugePartsProcessState {
 				) ;
 
 			//InfoTextの変更
-			if (hpGaugeParts.GetReferMonsterData() != null) {
+			if (hpGaugeParts.GetInfoText() != null) {
 				Text infoText = hpGaugeParts.GetInfoText();
 				IMonsterData monsterData = hpGaugeParts.GetReferMonsterData();
 

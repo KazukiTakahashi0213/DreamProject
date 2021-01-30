@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class StatusInfoParts : MonoBehaviour {
 	//EntryPoint
+	void Start() {
+		//初期位置の保存
+		entryPosY_ = transform.position.y;
+	}
+
 	void Update() {
 		//メイン処理
 		processState_.state_ = processState_.Update(this);
@@ -26,7 +31,7 @@ public class StatusInfoParts : MonoBehaviour {
 	private float timeRegulation_ = 0;
 	private Color32 endColor_ = new Color32();
 
-	private Vector3 entryPos_;
+	private float entryPosY_;
 
 	[SerializeField] FrameParts frameParts_ = null;
 	[SerializeField] BaseParts baseParts_ = null;
@@ -71,12 +76,10 @@ public class StatusInfoParts : MonoBehaviour {
 	}
 
 	public void ProcessIdleStart() {
-		entryPos_ = transform.position;
-
 		processState_.state_ = StatusInfoPartsProcess.IdleMove;
 	}
 	public void ProcessIdleEnd() {
-		t13.UnityUtil.ObjectPosMove(GetEventGameObject().GetGameObject(), entryPos_);
+		t13.UnityUtil.ObjectPosMove(gameObject, new Vector3(transform.position.x, entryPosY_, transform.position.z));
 
 		processIdleState_ = new StatusInfoPartsProcessIdleDown();
 

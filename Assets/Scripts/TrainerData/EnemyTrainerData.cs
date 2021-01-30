@@ -19,7 +19,7 @@ public class EnemyTrainerData {
 	private EnemyTrainerData() { }
 
 	static private EnemyTrainerData instance_ = null;
-	static public EnemyTrainerData getInstance() {
+	static public EnemyTrainerData GetInstance() {
 		if (instance_ != null) return instance_;
 
 		instance_ = new EnemyTrainerData();

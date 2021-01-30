@@ -33,6 +33,10 @@ public class AllEventManager {
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
 
+	private int eventSceneChangeExecuteCounter_ = 0;
+	private List<SceneState> sceneStates_ = new List<SceneState>();
+	private List<SceneChangeMode> sceneChangeModes_ = new List<SceneChangeMode>();
+
 	//EventManager
 	public void EventWaitSet(float timeRegulation) {
 		eventTimeRegulation_.Add(timeRegulation);
@@ -64,18 +68,11 @@ public class AllEventManager {
 		eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
 		statusInfoPartsEventManagerExecute_ = StatusInfoPartsEventManagerExecute.None;
 	}
-	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
-		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
-		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
-		mgr.hpGaugePartsEventManager_.HpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
-		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
-		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+	public void SceneChangeEventSet(SceneState sceneState, SceneChangeMode sceneChangeMode) {
+		sceneStates_.Add(sceneState);
+		sceneChangeModes_.Add(sceneChangeMode);
 
-		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
-
-		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
-
-		return true;
+		sceneEvent_.func_add(SceneChangeEvent);
 	}
 	static private bool WaitEvent(AllEventManager mgr) {
 		if (mgr.sceneCounter_.measure(Time.deltaTime, mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_])) {
@@ -101,6 +98,10 @@ public class AllEventManager {
 		mgr.eventActiveExecuteCounter_ = 0;
 		mgr.eventActive_.Clear();
 
+		mgr.eventSceneChangeExecuteCounter_ = 0;
+		mgr.sceneStates_.Clear();
+		mgr.sceneChangeModes_.Clear();
+
 		mgr.eventSpriteEventManager_.EventSpriteRenderersClear();
 
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsClear();
@@ -112,6 +113,26 @@ public class AllEventManager {
 		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsClear();
 
 		return mgr.sceneEvent_.event_finish();
+	}
+	static private bool AllUpdateEventExecuteEvent(AllEventManager mgr) {
+		mgr.updateGameObjectEventManager_.UpdateGameObjectsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.eventSpriteEventManager_.EventSpriteRenderersUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.hpGaugePartsEventManager_.HpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+
+		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
+
+		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
+
+		return true;
+	}
+	static private bool SceneChangeEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().SceneChange(mgr.sceneStates_[mgr.eventSceneChangeExecuteCounter_], mgr.sceneChangeModes_[mgr.eventSceneChangeExecuteCounter_]);
+
+		mgr.eventSceneChangeExecuteCounter_ += 1;
+
+		return true;
 	}
 
 	//EventSpriteRenderer
@@ -179,7 +200,7 @@ public class AllEventManager {
 	}
 
 	//シングルトン
-	private AllEventManager() {
+	public AllEventManager() {
 		//イベントの初期化
 		sceneEvent_ = new t13.Event<AllEventManager>(this);
 	}

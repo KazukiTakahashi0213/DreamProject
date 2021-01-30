@@ -12,7 +12,7 @@ public class CommandAttack : ICommandState {
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
 		mgr.CommandRightCursorMove();
-		return new CommandItem();
+		return new CommandDream();
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
 		return this;

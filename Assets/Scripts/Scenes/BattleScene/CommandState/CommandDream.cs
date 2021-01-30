@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandItem : ICommandState {
+public class CommandDream : ICommandState {
 	public ICommandState DownSelect(BattleManager mgr) {
 		mgr.CommandDownCursorMove();
 		return new CommandEscape();

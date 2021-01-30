@@ -32,6 +32,16 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			//エネミーの手持ちに追加
 			EnemyBattleData.GetInstance().monsterAdd(md);
 
+			//データの生成
+			IMonsterData md2 = new MonsterData(new MonsterTribesData(2), 0, 50);
+			//技の取得
+			md2.SkillAdd(new SkillData(1));
+			md2.SkillAdd(new SkillData(2));
+			md2.SkillAdd(new SkillData(3));
+			md2.SkillAdd(new SkillData(4));
+			//エネミーの手持ちに追加
+			EnemyBattleData.GetInstance().monsterAdd(md2);
+
 			//画像の設定
 			enemyMonsterParts_.GetMonsterSprite().sprite = md.tribesData_.frontTex_;
 
@@ -47,7 +57,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		{
 			//外部でする処理
 			//データの生成
-			IMonsterData md = new MonsterData(new MonsterTribesData(3), 0, 50);
+			IMonsterData md = new MonsterData(new MonsterTribesData(2), 0, 50);
 			//技の取得
 			md.SkillAdd(new SkillData(1));
 			md.SkillAdd(new SkillData(2));
@@ -103,7 +113,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		//外部でする処理
 		//エネミーのトレーナーデータの設定
-		EnemyTrainerData.getInstance().SetTrainerData("デバッガー", "テスト");
+		EnemyTrainerData.GetInstance().SetTrainerData("デバッガー", "テスト");
 
 		//イベントのセット
 		OpeningEventSet();
@@ -144,6 +154,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	public CursorParts GetCursorParts() { return cursorParts_; }
 	public AudioParts GetPlayerAudioParts() { return playerAudioParts_; }
 	public AudioParts GetEnemyAudioParts() { return enemyAudioParts_; }
+	public PlayerParts GetPlayerParts() { return playerParts_; }
+	public EnemyParts GetEnemyParts() { return enemyParts_; }
 
 	public void AttackCommandSkillInfoTextSet(int number) {
 		IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);
@@ -269,7 +281,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		AllEventManager.GetInstance().AllUpdateEventExecute(2.0f);
 		{
 			//文字列の設定
-			EnemyTrainerData enemyTrainerData = EnemyTrainerData.getInstance();
+			EnemyTrainerData enemyTrainerData = EnemyTrainerData.GetInstance();
 			string context = enemyTrainerData.job() + "の　" + enemyTrainerData.name() + "が\nしょうぶを　しかけてきた！";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);
@@ -281,7 +293,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		{
 			//文字列の設定
 			string enemyFirstMonsterName = EnemyBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
-			EnemyTrainerData enemyTrainerData = EnemyTrainerData.getInstance();
+			EnemyTrainerData enemyTrainerData = EnemyTrainerData.GetInstance();
 			string context = enemyTrainerData.job() + "の　" + enemyTrainerData.name() + "は\n" + enemyFirstMonsterName + "を　くりだした！";
 
 			AllEventManager.GetInstance().EventTextSet(novelWindowParts_.GetEventText(), context);

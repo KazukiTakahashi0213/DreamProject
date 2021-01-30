@@ -13,7 +13,33 @@ public class CommandSelectProcess : IProcessState {
 
 	public IProcessState Update(BattleManager mgr) {
 		if (PlayerBattleData.GetInstance().changeMonsterActive_) {
-			PlayerBattleData.GetInstance().MonsterChangeEventSet(mgr);
+			if (PlayerBattleData.GetInstance().changeMonsterNumber_ > 0) {
+				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
+				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
+
+				return new EnemyCommandSelectProcess();
+			}
+			else {
+				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetCursorParts().GetEventGameObject());
+				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
+				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
+
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は　どうする？");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+
+				AllEventManager.GetInstance().EventStatusInfoPartsSet(mgr.GetPlayerStatusInfoParts(), new Color32(0, 0, 0, 0));
+				AllEventManager.GetInstance().StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute.IdleMoveStart);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+
+				AllEventManager.GetInstance().EventFinishSet();
+
+				PlayerBattleData.GetInstance().changeMonsterActive_ = false;
+			}
 		}
 
 		if (AllEventManager.GetInstance().EventUpdate()) {

@@ -15,7 +15,7 @@ public class CommandEscape : ICommandState {
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
 		mgr.CommandUpCursorMove();
-		return new CommandItem();
+		return new CommandDream();
 	}
 
 	public IProcessState Execute(BattleManager mgr) {

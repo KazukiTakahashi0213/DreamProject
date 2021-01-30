@@ -16,6 +16,16 @@ public class CommandEventSetProcess : IProcessState {
 		//TODO
 		//状態異常処理の表示の実装
 
+		//交換されていたら
+		if (PlayerBattleData.GetInstance().changeMonsterActive_) {
+			PlayerBattleData.GetInstance().MonsterChangeEventSet(mgr);
+		}
+
+		//交換されていたら
+		if (EnemyBattleData.GetInstance().changeMonsterActive_) {
+			EnemyBattleData.GetInstance().MonsterChangeEventSet(mgr);
+		}
+
 		//現在、場に出ているモンスターのデータの取得
 		IMonsterData enemyMonsterData = EnemyBattleData.GetInstance().GetMonsterDatas(0);
 		IMonsterData playerMonsterData = PlayerBattleData.GetInstance().GetMonsterDatas(0);
@@ -78,11 +88,21 @@ public class CommandEventSetProcess : IProcessState {
 		//コマンドUIの非表示
 		mgr.InactiveUiAttackCommand();
 
+		//交換判定の初期化
+		PlayerBattleData.GetInstance().changeMonsterActive_ = false;
+		EnemyBattleData.GetInstance().changeMonsterActive_ = false;
+
 		return mgr.nowProcessState().NextProcess();
 	}
 
 	//HACK 同じ事をしている
 	private void EnemySkillResultSet(BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+		//ダウンしていたら
+		if (attackMonsterData.battleActive_ == false) return;
+
+		//交換されていたら
+		if (EnemyBattleData.GetInstance().changeMonsterActive_) return;
+
 		//エネミーの文字列の設定
 		string skillUseContext = "あいての　" + attackMonsterData.uniqueName_ + "の\n"
 			+ attackSkillData.skillNname_ + "！";
@@ -107,8 +127,21 @@ public class CommandEventSetProcess : IProcessState {
 			//状態異常の処理
 			AbnormalEventSet(mgr, defenseMonsterData, attackSkillData, attackMonsterData);
 		}
+
+		if (defenseMonsterData.nowHitPoint_ <= 0) {
+			//モンスターが倒れた時のイベント
+			PlayerBattleData.GetInstance().MonsterDownEventSet(mgr);
+
+			AllEventManager.GetInstance().EventFinishSet();
+		}
 	}
 	private void PlayerSkillResultSet(BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+		//ダウンしていたら
+		if (attackMonsterData.battleActive_ == false) return;
+
+		//交換されていたら
+		if (PlayerBattleData.GetInstance().changeMonsterActive_) return;
+
 		//プレイヤーの文字列の設定
 		string skillUseContext = attackMonsterData.uniqueName_ + "の\n"
 			+ attackSkillData.skillNname_ + "！";
@@ -132,6 +165,21 @@ public class CommandEventSetProcess : IProcessState {
 
 			//状態異常の処理
 			AbnormalEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+		}
+
+		if (defenseMonsterData.nowHitPoint_ <= 0) {
+			//モンスターが倒れた時のイベント
+			EnemyBattleData.GetInstance().MonsterDownEventSet(mgr);
+
+			//白紙に
+			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), " ");
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.5f);
+
+			AllEventManager.GetInstance().EventFinishSet();
 		}
 	}
 

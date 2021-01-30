@@ -77,18 +77,22 @@ public class MonsterBattleMenuCommandState {
 		return mine.state_;
 	}
 	static private MonsterBattleMenuCommand MonsterSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
-		PlayerBattleData.GetInstance().changeMonsterNumber_ = manager.selectMonsterNumber_;
-		PlayerBattleData.GetInstance().changeMonsterActive_ = true;
+		if (PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).battleActive_) {
+			PlayerBattleData.GetInstance().changeMonsterNumber_ = manager.selectMonsterNumber_;
+			PlayerBattleData.GetInstance().changeMonsterActive_ = true;
 
-		AllSceneManager.GetInstance().SceneChange(SceneState.Battle, SceneChangeMode.Continue);
+			AllSceneManager.GetInstance().SceneChange(SceneState.Battle, SceneChangeMode.Continue);
+		}
 
 		return mine.state_;
 	}
 	static private MonsterBattleMenuCommand MonsterSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
-		PlayerBattleData.GetInstance().changeMonsterNumber_ = 0;
-		PlayerBattleData.GetInstance().changeMonsterActive_ = true;
+		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleActive_) {
+			PlayerBattleData.GetInstance().changeMonsterNumber_ = 0;
+			PlayerBattleData.GetInstance().changeMonsterActive_ = true;
 
-		AllSceneManager.GetInstance().SceneChange(SceneState.Battle, SceneChangeMode.Continue);
+			AllSceneManager.GetInstance().SceneChange(SceneState.Battle, SceneChangeMode.Continue);
+		}
 
 		return mine.state_;
 	}
