@@ -16,7 +16,7 @@ public interface ISkillData {
 	
 	int optionEffectTriggerRateValue_ { get; }
 	int hitRateValue_ { get; }
-	float upDpValue_ { get; }
+	int upDpValue_ { get; }
 
 	int playPoint_ { get; }
 	int nowPlayPoint_ { get; set; }

@@ -12,10 +12,13 @@ public class CommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		if (PlayerBattleData.GetInstance().changeMonsterActive_) {
+		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
 			if (PlayerBattleData.GetInstance().changeMonsterNumber_ > 0) {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
+
+				//イベントの最後
+				AllEventManager.GetInstance().EventFinishSet();
 
 				return new EnemyCommandSelectProcess();
 			}
@@ -28,9 +31,19 @@ public class CommandSelectProcess : IProcessState {
 				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
 				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 
-				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は　どうする？");
-				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-				AllEventManager.GetInstance().AllUpdateEventExecute();
+				//dpが100以上だったら
+				if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+					AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText()
+						, "ゆめたちが　\n"
+						+ "きょうめいしている・・・");
+					AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+					AllEventManager.GetInstance().AllUpdateEventExecute();
+				}
+				else {
+					AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は　どうする？");
+					AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+					AllEventManager.GetInstance().AllUpdateEventExecute();
+				}
 
 				AllEventManager.GetInstance().EventStatusInfoPartsSet(mgr.GetPlayerStatusInfoParts(), new Color32(0, 0, 0, 0));
 				AllEventManager.GetInstance().StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute.IdleMoveStart);

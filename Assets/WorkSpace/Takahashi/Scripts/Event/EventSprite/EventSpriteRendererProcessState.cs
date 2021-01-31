@@ -5,6 +5,7 @@ using UnityEngine;
 public enum EventSpriteRendererProcess {
 	None
 	, Anime
+	, ChangeColor
 	, Max
 }
 
@@ -40,11 +41,86 @@ public class EventSpriteRendererProcessState {
 		return mine.state_;
 	}
 
+	//ChangeColor
+	static private EventSpriteRendererProcess ChangeColorUpdate(EventSpriteRendererProcessState mine, EventSpriteRenderer eventSpriteRenderer) {
+		if (eventSpriteRenderer.GetTimeCounter().measure(Time.deltaTime, eventSpriteRenderer.GetTimeRegulation())) {
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateRed(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(0)
+				, eventSpriteRenderer.GetChangeEndColor().r
+				, eventSpriteRenderer.GetTimeRegulation()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateGreen(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(1)
+				, eventSpriteRenderer.GetChangeEndColor().g
+				, eventSpriteRenderer.GetTimeRegulation()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateBlue(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(2)
+				, eventSpriteRenderer.GetChangeEndColor().b
+				, eventSpriteRenderer.GetTimeRegulation()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateAlpha(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(3)
+				, eventSpriteRenderer.GetChangeEndColor().a
+				, eventSpriteRenderer.GetTimeRegulation()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			return EventSpriteRendererProcess.None;
+		}
+		else {
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateRed(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(0)
+				, eventSpriteRenderer.GetChangeEndColor().r
+				, eventSpriteRenderer.GetTimeCounter().count()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateGreen(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(1)
+				, eventSpriteRenderer.GetChangeEndColor().g
+				, eventSpriteRenderer.GetTimeCounter().count()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateBlue(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(2)
+				, eventSpriteRenderer.GetChangeEndColor().b
+				, eventSpriteRenderer.GetTimeCounter().count()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+
+			eventSpriteRenderer.GetSpriteRenderer().color = t13.UnityUtil.Color32InFluctUpdateAlpha(
+				eventSpriteRenderer.GetSpriteRenderer().color
+				, eventSpriteRenderer.GetTimeFlucts(3)
+				, eventSpriteRenderer.GetChangeEndColor().a
+				, eventSpriteRenderer.GetTimeCounter().count()
+				, eventSpriteRenderer.GetTimeRegulation()
+				);
+		}
+
+		return mine.state_;
+	}
+
 	private delegate EventSpriteRendererProcess UpdateFunc(EventSpriteRendererProcessState mine, EventSpriteRenderer eventSpriteRenderer);
 
 	private UpdateFunc[] updateFuncs_ = new UpdateFunc[(int)EventSpriteRendererProcess.Max] {
 		NoneUpdate
 		, AnimeUpdate
+		, ChangeColorUpdate
 	};
 	public EventSpriteRendererProcess Update(EventSpriteRenderer eventSpriteRenderer) { return updateFuncs_[(int)state_](this, eventSpriteRenderer); }
 }

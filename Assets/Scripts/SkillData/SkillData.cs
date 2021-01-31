@@ -70,7 +70,7 @@ public class SkillData : ISkillData {
 
 	public int optionEffectTriggerRateValue_ { get; }
 	public int hitRateValue_ { get; }
-	public float upDpValue_ { get; }
+	public int upDpValue_ { get; }
 
 	public int playPoint_ { get; }
 	public int nowPlayPoint_ { get; set; }
@@ -84,8 +84,7 @@ public class SkillData : ISkillData {
 	private List<Sprite> animeSprites_ = new List<Sprite>();
 
 	public void Animetion(EffectParts targetEffectParts) {
-		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_);
-		//AllEventManager.GetInstance().EventSpriteRenderersUpdateExecute(0.35f);
+		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_, new Color32());
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 	}

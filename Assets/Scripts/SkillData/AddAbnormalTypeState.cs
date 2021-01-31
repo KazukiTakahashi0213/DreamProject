@@ -25,16 +25,21 @@ public class AddAbnormalTypeState {
 	}
 	//Burns
 	static private string BurnsAddAbnormalTypeExecute(AddAbnormalTypeState mine, IMonsterData monsterData) {
-		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Burns) {
+		if(monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
+		}
+
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None) {
 			monsterData.battleData_.firstAbnormalState_.state_ = AbnormalType.Burns;
 		}
 		else if (monsterData.battleData_.secondAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Burns) {
+			&& monsterData.battleData_.firstAbnormalState_.state_ != AbnormalType.Burns) {
 			monsterData.battleData_.secondAbnormalState_.state_ = AbnormalType.Burns;
 		}
 		else {
-			return "こうかが　ないようだ・・・";
+			return monsterData.uniqueName_ + "には\n" + 
+				"きかないようだ・・・";
 		}
 
 		return monsterData.uniqueName_ + "は\n" +
@@ -42,16 +47,21 @@ public class AddAbnormalTypeState {
 	}
 	//Poison
 	static private string PoisonAddAbnormalTypeExecute(AddAbnormalTypeState mine, IMonsterData monsterData) {
-		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Poison) {
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
+		}
+
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None) {
 			monsterData.battleData_.firstAbnormalState_.state_ = AbnormalType.Poison;
 		}
 		else if (monsterData.battleData_.secondAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Poison) {
+			&& monsterData.battleData_.firstAbnormalState_.state_ != AbnormalType.Poison) {
 			monsterData.battleData_.secondAbnormalState_.state_ = AbnormalType.Poison;
 		}
 		else {
-			return "こうかが　ないようだ・・・";
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
 		}
 
 		return monsterData.uniqueName_ + "は\n" +
@@ -59,16 +69,21 @@ public class AddAbnormalTypeState {
 	}
 	//Sleep
 	static private string SleepAddAbnormalTypeExecute(AddAbnormalTypeState mine, IMonsterData monsterData) {
-		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep) {
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
+		}
+
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None) {
 			monsterData.battleData_.firstAbnormalState_.state_ = AbnormalType.Sleep;
 		}
 		else if (monsterData.battleData_.secondAbnormalState_.state_ == AbnormalType.None 
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep) {
+			&& monsterData.battleData_.firstAbnormalState_.state_ != AbnormalType.Sleep) {
 			monsterData.battleData_.secondAbnormalState_.state_ = AbnormalType.Sleep;
 		}
 		else {
-			return "こうかが　ないようだ・・・";
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
 		}
 
 		return monsterData.uniqueName_ + "は\n" +
@@ -76,16 +91,21 @@ public class AddAbnormalTypeState {
 	}
 	//Confusion
 	static private string ConfusionAddAbnormalTypeExecute(AddAbnormalTypeState mine, IMonsterData monsterData) {
-		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion) {
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
+		}
+
+		if (monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.None) {
 			monsterData.battleData_.firstAbnormalState_.state_ = AbnormalType.Confusion;
 		}
 		else if (monsterData.battleData_.secondAbnormalState_.state_ == AbnormalType.None
-			|| monsterData.battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion) {
+			&& monsterData.battleData_.firstAbnormalState_.state_ != AbnormalType.Confusion) {
 			monsterData.battleData_.secondAbnormalState_.state_ = AbnormalType.Confusion;
 		}
 		else {
-			return "こうかが　ないようだ・・・";
+			return monsterData.uniqueName_ + "には\n" +
+				"きかないようだ・・・";
 		}
 
 		return monsterData.uniqueName_ + "は\n" +

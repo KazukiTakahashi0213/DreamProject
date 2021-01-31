@@ -16,8 +16,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		nowAttackCommandState_ = new AttackCommand0();
 
 		//BGMの再生
-		AllSceneManager.GetInstance().GetPublicSystemAudioParts().GetAudioSource().clip = Resources.Load("Sounds/BGM/BattleScene/Dreamers_Academy_Battle") as AudioClip;
-		AllSceneManager.GetInstance().GetPublicSystemAudioParts().GetAudioSource().Play();
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = Resources.Load("Sounds/BGM/BattleScene/Dreamers_Academy_Battle") as AudioClip;
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
 
 		//エネミーモンスターの読み込み
 		{
@@ -51,6 +51,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			//HPゲージの調整
 			enemyStatusInfoParts_.GetFrameParts().GetHpGaugeParts().GetGauge().fillAmount = t13.Utility.ValueForPercentage(md.RealHitPoint(), md.nowHitPoint_, 1);
+
+			//状態異常の反映
+			md.battleData_.AbnormalSetStatusInfoParts(enemyStatusInfoParts_);
 		}
 
 		//プレイヤーモンスターの読み込み
@@ -109,6 +112,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 					novelWindowParts_.GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i).GetText().color = new Color32(50, 50, 50, 255);
 				}
 			}
+
+			//状態異常の反映
+			md.battleData_.AbnormalSetStatusInfoParts(playerStatusInfoParts_);
 		}
 
 		//外部でする処理
@@ -188,9 +194,17 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		nowCommandState_ = new CommandAttack();
 
-		string playerFirstMonsterName = PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
-		string context_ = playerFirstMonsterName + "は　どうする？";
-		novelWindowParts_.GetNovelWindowText().text = context_;
+		//dpが100以上だったら
+		if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+			novelWindowParts_.GetNovelWindowText().text = 
+				"ゆめたちが　\n"
+				+ "きょうめいしている・・・";
+		}
+		else {
+			string playerFirstMonsterName = PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
+			string context_ = playerFirstMonsterName + "は　どうする？";
+			novelWindowParts_.GetNovelWindowText().text = context_;
+		}
 	}
 	public void InactiveUiAttackCommand() {
 		novelWindowParts_.GetNovelWindowText().text = "　";
@@ -212,9 +226,17 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		nowCommandState_ = new CommandAttack();
 
-		string playerFirstMonsterName = PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
-		string context_ = playerFirstMonsterName + "は　どうする？";
-		novelWindowParts_.GetNovelWindowText().text = context_;
+		//dpが100以上だったら
+		if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+			novelWindowParts_.GetNovelWindowText().text =
+				"ゆめたちが　\n"
+				+ "きょうめいしている・・・";
+		}
+		else {
+			string playerFirstMonsterName = PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
+			string context_ = playerFirstMonsterName + "は　どうする？";
+			novelWindowParts_.GetNovelWindowText().text = context_;
+		}
 	}
 
 	//仲介クラス

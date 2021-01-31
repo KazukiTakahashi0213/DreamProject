@@ -50,11 +50,19 @@ public class MonsterData : IMonsterData {
 
 	//実数値
 	public int RealHitPoint() { return ((tribesData_.tribesHitPoint_ * 2 + (uniqueHitPoint_ / 4)) * level_ / 100) + level_ + 10; }
-	public int RealAttack() { return tribesData_.tribesAttack_ + (uniqueAttack_ / 4); }
-	public int RealDefense() { return tribesData_.tribesDefense_ + (uniqueDefense_ / 4); }
-	public int RealSpecialAttack() { return tribesData_.tribesSpecialAttack_ + (uniqueSpecialAttack_ / 4); }
-	public int RealSpecialDefense() { return tribesData_.tribesSpecialDefense_ + (uniqueSpecialDefense_ / 4); }
-	public int RealSpeed() { return tribesData_.tribesSpeed_ + (uniqueSpeed_ / 4); }
+	public int RealAttack() { return (int)((tribesData_.tribesAttack_ + (uniqueAttack_ / 4)) * RealPowerUp()); }
+	public int RealDefense() { return (int)((tribesData_.tribesDefense_ + (uniqueDefense_ / 4)) * RealPowerUp()); }
+	public int RealSpecialAttack() { return (int)((tribesData_.tribesSpecialAttack_ + (uniqueSpecialAttack_ / 4)) * RealPowerUp()); }
+	public int RealSpecialDefense() { return (int)((tribesData_.tribesSpecialDefense_ + (uniqueSpecialDefense_ / 4)) * RealPowerUp()); }
+	public int RealSpeed() { return (int)((tribesData_.tribesSpeed_ + (uniqueSpeed_ / 4)) * RealPowerUp()); }
+	private float RealPowerUp() {
+		//もしヒーロー状態だったら
+		if (battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
+			return 1.5f;
+		}
+
+		return 1;
+	}
 
 	public void SkillAdd(SkillData addSkill) {
 		if (skillSize_ == SKILL_MAX_SIZE) return;

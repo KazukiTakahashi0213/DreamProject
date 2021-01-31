@@ -136,21 +136,11 @@ public class AllEventManager {
 	}
 
 	//EventSpriteRenderer
-	public void EventSpriteRendererSet(EventSpriteRenderer eventSprite, List<Sprite> sprites) {
-		eventSpriteEventManager_.EventSpriteRendererSet(eventSprite, sprites);
+	public void EventSpriteRendererSet(EventSpriteRenderer eventSprite, List<Sprite> sprites = null, Color32 color = new Color32()) {
+		eventSpriteEventManager_.EventSpriteRendererSet(eventSprite, sprites, color);
 	}
 	public void EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute setExecute) {
 		eventSpriteRendererEventManagerExecute_ = setExecute;
-	}
-	public void EventSpriteRenderersSetSpriteExecute() {
-		eventSpriteEventManager_.EventSpriteRenderersExecuteSet();
-
-		sceneEvent_.func_add(SpriteRenderersSetSpriteExecuteEvent);
-	}
-	static private bool SpriteRenderersSetSpriteExecuteEvent(AllEventManager mgr) {
-		mgr.eventSpriteEventManager_.EventSpriteRenderersSetSpriteExecute();
-
-		return true;
 	}
 
 	//UpdateGameObject
@@ -192,7 +182,7 @@ public class AllEventManager {
 	}
 
 	//StatusInfoParts
-	public void EventStatusInfoPartsSet(StatusInfoParts eventStatusInfoParts, Color32 setColor) {
+	public void EventStatusInfoPartsSet(StatusInfoParts eventStatusInfoParts, Color32 setColor = new Color32()) {
 		statusInfoPartsEventManager_.EventStatusInfoPartsSet(eventStatusInfoParts, setColor);
 	}
 	public void StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute setExecute) {

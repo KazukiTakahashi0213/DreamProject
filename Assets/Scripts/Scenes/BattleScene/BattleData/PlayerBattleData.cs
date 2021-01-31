@@ -32,8 +32,10 @@ public class PlayerBattleData {
 	//交換する手持ちの番号
 	public int changeMonsterNumber_ = 0;
 
-	//共通のDP
+	//共通のdp
 	public int dreamPoint_ = 0;
+	//パワーアップするか否かのフラグ
+	public bool dreamSyncronize_ = false;
 
 	//倒れた時の処理
 	public void MonsterDownEventSet(BattleManager manager) {
@@ -134,8 +136,9 @@ public class PlayerBattleData {
 			//画像の設定
 			List<Sprite> sprites = new List<Sprite>();
 			sprites.Add(md.tribesData_.backTex_);
-			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
-			AllEventManager.GetInstance().EventSpriteRenderersSetSpriteExecute();
+			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
@@ -173,6 +176,9 @@ public class PlayerBattleData {
 					manager.GetNovelWindowParts().GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i).GetText().color = new Color32(50, 50, 50, 255);
 				}
 			}
+
+			//状態異常の反映
+			md.battleData_.AbnormalSetStatusInfoParts(manager.GetPlayerStatusInfoParts());
 
 			IMonsterData temp = monsterDatas_[0];
 			monsterDatas_[0] = monsterDatas_[changeMonsterNumber_];

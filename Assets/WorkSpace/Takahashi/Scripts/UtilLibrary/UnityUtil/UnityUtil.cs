@@ -81,6 +81,21 @@ namespace t13 {
 			fillImage.fillAmount = imageFill;
 		}
 
+		static public Color32 Color32InFluctUpdateRed(Color32 color, TimeFluct timeFluct, float endRed, float count, float timeRegulation) {
+			float result = timeFluct.InFluct(count, color.r, endRed, timeRegulation);
+
+			return new Color32((byte)result, color.g, color.b, color.a);
+		}
+		static public Color32 Color32InFluctUpdateGreen(Color32 color, TimeFluct timeFluct, float endGreen, float count, float timeRegulation) {
+			float result = timeFluct.InFluct(count, color.g, endGreen, timeRegulation);
+
+			return new Color32(color.r, (byte)result, color.b, color.a);
+		}
+		static public Color32 Color32InFluctUpdateBlue(Color32 color, TimeFluct timeFluct, float endBlue, float count, float timeRegulation) {
+			float result = timeFluct.InFluct(count, color.b, endBlue, timeRegulation);
+
+			return new Color32(color.r, color.g, (byte)result, color.a);
+		}
 		static public Color32 Color32InFluctUpdateAlpha(Color32 color, TimeFluct timeFluct, float endAlpha, float count, float timeRegulation) {
 			float result = timeFluct.InFluct(count, color.a, endAlpha, timeRegulation);
 

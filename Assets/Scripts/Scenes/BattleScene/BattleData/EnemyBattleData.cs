@@ -33,6 +33,11 @@ public class EnemyBattleData {
 	//交換する手持ちの番号
 	public int changeMonsterNumber_ = 0;
 
+	//共通のdp
+	public int dreamPoint_ = 0;
+	//パワーアップするか否かのフラグ
+	public bool dreamSyncronize_ = false;
+
 	//倒れた時の処理
 	public void MonsterDownEventSet(BattleManager manager) {
 		battleActiveMonsterSize_ -= 1;
@@ -137,8 +142,9 @@ public class EnemyBattleData {
 		//画像の設定
 		List<Sprite> sprites = new List<Sprite>();
 		sprites.Add(monsterDatas_[0].tribesData_.frontTex_);
-		AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites);
-		AllEventManager.GetInstance().EventSpriteRenderersSetSpriteExecute();
+		AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+		AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 		//名前とレベルをTextに反映
 		string monsterViewName = t13.Utility.StringFullSpaceBackTamp(monsterDatas_[0].uniqueName_, 6);
@@ -152,6 +158,9 @@ public class EnemyBattleData {
 		AllEventManager.GetInstance().HpGaugePartsSet(manager.GetEnemyStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, monsterDatas_[0]);
 		AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
 		AllEventManager.GetInstance().AllUpdateEventExecute();
+
+		//状態異常の反映
+		monsterDatas_[0].battleData_.AbnormalSetStatusInfoParts(manager.GetEnemyStatusInfoParts());
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
@@ -211,8 +220,9 @@ public class EnemyBattleData {
 			//画像の設定
 			List<Sprite> sprites = new List<Sprite>();
 			sprites.Add(monsterDatas_[0].tribesData_.frontTex_);
-			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites);
-			AllEventManager.GetInstance().EventSpriteRenderersSetSpriteExecute();
+			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(monsterDatas_[0].uniqueName_, 6);
@@ -226,6 +236,9 @@ public class EnemyBattleData {
 			AllEventManager.GetInstance().HpGaugePartsSet(manager.GetEnemyStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, monsterDatas_[0]);
 			AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//状態異常の反映
+			md.battleData_.AbnormalSetStatusInfoParts(manager.GetEnemyStatusInfoParts());
 
 			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());

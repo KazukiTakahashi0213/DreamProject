@@ -11,20 +11,29 @@ public class EventSpriteRenderer : MonoBehaviour {
 
 	private EventSpriteRendererProcessState processState_ = new EventSpriteRendererProcessState(EventSpriteRendererProcess.None);
 
+	private t13.TimeFluct[] timeFlucts_ = new t13.TimeFluct[4]{
+		new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+		, new t13.TimeFluct()
+	};
 	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
 
 	private float timeRegulation_ = 0;
 	private List<Sprite> animeSprites_ = null;
 	private int nowAnimeSpriteNumber_ = 0;
+	private Color32 changeEndColor_ = new Color32();
 
 	[SerializeField] private SpriteRenderer spriteRenderer_ = null;
 
+	public t13.TimeFluct GetTimeFlucts(int value) { return timeFlucts_[value]; }
 	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
 	public float GetTimeRegulation() { return timeRegulation_; }
 	public List<Sprite> GetAnimeSprites() { return animeSprites_; }
 	public void SetNowAnimeSpriteNumber(int number) { nowAnimeSpriteNumber_ = number; }
 	public int GetNowAnimeSpriteNumber() { return nowAnimeSpriteNumber_; }
+	public Color32 GetChangeEndColor() { return changeEndColor_; }
 
 	public SpriteRenderer GetSpriteRenderer() { return spriteRenderer_; }
 
@@ -35,5 +44,18 @@ public class EventSpriteRenderer : MonoBehaviour {
 		spriteRenderer_.sprite = animeSprites_[nowAnimeSpriteNumber_];
 
 		processState_.state_ = EventSpriteRendererProcess.Anime;
+	}
+	public void ProcessStateChangeColorExecute(float timeRegulation, t13.TimeFluctProcess timeFluctProcess, Color color) {
+		timeRegulation_ = timeRegulation;
+		changeEndColor_ = color;
+		for (int i = 0; i < timeFlucts_.Length; ++i) {
+			timeFlucts_[i].GetProcessState().state_ = timeFluctProcess;
+		}
+
+		processState_.state_ = EventSpriteRendererProcess.ChangeColor;
+	}
+
+	public void SpriteSet(List<Sprite> sprites) {
+		spriteRenderer_.sprite = sprites[nowAnimeSpriteNumber_];
 	}
 }

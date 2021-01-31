@@ -19,12 +19,23 @@ public class CommandDream : ICommandState {
 	}
 
 	public IProcessState Execute(BattleManager mgr) {
-		//文字列の設定
-		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "いまは　つかえない！");
-		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-		AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-		//イベントの最後
-		AllEventManager.GetInstance().EventFinishSet();
+		//dpが100以上だったら
+		if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+			if (PlayerBattleData.GetInstance().dreamSyncronize_ == false) {
+				//ゆめの文字色の変更
+				mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(94, 120, 255, 255);
+
+				//パワーアップするか否かのフラグの設定
+				PlayerBattleData.GetInstance().dreamSyncronize_ = true;
+			}
+			else {
+				//ゆめの文字色の変更
+				mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
+
+				//パワーアップするか否かのフラグの設定
+				PlayerBattleData.GetInstance().dreamSyncronize_ = false;
+			}
+		}
 
 		return mgr.nowProcessState();
 	}

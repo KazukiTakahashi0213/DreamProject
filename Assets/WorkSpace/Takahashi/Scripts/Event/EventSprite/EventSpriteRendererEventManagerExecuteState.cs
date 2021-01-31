@@ -5,6 +5,8 @@ using UnityEngine;
 public enum EventSpriteRendererEventManagerExecute {
 	None
 	, Anime
+	, ChangeColor
+	, SpriteSet
 	, Max
 }
 
@@ -22,10 +24,30 @@ public class EventSpriteRendererEventManagerExecuteState {
 
 	//Anime
 	static private void AnimeExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
-		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderersCount(); ++i) {
-			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers(i).ProcessStateAnimeExecute(
-				timeRegulation / eventSpriteRendererEventManager.GetExecuteAnimeSprites(i).Count
-				, eventSpriteRendererEventManager.GetExecuteAnimeSprites(i)
+		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers().Count; ++i) {
+			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers()[i].ProcessStateAnimeExecute(
+				timeRegulation / eventSpriteRendererEventManager.GetExecuteAnimeSprites()[i].Count
+				, eventSpriteRendererEventManager.GetExecuteAnimeSprites()[i]
+				);
+		}
+	}
+
+	//ChangeColor
+	static private void ChangeColorExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
+		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers().Count; ++i) {
+			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers()[i].ProcessStateChangeColorExecute(
+				timeRegulation
+				, timeFluctProcess
+				, eventSpriteRendererEventManager.GetExecuteChangeColorEnds()[i]
+				);
+		}
+	}
+
+	//SpriteSet
+	static private void SpriteSetExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
+		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers().Count; ++i) {
+			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers()[i].SpriteSet(
+				eventSpriteRendererEventManager.GetExecuteAnimeSprites()[i]
 				);
 		}
 	}
@@ -35,6 +57,8 @@ public class EventSpriteRendererEventManagerExecuteState {
 	private ExecuteFunc[] executeFuncs_ = new ExecuteFunc[(int)EventSpriteRendererEventManagerExecute.Max] {
 		NoneExecute
 		, AnimeExecute
+		, ChangeColorExecute
+		, SpriteSetExecute
 	};
 	public void Execute(EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) { executeFuncs_[(int)state_](this, eventSpriteRendererEventManager, timeRegulation, timeFluctProcess); }
 }

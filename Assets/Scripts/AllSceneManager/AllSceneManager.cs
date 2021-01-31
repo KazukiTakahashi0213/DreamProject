@@ -58,10 +58,13 @@ public class AllSceneManager : MonoBehaviour {
 		}
 	}
 
-	[SerializeField] AudioParts publicSystemAudioParts_ = null;
+	[SerializeField] AudioParts publicAudioParts_ = null;
+	[SerializeField] ScreenParts publicFrontScreen_ = null;
 	
 	[SerializeField] private SceneState nowSceneState_ = SceneState.Battle;
-	public AudioParts GetPublicSystemAudioParts() { return publicSystemAudioParts_; }
+
+	public AudioParts GetPublicAudioParts() { return publicAudioParts_; }
+	public ScreenParts GetPublicFrontScreen() { return publicFrontScreen_; }
 
 	private string[] sceneStateString = new string[(int)SceneState.Max] {
 		"TitleScene",

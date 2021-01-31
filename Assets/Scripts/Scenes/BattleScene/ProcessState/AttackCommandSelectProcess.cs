@@ -33,8 +33,23 @@ public class AttackCommandSelectProcess : IProcessState {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 
+				//コマンドUIの非表示
+				mgr.InactiveUiAttackCommand();
+
 				//ppの消費
 				playerSkillData.nowPlayPoint_ -= 1;
+
+				//dpが100以下だったら
+				if (PlayerBattleData.GetInstance().dreamPoint_ <= 100) {
+					//dpの変動
+					PlayerBattleData.GetInstance().dreamPoint_ += playerSkillData.upDpValue_;
+				}
+
+				//dpの演出のイベント
+				AllEventManager.GetInstance().EventWaitSet(2.0f);
+
+				//イベントの最後
+				AllEventManager.GetInstance().EventFinishSet();
 
 				return mgr.nowAttackCommandState_.Execute(mgr);
 			}
