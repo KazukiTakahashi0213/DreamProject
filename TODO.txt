@@ -1,0 +1,10 @@
+changeMonsterNumber_を設定したら、アクティブをtrueにする関数。
+IdleMoveをUpdateGameObjectに実装する
+死亡時の処理の最適化
+交換時の処理の最適化
+EventSpriteのイベントの追加
+dpのアニメーション処理
+パワーアップのアニメーション処理
+相手のトレーナーのAIの処理
+相手のモンスターのAIの処理
+相手の状態異常の処理
