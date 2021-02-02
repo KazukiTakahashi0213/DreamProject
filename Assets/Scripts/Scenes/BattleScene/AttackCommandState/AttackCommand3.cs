@@ -7,6 +7,9 @@ public class AttackCommand3 : IAttackCommandState {
 		return this;
 	}
 	public IAttackCommandState LeftSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.AttackCommandLeftCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(2);
 		return new AttackCommand2();
@@ -15,6 +18,9 @@ public class AttackCommand3 : IAttackCommandState {
 		return this;
 	}
 	public IAttackCommandState UpSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.AttackCommandUpCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(1);
 		return new AttackCommand1();

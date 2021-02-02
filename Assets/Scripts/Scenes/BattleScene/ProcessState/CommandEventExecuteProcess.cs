@@ -13,7 +13,7 @@ public class CommandEventExecuteProcess : IProcessState {
 
 	public IProcessState Update(BattleManager mgr) {
 		//交換されていたら
-		if (PlayerBattleData.GetInstance().changeMonsterActive_) {
+		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
 			PlayerBattleData.GetInstance().MonsterChangeEventSet(mgr);
 
 			//イベントの最後

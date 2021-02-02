@@ -47,6 +47,7 @@ public class CommandEventSetProcess : IProcessState {
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
 
+			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 			//状態異常のイベントのセット
@@ -55,9 +56,36 @@ public class CommandEventSetProcess : IProcessState {
 			//ゆめの文字色の変更
 			mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
 
+			//ねむりの終了処理
+			mgr.SleepProcessEnd();
+
 			//dpの初期化
 			PlayerBattleData.GetInstance().dreamPoint_ = 0;
 			PlayerBattleData.GetInstance().dreamSyncronize_ = false;
+		}
+
+		//パワーアップしていたら
+		if (EnemyBattleData.GetInstance().dreamSyncronize_ == true) {
+			//アニメーション
+			AllEventManager.GetInstance().EventWaitSet(2.0f);
+
+			//能力変化の更新
+			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(enemyMonsterData);
+
+			//文字列のイベント
+			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//状態異常のイベントのセット
+			enemyMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetEnemyStatusInfoParts());
+
+			//dpの初期化
+			EnemyBattleData.GetInstance().dreamPoint_ = 0;
+			EnemyBattleData.GetInstance().dreamSyncronize_ = false;
 		}
 
 		//技の優先度で行動順を決める
@@ -111,9 +139,6 @@ public class CommandEventSetProcess : IProcessState {
 		//イベントの最後
 		AllEventManager.GetInstance().EventFinishSet();
 
-		////コマンドUIの非表示
-		//mgr.InactiveUiAttackCommand();
-
 		//交換判定の初期化
 		PlayerBattleData.GetInstance().changeMonsterActive_ = false;
 		EnemyBattleData.GetInstance().changeMonsterActive_ = false;
@@ -128,6 +153,12 @@ public class CommandEventSetProcess : IProcessState {
 
 		//交換されていたら
 		if (EnemyBattleData.GetInstance().changeMonsterActive_) return;
+
+		//ねむりターンの消費
+		//mgr.SleepProcessUse();
+
+		//こんらんターンの消費
+		//mgr.ConfusionProcessUse();
 
 		//エネミーの文字列の設定
 		string skillUseContext = "あいての　" + attackMonsterData.uniqueName_ + "の\n"
@@ -167,6 +198,12 @@ public class CommandEventSetProcess : IProcessState {
 
 		//交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_) return;
+
+		//ねむりターンの消費
+		mgr.SleepProcessUse();
+
+		//こんらんターンの消費
+		mgr.ConfusionProcessUse();
 
 		//プレイヤーの文字列の設定
 		string skillUseContext = attackMonsterData.uniqueName_ + "の\n"
@@ -275,6 +312,12 @@ public class CommandEventSetProcess : IProcessState {
 
 			//状態異常のイベントのセット
 			playerMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetPlayerStatusInfoParts());
+
+			//ねむりの処理の初期化
+			mgr.SleepProcessStart();
+
+			//こんらんの状態の初期化
+			mgr.ConfusionUseStart();
 		}
 
 		if (attackSkillData.addEnemyAbnormalStates_[0].state_ != AddAbnormalType.None) {

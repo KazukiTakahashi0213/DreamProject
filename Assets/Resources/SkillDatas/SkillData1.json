@@ -29,9 +29,10 @@
 
 		"//AddAbnormal": ["None","Burns","Poison","Sleep","Confusion","Hero"],
 		"addPlayerAbnormals_": [
-			{"addAbnormal_": "0"}
+			{ "addAbnormal_": "4" }
+
 		],
 		"addEnemyAbnormals_": [
-			{"addAbnormal_": "0"}
+			{ "addAbnormal_": "0" }
 		]
 }

@@ -12,8 +12,10 @@ public class CommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		//モンスターが交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
 			if (PlayerBattleData.GetInstance().changeMonsterNumber_ > 0) {
+				//アイドル状態の停止
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 
@@ -54,6 +56,9 @@ public class CommandSelectProcess : IProcessState {
 				PlayerBattleData.GetInstance().changeMonsterActive_ = false;
 			}
 		}
+
+		//やけどのダメージ処理
+		mgr.BurnsDamageProcess();
 
 		if (AllEventManager.GetInstance().EventUpdate()) {
 			mgr.SetInputProvider(new KeyBoardNormalInputProvider());

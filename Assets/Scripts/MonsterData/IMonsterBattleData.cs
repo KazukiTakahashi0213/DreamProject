@@ -7,7 +7,7 @@ public interface IMonsterBattleData {
 	AbnormalTypeState secondAbnormalState_ { get; set; }
 
 	void RankReset();
-	
+
 	void AttackParameterRankAdd(int value);
 	void DefenseParameterRankAdd(int value);
 	void SpecialAttackParameterRankAdd(int value);
@@ -27,4 +27,13 @@ public interface IMonsterBattleData {
 	int GetHitRateParameterRank();
 
 	void AbnormalSetStatusInfoParts(StatusInfoParts statusInfoParts);
+	void RefreshAbnormalType(AbnormalType refreshAbnormalType);
+
+	bool BurnsCounter();
+
+	void SleepTurnSeedCreate();
+	bool UseSleepTurn();
+
+	void ConfusionTurnSeedCreate();
+	bool UseConfusionTurn();
 }

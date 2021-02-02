@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CommandAttack : ICommandState {
 	public ICommandState DownSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandDownCursorMove();
 		return new CommandMonsterTrade();
 	}
@@ -11,6 +14,9 @@ public class CommandAttack : ICommandState {
 		return this;
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandRightCursorMove();
 		return new CommandDream();
 	}
@@ -19,6 +25,9 @@ public class CommandAttack : ICommandState {
 	}
 
 	public IProcessState Execute(BattleManager mgr) {
+		//こんらんの処理の初期化
+		mgr.ConfusionProcessStart();
+
 		mgr.ChangeUiAttackCommand();
 
 		return mgr.nowProcessState().NextProcess();

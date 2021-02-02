@@ -10,10 +10,16 @@ public class CommandMonsterTrade : ICommandState {
 		return this;
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandRightCursorMove();
 		return new CommandEscape();
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandUpCursorMove();
 		return new CommandAttack();
 	}

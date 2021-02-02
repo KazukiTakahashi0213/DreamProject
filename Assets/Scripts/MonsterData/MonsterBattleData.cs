@@ -21,6 +21,15 @@ public class MonsterBattleData : IMonsterBattleData {
 	private int avoidRateParameterRank_ = 0;
 	private int hitRateParameterRank_ = 0;
 
+	private const float BURNS_LIMIT = 0.5f;
+	private float burnsCount_ = 0;
+
+	private const int SLEEP_TURN_LIMIT = 7;
+	private int sleepTurn_ = 0;
+
+	private const int CONFUSION_TURN_LIMIT = 4;
+	private int confusionTurn_ = 0;
+
 	public void RankReset() {
 		attackParameterRank_ = 0;
 		defenseParameterRank_ = 0;
@@ -193,5 +202,51 @@ public class MonsterBattleData : IMonsterBattleData {
 			AllEventManager.GetInstance().UpdateGameObjectSet(statusInfoParts.GetSecondAbnormalStateInfoParts().GetUpdateGameObject());
 			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
 		}
+	}
+
+	public bool BurnsCounter() {
+		burnsCount_ += Time.deltaTime;
+
+		if(burnsCount_ > BURNS_LIMIT) {
+			burnsCount_ = 0;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public void RefreshAbnormalType(AbnormalType refreshAbnormalType) {
+		if(firstAbnormalState_.state_ == refreshAbnormalType) {
+			firstAbnormalState_.state_ = secondAbnormalState_.state_;
+			secondAbnormalState_.state_ = AbnormalType.None;
+		}
+		else if(secondAbnormalState_.state_ == refreshAbnormalType) {
+			secondAbnormalState_.state_ = AbnormalType.None;
+		}
+	}
+
+	public void SleepTurnSeedCreate() {
+		//既にセットされていなかったら
+		if (sleepTurn_ <= 0) {
+			sleepTurn_ = AllSceneManager.GetInstance().GetRandom().Next(2, SLEEP_TURN_LIMIT + 1);
+		}
+	}
+	public bool UseSleepTurn() {
+		sleepTurn_ -= 1;
+
+		return sleepTurn_ <= 0;
+	}
+
+	public void ConfusionTurnSeedCreate() {
+		//既にセットされていなかったら
+		if (confusionTurn_ <= 0) {
+			confusionTurn_ = AllSceneManager.GetInstance().GetRandom().Next(1, CONFUSION_TURN_LIMIT + 1);
+		}
+	}
+	public bool UseConfusionTurn() {
+		confusionTurn_ -= 1;
+
+		return confusionTurn_ <= 0;
 	}
 }

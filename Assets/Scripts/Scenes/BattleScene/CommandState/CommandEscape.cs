@@ -7,6 +7,9 @@ public class CommandEscape : ICommandState {
 		return this;
 	}
 	public ICommandState LeftSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandLeftCursorMove();
 		return new CommandMonsterTrade();
 	}
@@ -14,6 +17,9 @@ public class CommandEscape : ICommandState {
 		return this;
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.CommandUpCursorMove();
 		return new CommandDream();
 	}

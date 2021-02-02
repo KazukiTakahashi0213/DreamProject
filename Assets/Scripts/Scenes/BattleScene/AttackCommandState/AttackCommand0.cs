@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AttackCommand0 : IAttackCommandState {
 	public IAttackCommandState DownSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.AttackCommandDownCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(2);
 		return new AttackCommand2();
@@ -12,6 +15,9 @@ public class AttackCommand0 : IAttackCommandState {
 		return this;
 	}
 	public IAttackCommandState RightSelect(BattleManager mgr) {
+		//どくのダメージ処理
+		mgr.PoisonDamageProcess();
+
 		mgr.AttackCommandRightCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(1);
 		return new AttackCommand1();

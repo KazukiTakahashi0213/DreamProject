@@ -42,6 +42,8 @@ public class EnemyBattleData {
 	public void MonsterDownEventSet(BattleManager manager) {
 		battleActiveMonsterSize_ -= 1;
 
+		dreamPoint_ += 45;
+
 		//戦闘のモンスターをダウンさせる
 		monsterDatas_[0].battleActive_ = false;
 
@@ -239,9 +241,6 @@ public class EnemyBattleData {
 
 			//状態異常の反映
 			md.battleData_.AbnormalSetStatusInfoParts(manager.GetEnemyStatusInfoParts());
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 			//エネミーの表示
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyMonsterParts().GetEventGameObject());

@@ -12,7 +12,60 @@ public class AttackCommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		AllEventManager.GetInstance().EventUpdate();
+		//モンスターが交換されていたら
+		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
+			if (PlayerBattleData.GetInstance().changeMonsterNumber_ > 0) {
+				//アイドル状態の停止
+				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
+				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
+
+				//イベントの最後
+				AllEventManager.GetInstance().EventFinishSet();
+
+				return new EnemyCommandSelectProcess();
+			}
+			else {
+				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetCursorParts().GetEventGameObject());
+				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetNovelWindowParts().GetCommandParts().GetEventGameObject());
+				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
+
+				//dpが100以上だったら
+				if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+					AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText()
+						, "ゆめたちが　\n"
+						+ "きょうめいしている・・・");
+					AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+					AllEventManager.GetInstance().AllUpdateEventExecute();
+				}
+				else {
+					AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は　どうする？");
+					AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+					AllEventManager.GetInstance().AllUpdateEventExecute();
+				}
+
+				AllEventManager.GetInstance().EventStatusInfoPartsSet(mgr.GetPlayerStatusInfoParts(), new Color32(0, 0, 0, 0));
+				AllEventManager.GetInstance().StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute.IdleMoveStart);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+
+				AllEventManager.GetInstance().EventFinishSet();
+
+				PlayerBattleData.GetInstance().changeMonsterActive_ = false;
+			}
+		}
+
+		//やけどのダメージ処理
+		mgr.BurnsDamageProcess();
+
+		//こんらんの処理
+		mgr.ConfusionProcess();
+
+		if (AllEventManager.GetInstance().EventUpdate()) {
+			mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+		}
 
 		if (mgr.GetInputProvider().UpSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.UpSelect(mgr);
@@ -55,6 +108,12 @@ public class AttackCommandSelectProcess : IProcessState {
 			}
 		}
 		else if (mgr.GetInputProvider().SelectBack()) {
+			//こんらん状態なら
+			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
+				|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
+				mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+			}
+
 			mgr.ChangeUiCommand();
 
 			return mgr.nowProcessState().BackProcess();

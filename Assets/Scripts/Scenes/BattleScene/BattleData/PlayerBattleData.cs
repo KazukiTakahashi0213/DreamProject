@@ -41,6 +41,8 @@ public class PlayerBattleData {
 	public void MonsterDownEventSet(BattleManager manager) {
 		battleActiveMonsterSize_ -= 1;
 
+		dreamPoint_ += 45;
+
 		//戦闘のモンスターをダウンさせる
 		monsterDatas_[0].battleActive_ = false;
 
@@ -180,9 +182,15 @@ public class PlayerBattleData {
 			//状態異常の反映
 			md.battleData_.AbnormalSetStatusInfoParts(manager.GetPlayerStatusInfoParts());
 
+			//ねむりの終了処理
+			manager.SleepProcessEnd();
+
 			IMonsterData temp = monsterDatas_[0];
 			monsterDatas_[0] = monsterDatas_[changeMonsterNumber_];
 			monsterDatas_[changeMonsterNumber_] = temp;
+
+			//ねむりの開始処理
+			manager.SleepProcessStart();
 
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
 			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);

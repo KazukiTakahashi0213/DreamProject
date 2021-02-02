@@ -105,6 +105,12 @@ public class EnemyCommandSelectProcess : IProcessState {
 					}
 				}
 
+				//dpが100以上だったら
+				if (EnemyBattleData.GetInstance().dreamPoint_ >= 100) {
+					//パワーアップするか否かのフラグの設定
+					EnemyBattleData.GetInstance().dreamSyncronize_ = true;
+				}
+
 				//ppの消費
 				ISkillData enemySkillData = EnemyBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.enemySelectSkillNumber_);
 				enemySkillData.nowPlayPoint_ -= 1;

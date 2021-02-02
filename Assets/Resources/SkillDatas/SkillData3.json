@@ -1,10 +1,10 @@
 ﻿{
 		"skillNname_":										"みずしゅりけん",
 		
-		"effectValue_":										"90",
+		"effectValue_":										"0",
 		"optionEffectTriggerRateValue_":	"100",
 		"hitRateValue_":									"100",
-		"upDpValue_":											"5",
+		"upDpValue_":											"100",
 
 		"playPoint_":											"10",
 
