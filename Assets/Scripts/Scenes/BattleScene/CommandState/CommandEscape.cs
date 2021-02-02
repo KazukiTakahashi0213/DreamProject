@@ -8,7 +8,7 @@ public class CommandEscape : ICommandState {
 	}
 	public ICommandState LeftSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandLeftCursorMove();
 		return new CommandMonsterTrade();
@@ -18,7 +18,7 @@ public class CommandEscape : ICommandState {
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandUpCursorMove();
 		return new CommandDream();

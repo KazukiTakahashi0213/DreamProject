@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBattleData {
+public class PlayerBattleData : ITrainerBattleData {
 	public void monsterAdd(IMonsterData addMonster) {
 		if (haveMonsterSize_ == MONSTER_MAX_SIZE) return;
 
@@ -14,6 +14,7 @@ public class PlayerBattleData {
 	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
 	public int GetMonsterDatasLength() { return monsterDatas_.Length; }
 	public int GetHaveMonsterSize() { return haveMonsterSize_; }
+	public string GetUniqueTrainerName() { return ""; }
 
 	//手持ちのモンスターのデータ
 	private const int MONSTER_MAX_SIZE = 3;
@@ -191,6 +192,7 @@ public class PlayerBattleData {
 
 			//ねむりの開始処理
 			manager.SleepProcessStart();
+			manager.SleepUseStart(this);
 
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
 			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);

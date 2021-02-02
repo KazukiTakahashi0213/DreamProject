@@ -28,6 +28,7 @@ public interface IMonsterBattleData {
 
 	void AbnormalSetStatusInfoParts(StatusInfoParts statusInfoParts);
 	void RefreshAbnormalType(AbnormalType refreshAbnormalType);
+	bool HaveAbnormalType(AbnormalType haveAbnormalType);
 
 	bool BurnsCounter();
 

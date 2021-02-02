@@ -8,7 +8,7 @@ public class AttackCommand3 : IAttackCommandState {
 	}
 	public IAttackCommandState LeftSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.AttackCommandLeftCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(2);
@@ -19,7 +19,7 @@ public class AttackCommand3 : IAttackCommandState {
 	}
 	public IAttackCommandState UpSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.AttackCommandUpCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(1);

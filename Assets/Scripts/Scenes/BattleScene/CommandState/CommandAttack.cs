@@ -5,7 +5,7 @@ using UnityEngine;
 public class CommandAttack : ICommandState {
 	public ICommandState DownSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandDownCursorMove();
 		return new CommandMonsterTrade();
@@ -15,7 +15,7 @@ public class CommandAttack : ICommandState {
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandRightCursorMove();
 		return new CommandDream();

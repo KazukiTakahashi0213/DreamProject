@@ -12,6 +12,9 @@ public class AttackCommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		//敵の思考時間の処理
+		EnemyBattleData.GetInstance().ThinkingTimeCounter();
+
 		//モンスターが交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
 			if (PlayerBattleData.GetInstance().changeMonsterNumber_ > 0) {
@@ -58,7 +61,22 @@ public class AttackCommandSelectProcess : IProcessState {
 		}
 
 		//やけどのダメージ処理
-		mgr.BurnsDamageProcess();
+		if(mgr.BurnsDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts())){
+			return new CommandEventExecuteProcess();
+		}
+
+		if (EnemyBattleData.GetInstance().GetThinkingEnd() == false) {
+			//やけどのダメージ処理
+			if(mgr.BurnsDamageProcess(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts(), mgr.GetEnemyMonsterParts())) {
+				return new CommandEventExecuteProcess();
+			}
+
+			if (EnemyBattleData.GetInstance().PoinsonCounter()) {
+				//どくのダメージ処理
+				mgr.PoisonDamageProcess(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts(), mgr.GetEnemyMonsterParts());
+				if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
+			}
+		}
 
 		//こんらんの処理
 		mgr.ConfusionProcess();
@@ -69,15 +87,19 @@ public class AttackCommandSelectProcess : IProcessState {
 
 		if (mgr.GetInputProvider().UpSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.UpSelect(mgr);
+			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
 		else if (mgr.GetInputProvider().DownSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.DownSelect(mgr);
+			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
 		else if (mgr.GetInputProvider().RightSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.RightSelect(mgr);
+			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
 		else if (mgr.GetInputProvider().LeftSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.LeftSelect(mgr);
+			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
 		else if (mgr.GetInputProvider().SelectEnter()) {
 			ISkillData playerSkillData = PlayerBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.playerSelectSkillNumber_);
@@ -85,6 +107,8 @@ public class AttackCommandSelectProcess : IProcessState {
 			if (playerSkillData.nowPlayPoint_ > 0) {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
+
+				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
 
 				//コマンドUIの非表示
 				mgr.InactiveUiAttackCommand();
@@ -97,12 +121,6 @@ public class AttackCommandSelectProcess : IProcessState {
 					//dpの変動
 					PlayerBattleData.GetInstance().dreamPoint_ += playerSkillData.upDpValue_;
 				}
-
-				//dpの演出のイベント
-				AllEventManager.GetInstance().EventWaitSet(2.0f);
-
-				//イベントの最後
-				AllEventManager.GetInstance().EventFinishSet();
 
 				return mgr.nowAttackCommandState_.Execute(mgr);
 			}

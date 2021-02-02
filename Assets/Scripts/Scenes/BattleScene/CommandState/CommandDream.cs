@@ -5,14 +5,14 @@ using UnityEngine;
 public class CommandDream : ICommandState {
 	public ICommandState DownSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandDownCursorMove();
 		return new CommandEscape();
 	}
 	public ICommandState LeftSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandLeftCursorMove();
 		return new CommandAttack();

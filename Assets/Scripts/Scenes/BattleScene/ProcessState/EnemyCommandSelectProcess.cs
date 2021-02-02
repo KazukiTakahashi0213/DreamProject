@@ -12,10 +12,15 @@ public class EnemyCommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		if (!AllEventManager.GetInstance().EventUpdate()) {
-			return this;
+		if (AllEventManager.GetInstance().EventUpdate()) {
+
 		}
-		else {
+
+		//敵の思考時間の処理
+		EnemyBattleData.GetInstance().ThinkingTimeCounter();
+
+		//思考時間が終わっていたら
+		if (EnemyBattleData.GetInstance().ThinkingTimeEnd()) {
 			//タイプ相性の測定
 			int[] typeSimillarResult = new int[3] { 0, 0, 0 };
 			int[] monsterNumbers = new int[3] { 0, 1, 2 };
@@ -99,9 +104,17 @@ public class EnemyCommandSelectProcess : IProcessState {
 
 				//ppがあれば、一番の火力の高い技を選択
 				for (int i = 0; i < skillNumbers.Length; ++i) {
-					if (EnemyBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(skillNumbers[i]).nowPlayPoint_ > 0) {
+					if (enemyMD.GetSkillDatas(skillNumbers[i]).nowPlayPoint_ > 0) {
 						mgr.enemySelectSkillNumber_ = skillNumbers[i];
 						i = skillNumbers.Length;
+					}
+				}
+
+				//こんらん状態であれば
+				if (enemyMD.battleData_.HaveAbnormalType(AbnormalType.Confusion)) {
+					//5/10の確立
+					if (AllSceneManager.GetInstance().GetRandom().Next(0, 10) < 5) {
+						mgr.enemySelectSkillNumber_ = AllSceneManager.GetInstance().GetRandom().Next(0, skillNumbers.Length);
 					}
 				}
 
@@ -112,7 +125,7 @@ public class EnemyCommandSelectProcess : IProcessState {
 				}
 
 				//ppの消費
-				ISkillData enemySkillData = EnemyBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.enemySelectSkillNumber_);
+				ISkillData enemySkillData = enemyMD.GetSkillDatas(mgr.enemySelectSkillNumber_);
 				enemySkillData.nowPlayPoint_ -= 1;
 
 				//dpが100以下だったら
@@ -120,12 +133,22 @@ public class EnemyCommandSelectProcess : IProcessState {
 					//dpの変動
 					EnemyBattleData.GetInstance().dreamPoint_ += enemySkillData.upDpValue_;
 				}
-
-				//dpの演出のイベント
-				AllEventManager.GetInstance().EventWaitSet(2.0f);
 			}
 
 			return mgr.nowProcessState().NextProcess();
 		}
+
+		//やけどのダメージ処理
+		if (mgr.BurnsDamageProcess(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts(), mgr.GetEnemyMonsterParts())) {
+			return new CommandEventExecuteProcess();
+		}
+
+		if (EnemyBattleData.GetInstance().PoinsonCounter()) {
+			//どくのダメージ処理
+			mgr.PoisonDamageProcess(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts(), mgr.GetEnemyMonsterParts());
+			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
+		}
+
+		return this;
 	}
 }

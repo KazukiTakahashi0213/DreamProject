@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBattleData {
+public class EnemyBattleData : ITrainerBattleData {
 	public void monsterAdd(IMonsterData addMonster) {
 		if (haveMonsterSize_ == MONSTER_MAX_SIZE) return;
 
@@ -11,10 +11,11 @@ public class EnemyBattleData {
 		battleActiveMonsterSize_ += 1;
 	}
 
-	//get
 	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
 	public int GetMonsterDatasLength() { return monsterDatas_.Length; }
 	public int GetHaveMonsterSize() { return haveMonsterSize_; }
+	public string GetUniqueTrainerName() { return "あいての　"; }
+	public bool GetThinkingEnd() { return thikingEnd_; }
 
 	//手持ちのモンスターのデータ
 	private const int MONSTER_MAX_SIZE = 3;
@@ -37,6 +38,18 @@ public class EnemyBattleData {
 	public int dreamPoint_ = 0;
 	//パワーアップするか否かのフラグ
 	public bool dreamSyncronize_ = false;
+
+	//思考時間
+	private const float THINKING_TIME_REGURATION = 3.0f;
+	//思考処理が終わったかのフラグ
+	private bool thikingEnd_ = false;
+	//思考時間のタイマー
+	private t13.TimeCounter thikingTimeCounter_ = new t13.TimeCounter();
+
+	//どくダメージの時間
+	private const float POISON_COUNTER_TIME_REGULATION = 1.5f;
+	//どく状態のカウンター
+	private float poisonCounter_ = 0;
 
 	//倒れた時の処理
 	public void MonsterDownEventSet(BattleManager manager) {
@@ -181,6 +194,9 @@ public class EnemyBattleData {
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+		manager.ActiveUiCommand();
+		manager.InactiveUiCommand();
 	}
 
 	//交換処理
@@ -259,6 +275,43 @@ public class EnemyBattleData {
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 		changeMonsterNumber_ = 0;
+	}
+
+	public bool ThinkingTimeEnd() {
+		//思考時間が終わっていたら
+		if(thikingEnd_ == true) {
+			thikingEnd_ = false;
+
+			return true;
+		}
+
+		return thikingEnd_;
+	}
+	public void ThinkingTimeCounter() {
+		float addRegulationTime = 0;
+		if (monsterDatas_[0].battleData_.HaveAbnormalType(AbnormalType.Sleep)) addRegulationTime += 3.0f;
+		if (monsterDatas_[0].battleData_.HaveAbnormalType(AbnormalType.Confusion)) addRegulationTime += 2.0f;
+
+		//思考時間が終わっていなかったら
+		if (thikingEnd_ == false) {
+			//時間のカウント
+			if (thikingTimeCounter_.measure(Time.deltaTime, THINKING_TIME_REGURATION + addRegulationTime)) {
+				//思考時間の終了
+				thikingEnd_ = true;
+			}
+		}
+	}
+
+	public bool PoinsonCounter() {
+		poisonCounter_ += Time.deltaTime;
+
+		if(poisonCounter_ > POISON_COUNTER_TIME_REGULATION) {
+			poisonCounter_ = 0;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	//シングルトン

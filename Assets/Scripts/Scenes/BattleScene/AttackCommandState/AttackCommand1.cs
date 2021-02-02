@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackCommand1 : IAttackCommandState {
 	public IAttackCommandState DownSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.AttackCommandDownCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(3);
@@ -13,7 +13,7 @@ public class AttackCommand1 : IAttackCommandState {
 	}
 	public IAttackCommandState LeftSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.AttackCommandLeftCursorMove();
 		mgr.AttackCommandSkillInfoTextSet(0);

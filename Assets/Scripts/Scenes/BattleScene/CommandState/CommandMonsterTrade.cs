@@ -11,14 +11,14 @@ public class CommandMonsterTrade : ICommandState {
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandRightCursorMove();
 		return new CommandEscape();
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
 		//どくのダメージ処理
-		mgr.PoisonDamageProcess();
+		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
 		mgr.CommandUpCursorMove();
 		return new CommandAttack();

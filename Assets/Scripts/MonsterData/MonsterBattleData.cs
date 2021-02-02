@@ -27,7 +27,7 @@ public class MonsterBattleData : IMonsterBattleData {
 	private const int SLEEP_TURN_LIMIT = 7;
 	private int sleepTurn_ = 0;
 
-	private const int CONFUSION_TURN_LIMIT = 4;
+	private const int CONFUSION_TURN_LIMIT = 5;
 	private int confusionTurn_ = 0;
 
 	public void RankReset() {
@@ -225,6 +225,16 @@ public class MonsterBattleData : IMonsterBattleData {
 			secondAbnormalState_.state_ = AbnormalType.None;
 		}
 	}
+	public bool HaveAbnormalType(AbnormalType haveAbnormalType) {
+		if (firstAbnormalState_.state_ == haveAbnormalType) {
+			return true;
+		}
+		else if (secondAbnormalState_.state_ == haveAbnormalType) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public void SleepTurnSeedCreate() {
 		//既にセットされていなかったら
@@ -241,7 +251,7 @@ public class MonsterBattleData : IMonsterBattleData {
 	public void ConfusionTurnSeedCreate() {
 		//既にセットされていなかったら
 		if (confusionTurn_ <= 0) {
-			confusionTurn_ = AllSceneManager.GetInstance().GetRandom().Next(1, CONFUSION_TURN_LIMIT + 1);
+			confusionTurn_ = AllSceneManager.GetInstance().GetRandom().Next(2, CONFUSION_TURN_LIMIT + 1);
 		}
 	}
 	public bool UseConfusionTurn() {

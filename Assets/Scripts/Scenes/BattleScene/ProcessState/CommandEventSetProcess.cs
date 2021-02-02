@@ -13,8 +13,8 @@ public class CommandEventSetProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		//TODO
-		//状態異常処理の表示の実装
+		//dpの演出のイベント
+		AllEventManager.GetInstance().EventWaitSet(2.0f);
 
 		//交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
@@ -155,10 +155,10 @@ public class CommandEventSetProcess : IProcessState {
 		if (EnemyBattleData.GetInstance().changeMonsterActive_) return;
 
 		//ねむりターンの消費
-		//mgr.SleepProcessUse();
+		mgr.SleepProcessUse(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts());
 
 		//こんらんターンの消費
-		//mgr.ConfusionProcessUse();
+		mgr.ConfusionProcessUse(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts());
 
 		//エネミーの文字列の設定
 		string skillUseContext = "あいての　" + attackMonsterData.uniqueName_ + "の\n"
@@ -200,10 +200,10 @@ public class CommandEventSetProcess : IProcessState {
 		if (PlayerBattleData.GetInstance().changeMonsterActive_) return;
 
 		//ねむりターンの消費
-		mgr.SleepProcessUse();
+		mgr.SleepProcessUse(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts());
 
 		//こんらんターンの消費
-		mgr.ConfusionProcessUse();
+		mgr.ConfusionProcessUse(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts());
 
 		//プレイヤーの文字列の設定
 		string skillUseContext = attackMonsterData.uniqueName_ + "の\n"
@@ -315,9 +315,10 @@ public class CommandEventSetProcess : IProcessState {
 
 			//ねむりの処理の初期化
 			mgr.SleepProcessStart();
+			mgr.SleepUseStart(PlayerBattleData.GetInstance());
 
 			//こんらんの状態の初期化
-			mgr.ConfusionUseStart();
+			mgr.ConfusionUseStart(PlayerBattleData.GetInstance());
 		}
 
 		if (attackSkillData.addEnemyAbnormalStates_[0].state_ != AddAbnormalType.None) {
@@ -342,6 +343,13 @@ public class CommandEventSetProcess : IProcessState {
 
 			//状態異常のイベントのセット
 			enemyMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetEnemyStatusInfoParts());
+
+			//ねむりの処理の初期化
+			mgr.SleepProcessStart();
+			mgr.SleepUseStart(EnemyBattleData.GetInstance());
+
+			//こんらんの状態の初期化
+			mgr.ConfusionUseStart(EnemyBattleData.GetInstance());
 		}
 	}
 }

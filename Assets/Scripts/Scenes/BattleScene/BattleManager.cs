@@ -135,10 +135,11 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 	public GameObject GetGameObject() { return gameObject; }
 
-	private t13.TimeCounter confusionCounter_ = new t13.TimeCounter();
 	private const float CONFUSION_TIME = 0.2f;
+	private t13.TimeCounter confusionCounter_ = new t13.TimeCounter();
 
-	private const int POISON_DAMAGE = 8;
+	private const int POISON_DAMAGE = 5;
+	private bool poisonMonsterDown_ = false;
 
 	[SerializeField] private CursorParts cursorParts_ = null;
 	[SerializeField] private NovelWindowParts novelWindowParts_ = null;
@@ -250,18 +251,18 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 	}
 
-	public void PoisonDamageProcess() {
+	public void PoisonDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
 		//どく状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Poison
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Poison) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Poison
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Poison) {
 			//ダメージ
-			PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_ -= POISON_DAMAGE;
+			trainerBattleData.GetMonsterDatas(0).nowHitPoint_ -= POISON_DAMAGE;
 
 			//ヒットポイントのゲージの変動
-			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(PlayerBattleData.GetInstance().GetMonsterDatas(0).RealHitPoint(), PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_, 1);
-			playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, PlayerBattleData.GetInstance().GetMonsterDatas(0), hpGaugeFillAmount);
+			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(trainerBattleData.GetMonsterDatas(0).RealHitPoint(), trainerBattleData.GetMonsterDatas(0).nowHitPoint_, 1);
+			statusInfoParts.GetFrameParts().GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, trainerBattleData.GetMonsterDatas(0), hpGaugeFillAmount);
 
-			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_ <= 0) {
+			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
 				inputProvider_ = new KeyBoardInactiveInputProvider();
 
@@ -277,28 +278,39 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 
 				//モンスターが倒れた時のイベント
-				PlayerBattleData.GetInstance().MonsterDownEventSet(this);
+				trainerBattleData.MonsterDownEventSet(this);
 
 				AllEventManager.GetInstance().EventFinishSet();
+
+				poisonMonsterDown_ = true;
 			}
 		}
 	}
+	public bool PoisonDamageDown() {
+		if (poisonMonsterDown_) {
+			poisonMonsterDown_ = false;
 
-	public void BurnsDamageProcess() {
+			return true;
+		}
+
+		return poisonMonsterDown_;
+	}
+
+	public bool BurnsDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
 		//やけど状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Burns
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Burns) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Burns
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Burns) {
 			//やけどダメージのカウント
-			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.BurnsCounter()) {
+			if (trainerBattleData.GetMonsterDatas(0).battleData_.BurnsCounter()) {
 				//ダメージ
-				PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_ -= 1;
+				trainerBattleData.GetMonsterDatas(0).nowHitPoint_ -= 1;
 			}
 
 			//ヒットポイントのゲージの変動
-			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(PlayerBattleData.GetInstance().GetMonsterDatas(0).RealHitPoint(), PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_, 1);
-			playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, PlayerBattleData.GetInstance().GetMonsterDatas(0), hpGaugeFillAmount);
+			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(trainerBattleData.GetMonsterDatas(0).RealHitPoint(), trainerBattleData.GetMonsterDatas(0).nowHitPoint_, 1);
+			statusInfoParts.GetFrameParts().GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, trainerBattleData.GetMonsterDatas(0), hpGaugeFillAmount);
 
-			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).nowHitPoint_ <= 0) {
+			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
 				inputProvider_ = new KeyBoardInactiveInputProvider();
 
@@ -314,11 +326,15 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 
 				//モンスターが倒れた時のイベント
-				PlayerBattleData.GetInstance().MonsterDownEventSet(this);
+				trainerBattleData.MonsterDownEventSet(this);
 
 				AllEventManager.GetInstance().EventFinishSet();
+
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	public void ConfusionProcessStart() {
@@ -344,31 +360,31 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			}
 		}
 	}
-	public void ConfusionUseStart() {
+	public void ConfusionUseStart(ITrainerBattleData trainerBattleData) {
 		//こんらん状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
 			//ターン数のセット
-			PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.ConfusionTurnSeedCreate();
+			trainerBattleData.GetMonsterDatas(0).battleData_.ConfusionTurnSeedCreate();
 		}
 	}
-	public void ConfusionProcessUse() {
+	public void ConfusionProcessUse(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
 		//こんらん状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
 
 			//こんらんターンの消費
-			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.UseConfusionTurn()) {
+			if (trainerBattleData.GetMonsterDatas(0).battleData_.UseConfusionTurn()) {
 				//状態異常の回復
-				PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Confusion);
+				trainerBattleData.GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Confusion);
 
 				//StatusInfoPartsへ反映
-				PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(playerStatusInfoParts_);
+				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(statusInfoParts);
 
 				//メッセージ処理
 				AllEventManager.GetInstance().EventTextSet(
 					novelWindowParts_.GetEventText()
-					, PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "の\n"
+					, trainerBattleData.GetUniqueTrainerName() + trainerBattleData.GetMonsterDatas(0).uniqueName_ + "の\n"
 					+ "こんらんが　とけた！"
 					);
 				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
@@ -381,7 +397,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				//メッセージ処理
 				AllEventManager.GetInstance().EventTextSet(
 					novelWindowParts_.GetEventText()
-					, PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は\n"
+					, trainerBattleData.GetUniqueTrainerName() + trainerBattleData.GetMonsterDatas(0).uniqueName_ + "は\n"
 					+ "こんらんしている"
 					);
 				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
@@ -393,31 +409,26 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 	}
 
-	public void SleepProcessStart() {
+	public void SleepUseStart(ITrainerBattleData trainerBattleData) {
 		//ねむり状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
 			//ターン数のセット
-			PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.SleepTurnSeedCreate();
-
-			//フェードアウト
-			AllEventManager.GetInstance().EventSpriteRendererSet(sleepScreenParts_.GetEventScreenSprite(), null, new Color(sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.r, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.g, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.b, 1));
-			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
-			AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
+			trainerBattleData.GetMonsterDatas(0).battleData_.SleepTurnSeedCreate();
 		}
 	}
-	public void SleepProcessUse() {
+	public void SleepProcessUse(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
 		//ねむり状態なら
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
-			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
+		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
+			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
 
 			//ねむりターンの消費
-			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.UseSleepTurn()) {
+			if (trainerBattleData.GetMonsterDatas(0).battleData_.UseSleepTurn()) {
 				//状態異常の回復
-				PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Sleep);
+				trainerBattleData.GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Sleep);
 
 				//StatusInfoPartsへ反映
-				PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(playerStatusInfoParts_);
+				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(statusInfoParts);
 
 				//フェードイン
 				AllEventManager.GetInstance().EventSpriteRendererSet(sleepScreenParts_.GetEventScreenSprite(), null, new Color(sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.r, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.g, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.b, 0));
@@ -430,11 +441,14 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				//メッセージ処理
 				AllEventManager.GetInstance().EventTextSet(
 					novelWindowParts_.GetEventText()
-					, PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は\n"
+					, trainerBattleData.GetUniqueTrainerName() + trainerBattleData.GetMonsterDatas(0).uniqueName_ + "は\n"
 					+ "めをさました！"
 					);
 				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 				AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
+
+				//ウェイト
+				AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 			}
 			else {
 				//ウェイト
@@ -443,12 +457,25 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				//メッセージ処理
 				AllEventManager.GetInstance().EventTextSet(
 					novelWindowParts_.GetEventText()
-					, PlayerBattleData.GetInstance().GetMonsterDatas(0).uniqueName_ + "は\n"
+					, trainerBattleData.GetUniqueTrainerName() + trainerBattleData.GetMonsterDatas(0).uniqueName_ + "は\n"
 					+ "ねむっている"
 					);
 				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 				AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
+
+				//ウェイト
+				AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 			}
+		}
+	}
+	public void SleepProcessStart() {
+		//ねむり状態なら
+		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
+			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
+			//フェードアウト
+			AllEventManager.GetInstance().EventSpriteRendererSet(sleepScreenParts_.GetEventScreenSprite(), null, new Color(sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.r, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.g, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.b, 1));
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
 		}
 	}
 	public void SleepProcessEnd() {
