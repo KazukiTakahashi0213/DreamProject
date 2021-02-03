@@ -101,6 +101,8 @@ public class PlayerBattleData : ITrainerBattleData {
 
 	//交換処理
 	public void MonsterChangeEventSet(BattleManager manager) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+		
 		//モンスターの変更が行われていたら
 		if (changeMonsterNumber_ > 0) {
 			IMonsterData md = monsterDatas_[changeMonsterNumber_];
@@ -209,7 +211,7 @@ public class PlayerBattleData : ITrainerBattleData {
 		manager.ActiveUiCommand();
 		manager.InactiveUiCommand();
 
-		manager.SetInputProvider(new KeyBoardInactiveInputProvider());
+		allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 		changeMonsterNumber_ = 0;
 	}

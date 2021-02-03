@@ -17,7 +17,9 @@ public class NovelWindowPartsActiveState {
 
 	//Active
 	static private NovelWindowPartsActive ActiveNext(NovelWindowPartsActiveState mine, BattleManager battleManager) {
-		battleManager.SetInputProvider(new KeyBoardNovelWindowInactiveInputProvider());
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
+		allSceneMgr.inputProvider_ = new KeyBoardNovelWindowInactiveInputProvider();
 
 		battleManager.GetNovelWindowParts().gameObject.SetActive(false);
 		battleManager.GetCursorParts().gameObject.SetActive(false);
@@ -27,7 +29,9 @@ public class NovelWindowPartsActiveState {
 
 	//Inactive
 	static private NovelWindowPartsActive InactiveNext(NovelWindowPartsActiveState mine, BattleManager battleManager) {
-		battleManager.SetInputProvider(new KeyBoardNormalInputProvider());
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
+		allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
 		battleManager.GetNovelWindowParts().gameObject.SetActive(true);
 		battleManager.GetCursorParts().gameObject.SetActive(true);

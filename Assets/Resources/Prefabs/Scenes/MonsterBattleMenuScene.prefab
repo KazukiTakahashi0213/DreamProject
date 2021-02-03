@@ -287,7 +287,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3642415394036447564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c619dee4281e4140b64c621549d26be, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f05fd2a95fdf5049a7f55a7f094751d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   magazineParts_: {fileID: 4822418484224035616}

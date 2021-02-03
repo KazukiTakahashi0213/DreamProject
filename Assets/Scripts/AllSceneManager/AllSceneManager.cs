@@ -85,8 +85,9 @@ public class AllSceneManager : MonoBehaviour {
 	private SceneState nextSceneState_;
 
 	private System.Random random = new System.Random();
-
 	public System.Random GetRandom() { return random; }
+
+	public IInputProvider inputProvider_ = new KeyBoardInactiveInputProvider();
 
 	public void SceneChange(SceneState nextScene, SceneChangeMode sceneChangeMode) {
 		SceneActive_ = false;

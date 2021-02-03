@@ -12,6 +12,8 @@ public class CommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//敵の思考時間の処理
 		EnemyBattleData.GetInstance().ThinkingTimeCounter();
 
@@ -22,7 +24,7 @@ public class CommandSelectProcess : IProcessState {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 
-				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				//イベントの最後
 				AllEventManager.GetInstance().EventFinishSet();
@@ -30,7 +32,7 @@ public class CommandSelectProcess : IProcessState {
 				return new EnemyCommandSelectProcess();
 			}
 			else {
-				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				mgr.ActiveUiCommand();
 				mgr.InactiveUiCommand();
@@ -84,29 +86,29 @@ public class CommandSelectProcess : IProcessState {
 		}
 
 		if (AllEventManager.GetInstance().EventUpdate()) {
-			mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 		}
 
-		if (mgr.GetInputProvider().UpSelect()) {
+		if (allSceneMgr.inputProvider_.UpSelect()) {
 			mgr.nowCommandState_ = mgr.nowCommandState_.UpSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().DownSelect()) {
+		else if (allSceneMgr.inputProvider_.DownSelect()) {
 			mgr.nowCommandState_ = mgr.nowCommandState_.DownSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().RightSelect()) {
+		else if (allSceneMgr.inputProvider_.RightSelect()) {
 			mgr.nowCommandState_ = mgr.nowCommandState_.RightSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().LeftSelect()) {
+		else if (allSceneMgr.inputProvider_.LeftSelect()) {
 			mgr.nowCommandState_ = mgr.nowCommandState_.LeftSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().SelectEnter()) {
+		else if (allSceneMgr.inputProvider_.SelectEnter()) {
 			return mgr.nowCommandState_.Execute(mgr);
 		}
-		else if (mgr.GetInputProvider().SelectNovelWindowActive()) {
+		else if (allSceneMgr.inputProvider_.SelectNovelWindowActive()) {
 			mgr.GetNovelWindowPartsActiveState().state_ = mgr.GetNovelWindowPartsActiveState().Next(mgr);
 		}
 

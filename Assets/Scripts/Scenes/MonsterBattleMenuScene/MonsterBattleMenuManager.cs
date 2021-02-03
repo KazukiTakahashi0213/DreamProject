@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterBattleMenuScene : MonoBehaviour, ISceneManager {
+public class MonsterBattleMenuManager : MonoBehaviour, ISceneManager {
 	public void SceneStart() {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//依存性注入
-		inputProvider_ = new KeyBoardNormalInputProvider();
+		allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 		nowCommandState_ = new MonsterBattleMenuCommandState(MonsterBattleMenuCommand.MonsterSelect);
 
 		selectMonsterNumber_ = 0;
@@ -56,29 +58,31 @@ public class MonsterBattleMenuScene : MonoBehaviour, ISceneManager {
 	}
 
 	public void SceneUpdate() {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		if (AllEventManager.GetInstance().EventUpdate()) {
-			inputProvider_ = new KeyBoardNormalInputProvider();
+			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 		}
 
-		if (inputProvider_.UpSelect()) {
+		if (allSceneMgr.inputProvider_.UpSelect()) {
 			nowCommandState_.state_ = nowCommandState_.UpSelect(this);
 		}
-		else if (inputProvider_.DownSelect()) {
+		else if (allSceneMgr.inputProvider_.DownSelect()) {
 			nowCommandState_.state_ = nowCommandState_.DownSelect(this);
 		}
-		else if (inputProvider_.RightSelect()) {
+		else if (allSceneMgr.inputProvider_.RightSelect()) {
 			nowCommandState_.state_ = nowCommandState_.RightSelect(this);
 		}
-		else if (inputProvider_.LeftSelect()) {
+		else if (allSceneMgr.inputProvider_.LeftSelect()) {
 			nowCommandState_.state_ = nowCommandState_.LeftSelect(this);
 		}
-		else if (inputProvider_.SelectEnter()) {
+		else if (allSceneMgr.inputProvider_.SelectEnter()) {
 			nowCommandState_.state_ = nowCommandState_.SelectEnter(this);
 		}
-		else if (inputProvider_.SelectBack()) {
+		else if (allSceneMgr.inputProvider_.SelectBack()) {
 			nowCommandState_.state_ = nowCommandState_.SelectBack(this);
 		}
-		else if (inputProvider_.SelectNovelWindowActive()) {
+		else if (allSceneMgr.inputProvider_.SelectNovelWindowActive()) {
 			nowCommandState_.state_ = nowCommandState_.SelectNovelWindowActive(this);
 		}
 	}
@@ -96,7 +100,6 @@ public class MonsterBattleMenuScene : MonoBehaviour, ISceneManager {
 	public BulletParts GetBulletParts() { return bulletParts_; }
 
 	//ステート
-	public IInputProvider inputProvider_ = new KeyBoardNormalInputProvider();
 	private MonsterBattleMenuCommandState nowCommandState_ = new MonsterBattleMenuCommandState(MonsterBattleMenuCommand.MonsterSelect);
 
 	public int selectMonsterNumber_ = 0;

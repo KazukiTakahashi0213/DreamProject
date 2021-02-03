@@ -12,6 +12,8 @@ public class AttackCommandSelectProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//敵の思考時間の処理
 		EnemyBattleData.GetInstance().ThinkingTimeCounter();
 
@@ -28,7 +30,7 @@ public class AttackCommandSelectProcess : IProcessState {
 				return new EnemyCommandSelectProcess();
 			}
 			else {
-				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
@@ -82,33 +84,33 @@ public class AttackCommandSelectProcess : IProcessState {
 		mgr.ConfusionProcess();
 
 		if (AllEventManager.GetInstance().EventUpdate()) {
-			mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 		}
 
-		if (mgr.GetInputProvider().UpSelect()) {
+		if (allSceneMgr.inputProvider_.UpSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.UpSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().DownSelect()) {
+		else if (allSceneMgr.inputProvider_.DownSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.DownSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().RightSelect()) {
+		else if (allSceneMgr.inputProvider_.RightSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.RightSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().LeftSelect()) {
+		else if (allSceneMgr.inputProvider_.LeftSelect()) {
 			mgr.nowAttackCommandState_ = mgr.nowAttackCommandState_.LeftSelect(mgr);
 			if (mgr.PoisonDamageDown()) return new CommandEventExecuteProcess();
 		}
-		else if (mgr.GetInputProvider().SelectEnter()) {
+		else if (allSceneMgr.inputProvider_.SelectEnter()) {
 			ISkillData playerSkillData = PlayerBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.playerSelectSkillNumber_);
 
 			if (playerSkillData.nowPlayPoint_ > 0) {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 
-				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				//コマンドUIの非表示
 				mgr.InactiveUiAttackCommand();
@@ -125,18 +127,18 @@ public class AttackCommandSelectProcess : IProcessState {
 				return mgr.nowAttackCommandState_.Execute(mgr);
 			}
 		}
-		else if (mgr.GetInputProvider().SelectBack()) {
+		else if (allSceneMgr.inputProvider_.SelectBack()) {
 			//こんらん状態なら
 			if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
 				|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
-				mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+				allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 			}
 
 			mgr.ChangeUiCommand();
 
 			return mgr.nowProcessState().BackProcess();
 		}
-		else if (mgr.GetInputProvider().SelectNovelWindowActive()) {
+		else if (allSceneMgr.inputProvider_.SelectNovelWindowActive()) {
 			mgr.GetNovelWindowPartsActiveState().state_ = mgr.GetNovelWindowPartsActiveState().Next(mgr);
 		}
 

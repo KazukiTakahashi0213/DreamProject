@@ -17,30 +17,32 @@ public class MonsterBattleMenuCommandState {
 	public MonsterBattleMenuCommand state_;
 
 	//None
-	static private MonsterBattleMenuCommand NoneUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand NoneSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand NoneSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
 
 	//MonsterSelect
-	static private MonsterBattleMenuCommand MonsterSelectUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		manager.GetMagazineParts().UpRollMagazineParts();
 		AllEventManager.GetInstance().EventFinishSet();
 		manager.GetBulletParts().UpRollStatusInfoParts(manager.selectMonsterNumber_);
@@ -51,11 +53,13 @@ public class MonsterBattleMenuCommandState {
 
 		manager.selectMonsterNumber_ = System.Math.Abs((manager.selectMonsterNumber_ + 3) % 3);
 
-		manager.inputProvider_ = new KeyBoardInactiveInputProvider();
+		allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		manager.GetMagazineParts().DownRollMagazineParts();
 		AllEventManager.GetInstance().EventFinishSet();
 		manager.GetBulletParts().DownRollStatusInfoParts(manager.selectMonsterNumber_);
@@ -66,17 +70,17 @@ public class MonsterBattleMenuCommandState {
 
 		manager.selectMonsterNumber_ %= 3;
 
-		manager.inputProvider_ = new KeyBoardInactiveInputProvider();
+		allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		if (PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).battleActive_
 			&& PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).tribesData_.monsterNumber_ != 0) {
 			PlayerBattleData.GetInstance().changeMonsterNumber_ = manager.selectMonsterNumber_;
@@ -87,7 +91,7 @@ public class MonsterBattleMenuCommandState {
 
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleActive_) {
 			PlayerBattleData.GetInstance().changeMonsterNumber_ = 0;
 			PlayerBattleData.GetInstance().changeMonsterActive_ = true;
@@ -97,81 +101,81 @@ public class MonsterBattleMenuCommandState {
 
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand MonsterSelectSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand MonsterSelectSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
 
 	//ActionSelect
-	static private MonsterBattleMenuCommand ActionSelectUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectUpSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectDownSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectRightSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectLeftSelect(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
-	static private MonsterBattleMenuCommand ActionSelectSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
+	static private MonsterBattleMenuCommand ActionSelectSelectNovelWindowActive(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		return mine.state_;
 	}
 
-	private delegate MonsterBattleMenuCommand SelectFunc(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager);
+	private delegate MonsterBattleMenuCommand SelectFunc(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager);
 
 	private SelectFunc[] upSelects_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneUpSelect,
 		MonsterSelectUpSelect,
 		ActionSelectUpSelect
 	};
-	public MonsterBattleMenuCommand UpSelect(MonsterBattleMenuScene manager) { return upSelects_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand UpSelect(MonsterBattleMenuManager manager) { return upSelects_[(int)state_](this, manager); }
 
 	private SelectFunc[] downSelects_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneDownSelect,
 		MonsterSelectDownSelect,
 		ActionSelectDownSelect
 	};
-	public MonsterBattleMenuCommand DownSelect(MonsterBattleMenuScene manager) { return downSelects_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand DownSelect(MonsterBattleMenuManager manager) { return downSelects_[(int)state_](this, manager); }
 
 	private SelectFunc[] rightSelects_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneRightSelect,
 		MonsterSelectRightSelect,
 		ActionSelectRightSelect
 	};
-	public MonsterBattleMenuCommand RightSelect(MonsterBattleMenuScene manager) { return rightSelects_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand RightSelect(MonsterBattleMenuManager manager) { return rightSelects_[(int)state_](this, manager); }
 
 	private SelectFunc[] leftSelects_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneLeftSelect,
 		MonsterSelectLeftSelect,
 		ActionSelectLeftSelect
 	};
-	public MonsterBattleMenuCommand LeftSelect(MonsterBattleMenuScene manager) { return leftSelects_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand LeftSelect(MonsterBattleMenuManager manager) { return leftSelects_[(int)state_](this, manager); }
 
 	private SelectFunc[] selectEnters_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneSelectEnter,
 		MonsterSelectSelectEnter,
 		ActionSelectSelectEnter
 	};
-	public MonsterBattleMenuCommand SelectEnter(MonsterBattleMenuScene manager) { return selectEnters_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand SelectEnter(MonsterBattleMenuManager manager) { return selectEnters_[(int)state_](this, manager); }
 
 	private SelectFunc[] selectBacks_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneSelectBack,
 		MonsterSelectSelectBack,
 		ActionSelectSelectBack
 	};
-	public MonsterBattleMenuCommand SelectBack(MonsterBattleMenuScene manager) { return selectBacks_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand SelectBack(MonsterBattleMenuManager manager) { return selectBacks_[(int)state_](this, manager); }
 
 	private SelectFunc[] selectNovelWindowActives_ = new SelectFunc[(int)MonsterBattleMenuCommand.Max] {
 		NoneSelectNovelWindowActive,
 		MonsterSelectSelectNovelWindowActive,
 		ActionSelectSelectNovelWindowActive
 	};
-	public MonsterBattleMenuCommand SelectNovelWindowActive(MonsterBattleMenuScene manager) { return selectNovelWindowActives_[(int)state_](this, manager); }
+	public MonsterBattleMenuCommand SelectNovelWindowActive(MonsterBattleMenuManager manager) { return selectNovelWindowActives_[(int)state_](this, manager); }
 }

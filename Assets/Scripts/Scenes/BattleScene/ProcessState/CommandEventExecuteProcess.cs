@@ -12,6 +12,8 @@ public class CommandEventExecuteProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
 			PlayerBattleData.GetInstance().MonsterChangeEventSet(mgr);
@@ -26,7 +28,7 @@ public class CommandEventExecuteProcess : IProcessState {
 			mgr.GetPlayerStatusInfoParts().ProcessIdleStart();
 			mgr.GetPlayerMonsterParts().ProcessIdleStart();
 			mgr.ActiveUiCommand();
-			mgr.SetInputProvider(new KeyBoardNormalInputProvider());
+			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
 			//文字の色の変更
 			IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);

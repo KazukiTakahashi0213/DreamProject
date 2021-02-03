@@ -7,8 +7,10 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	//EntryPoint
 	//Init
 	public void SceneStart() {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//依存性注入
-		inputProvider_ = new KeyBoardNormalInputProvider();
+		allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
 		//初期Stateを設定
 		nowProcessState_ = new OpeningProcess();
@@ -252,6 +254,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	}
 
 	public void PoisonDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//どく状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Poison
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Poison) {
@@ -264,7 +268,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
-				inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				//アイドル状態の停止
 				playerStatusInfoParts_.ProcessIdleEnd();
@@ -297,6 +301,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	}
 
 	public bool BurnsDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//やけど状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Burns
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Burns) {
@@ -312,7 +318,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
-				inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
 
 				//アイドル状態の停止
 				playerStatusInfoParts_.ProcessIdleEnd();
@@ -338,11 +344,13 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	}
 
 	public void ConfusionProcessStart() {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
 		//こんらん状態なら
 		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
 			|| PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
 			//選択の不可
-			inputProvider_ = new KeyBoardSelectInactiveInputProvider();
+			allSceneMgr.inputProvider_ = new KeyBoardSelectInactiveTriggerInputProvider();
 
 			//カウンターのリセット
 			confusionCounter_.reset();
@@ -489,11 +497,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
 		}
 	}
-
-	//仲介クラス
-	private IInputProvider inputProvider_;
-	public IInputProvider GetInputProvider() { return inputProvider_; }
-	public void SetInputProvider(IInputProvider inputProvider) { inputProvider_ = inputProvider; }
 
 	//ステート
 	private IProcessState nowProcessState_;

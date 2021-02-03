@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class KeyBoardNormalInputProvider : IInputProvider {
 	public bool UpSelect() {
-		return Input.GetKeyDown(KeyCode.UpArrow);
+		return Input.GetKey(KeyCode.UpArrow);
 	}
 	public bool DownSelect() {
-		return Input.GetKeyDown(KeyCode.DownArrow);
+		return Input.GetKey(KeyCode.DownArrow);
 	}
 	public bool RightSelect() {
-		return Input.GetKeyDown(KeyCode.RightArrow);
+		return Input.GetKey(KeyCode.RightArrow);
 	}
 	public bool LeftSelect() {
-		return Input.GetKeyDown(KeyCode.LeftArrow);
+		return Input.GetKey(KeyCode.LeftArrow);
 	}
 	public bool SelectEnter() {
-		return Input.GetKeyDown(KeyCode.Z);
+		return Input.GetKey(KeyCode.Z);
 	}
 	public bool SelectBack() {
-		return Input.GetKeyDown(KeyCode.X);
+		return Input.GetKey(KeyCode.X);
 	}
 	public bool SelectNovelWindowActive() {
-		return Input.GetKeyDown(KeyCode.W);
+		return Input.GetKey(KeyCode.W);
 	}
 }

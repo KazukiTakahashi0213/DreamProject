@@ -6,28 +6,29 @@ public class PlayerMoveMap : ObjectMoveMap
 {
     [SerializeField] private PlayerEntryZone _entry_zone = null;
 
-    IInputProvider input = new KeyBoardNormalInputProvider();
-
     private void Start()
     {
         Init();
+        AllSceneManager.GetInstance().inputProvider_ = new KeyBoardInactiveInputProvider();
     }
 
     void Update()
     {
+        AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+
         if (!is_move) return;//falseは動けない
 
         //話しかける
-        if (input.SelectEnter() && _entry_zone.is_collider) 
+        if (allSceneMgr.inputProvider_.SelectEnter() && _entry_zone.is_collider) 
         {
             Debug.Log(_entry_zone._collision_object._message); 
         }
 
         //移動
-        if      (Input.GetKey(KeyCode.UpArrow))     MoveUp();
-        else if (Input.GetKey(KeyCode.DownArrow))   MoveDown();
-        else if (Input.GetKey(KeyCode.RightArrow))  MoveRight();
-        else if (Input.GetKey(KeyCode.LeftArrow))   MoveLeft();
+        if      (allSceneMgr.inputProvider_.UpSelect())     MoveUp();
+        else if (allSceneMgr.inputProvider_.DownSelect())   MoveDown();
+        else if (allSceneMgr.inputProvider_.RightSelect())  MoveRight();
+        else if (allSceneMgr.inputProvider_.LeftSelect())   MoveLeft();
 
         //移動できれば移動する
         TransMove();

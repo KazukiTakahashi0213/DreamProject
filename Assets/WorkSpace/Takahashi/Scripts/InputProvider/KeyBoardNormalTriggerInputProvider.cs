@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyBoardSelectInactiveInputProvider : IInputProvider {
+public class KeyBoardNormalTriggerInputProvider : IInputProvider {
 	public bool UpSelect() {
-		return false;
+		return Input.GetKeyDown(KeyCode.UpArrow);
 	}
 	public bool DownSelect() {
-		return false;
+		return Input.GetKeyDown(KeyCode.DownArrow);
 	}
 	public bool RightSelect() {
-		return false;
+		return Input.GetKeyDown(KeyCode.RightArrow);
 	}
 	public bool LeftSelect() {
-		return false;
+		return Input.GetKeyDown(KeyCode.LeftArrow);
 	}
 	public bool SelectEnter() {
 		return Input.GetKeyDown(KeyCode.Z);

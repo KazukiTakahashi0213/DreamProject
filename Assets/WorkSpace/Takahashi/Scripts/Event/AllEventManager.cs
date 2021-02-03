@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AllEventManager {
 	//依存性注入
-	private IInputProvider inputProvider_ = new KeyBoardNormalInputProvider();
+	private IInputProvider inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
 	private t13.TimeCounter sceneCounter_ = new t13.TimeCounter();
 	private List<t13.TimeFluct> sceneFlucts_ = new List<t13.TimeFluct>();
