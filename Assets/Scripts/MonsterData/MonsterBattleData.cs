@@ -144,7 +144,7 @@ public class MonsterBattleData : IMonsterBattleData {
 	public int GetAvoidRateParameterRank() { return avoidRateParameterRank_; }
 	public int GetHitRateParameterRank() { return hitRateParameterRank_; }
 
-	public void AbnormalSetStatusInfoParts(StatusInfoParts statusInfoParts) {
+	public void AbnormalSetStatusInfoPartsEventSet(StatusInfoParts statusInfoParts) {
 		//状態異常の１つ目の表示処理
 		if (firstAbnormalState_.state_ != AbnormalType.None) {
 			//文字の変更

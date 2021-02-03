@@ -141,13 +141,13 @@ public class PlayerBattleData : ITrainerBattleData {
 			sprites.Add(md.tribesData_.backTex_);
 			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
-			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
 			AllEventManager.GetInstance().EventTextSet(manager.GetPlayerStatusInfoParts().GetBaseParts().GetInfoEventText(), monsterViewName + "　　Lｖ" + t13.Utility.HarfSizeForFullSize(md.level_.ToString()));
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 
 			//HPをTextに反映
 			//HPゲージの調整
@@ -181,7 +181,7 @@ public class PlayerBattleData : ITrainerBattleData {
 			}
 
 			//状態異常の反映
-			md.battleData_.AbnormalSetStatusInfoParts(manager.GetPlayerStatusInfoParts());
+			md.battleData_.AbnormalSetStatusInfoPartsEventSet(manager.GetPlayerStatusInfoParts());
 
 			//ねむりの終了処理
 			manager.SleepProcessEnd();

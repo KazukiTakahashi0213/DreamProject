@@ -77,7 +77,8 @@ public class MonsterBattleMenuCommandState {
 		return mine.state_;
 	}
 	static private MonsterBattleMenuCommand MonsterSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuScene manager) {
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).battleActive_) {
+		if (PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).battleActive_
+			&& PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).tribesData_.monsterNumber_ != 0) {
 			PlayerBattleData.GetInstance().changeMonsterNumber_ = manager.selectMonsterNumber_;
 			PlayerBattleData.GetInstance().changeMonsterActive_ = true;
 

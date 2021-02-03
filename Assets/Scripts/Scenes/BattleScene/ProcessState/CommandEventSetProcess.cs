@@ -51,7 +51,7 @@ public class CommandEventSetProcess : IProcessState {
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 			//状態異常のイベントのセット
-			playerMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetPlayerStatusInfoParts());
+			playerMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
 
 			//ゆめの文字色の変更
 			mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
@@ -81,7 +81,7 @@ public class CommandEventSetProcess : IProcessState {
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 			//状態異常のイベントのセット
-			enemyMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetEnemyStatusInfoParts());
+			enemyMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
 
 			//dpの初期化
 			EnemyBattleData.GetInstance().dreamPoint_ = 0;
@@ -311,7 +311,7 @@ public class CommandEventSetProcess : IProcessState {
 			}
 
 			//状態異常のイベントのセット
-			playerMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetPlayerStatusInfoParts());
+			playerMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
 
 			//ねむりの処理の初期化
 			mgr.SleepProcessStart();
@@ -342,7 +342,7 @@ public class CommandEventSetProcess : IProcessState {
 			}
 
 			//状態異常のイベントのセット
-			enemyMonsterData.battleData_.AbnormalSetStatusInfoParts(mgr.GetEnemyStatusInfoParts());
+			enemyMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
 
 			//ねむりの処理の初期化
 			mgr.SleepProcessStart();

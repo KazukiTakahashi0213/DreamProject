@@ -53,7 +53,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			enemyStatusInfoParts_.GetFrameParts().GetHpGaugeParts().GetGauge().fillAmount = t13.Utility.ValueForPercentage(md.RealHitPoint(), md.nowHitPoint_, 1);
 
 			//状態異常の反映
-			md.battleData_.AbnormalSetStatusInfoParts(enemyStatusInfoParts_);
+			md.battleData_.AbnormalSetStatusInfoPartsEventSet(enemyStatusInfoParts_);
 		}
 
 		//プレイヤーモンスターの読み込み
@@ -114,7 +114,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			}
 
 			//状態異常の反映
-			md.battleData_.AbnormalSetStatusInfoParts(playerStatusInfoParts_);
+			md.battleData_.AbnormalSetStatusInfoPartsEventSet(playerStatusInfoParts_);
 		}
 
 		//外部でする処理
@@ -379,7 +379,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				trainerBattleData.GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Confusion);
 
 				//StatusInfoPartsへ反映
-				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(statusInfoParts);
+				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(statusInfoParts);
 
 				//メッセージ処理
 				AllEventManager.GetInstance().EventTextSet(
@@ -428,7 +428,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 				trainerBattleData.GetMonsterDatas(0).battleData_.RefreshAbnormalType(AbnormalType.Sleep);
 
 				//StatusInfoPartsへ反映
-				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoParts(statusInfoParts);
+				trainerBattleData.GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(statusInfoParts);
 
 				//フェードイン
 				AllEventManager.GetInstance().EventSpriteRendererSet(sleepScreenParts_.GetEventScreenSprite(), null, new Color(sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.r, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.g, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.b, 0));

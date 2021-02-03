@@ -14,6 +14,8 @@ public class MagazineParts : MonoBehaviour {
 	public int GetMonsterSDsPartsCount() { return monsterSDsParts_.Count; }
 	public UpdateGameObject GetEventGameObject() { return eventGameObject_; }
 
+	private const float UPDATE_TIME_REGULATION = 0.3f;
+
 	public void UpRollMagazineParts() {
 		AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_, new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + (360.0f / holeNumber_)));
 
@@ -22,7 +24,7 @@ public class MagazineParts : MonoBehaviour {
 		}
 
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.RotMove);
-		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
+		AllEventManager.GetInstance().AllUpdateEventExecute(UPDATE_TIME_REGULATION);
 	}
 	public void DownRollMagazineParts() {
 		AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_, new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + -(360.0f / holeNumber_)));
@@ -32,6 +34,6 @@ public class MagazineParts : MonoBehaviour {
 		}
 
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.RotMove);
-		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
+		AllEventManager.GetInstance().AllUpdateEventExecute(UPDATE_TIME_REGULATION);
 	}
 }

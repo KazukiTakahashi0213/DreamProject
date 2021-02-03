@@ -32,6 +32,9 @@ public class CommandSelectProcess : IProcessState {
 			else {
 				mgr.SetInputProvider(new KeyBoardInactiveInputProvider());
 
+				mgr.ActiveUiCommand();
+				mgr.InactiveUiCommand();
+
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 				AllEventManager.GetInstance().UpdateGameObjectSet(mgr.GetCursorParts().GetEventGameObject());

@@ -27,8 +27,8 @@ public class MonsterBattleMenuScene : MonoBehaviour, ISceneManager {
 		//StatusInfosPartsの色の変更
 		for (int i = 0;i < bulletParts_.GetEventStatusInfosPartsSize() / 2 + (bulletParts_.GetEventStatusInfosPartsSize() % 2); ++i) {
 			if (i == 0) {
-				bulletParts_.GetEventStatusInfosParts(i).ProcessStateColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, 0));
-				bulletParts_.GetEventStatusInfosParts(bulletParts_.GetEventStatusInfosPartsSize() - 1 - i).ProcessStateColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, 0));
+				bulletParts_.GetEventStatusInfosParts(i).ProcessStateAllColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, 0));
+				bulletParts_.GetEventStatusInfosParts(bulletParts_.GetEventStatusInfosPartsSize() - 1 - i).ProcessStateAllColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, 0));
 			}
 			else {
 				bulletParts_.GetEventStatusInfosParts(i).ProcessStateColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, (byte)(255 / ((i % 2) + 1))));
