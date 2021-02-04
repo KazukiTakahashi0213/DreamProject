@@ -10,6 +10,7 @@ public class EventSpriteRenderer : MonoBehaviour {
 	}
 
 	private EventSpriteRendererProcessState processState_ = new EventSpriteRendererProcessState(EventSpriteRendererProcess.None);
+	private UpdateSpriteRendererProcessBlinkState blinkState_ = new UpdateSpriteRendererProcessBlinkState(UpdateSpriteRendererProcessBlink.Out);
 
 	private t13.TimeFluct[] timeFlucts_ = new t13.TimeFluct[4]{
 		new t13.TimeFluct()
@@ -24,7 +25,12 @@ public class EventSpriteRenderer : MonoBehaviour {
 	private int nowAnimeSpriteNumber_ = 0;
 	private Color32 changeEndColor_ = new Color32();
 
+	public float blinkTimeRegulation_ = 0.06f;
+	private float blinkAlphaValueArchive_ = 0;
+
 	[SerializeField] private SpriteRenderer spriteRenderer_ = null;
+
+	public UpdateSpriteRendererProcessBlinkState GetBlinkState() { return blinkState_; }
 
 	public t13.TimeFluct GetTimeFlucts(int value) { return timeFlucts_[value]; }
 	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
@@ -53,6 +59,20 @@ public class EventSpriteRenderer : MonoBehaviour {
 		}
 
 		processState_.state_ = EventSpriteRendererProcess.ChangeColor;
+	}
+	public void ProcessStateBlinkStartExecute() {
+		blinkAlphaValueArchive_ = spriteRenderer_.color.a;
+
+		processState_.state_ = EventSpriteRendererProcess.Blink;
+	}
+	public void ProcessStateBlinkEndExecute() {
+		spriteRenderer_.color = new Color(spriteRenderer_.color.r, spriteRenderer_.color.g, spriteRenderer_.color.b, blinkAlphaValueArchive_);
+
+		blinkState_.state_ = UpdateSpriteRendererProcessBlink.Out;
+
+		timeCounter_.reset();
+
+		processState_.state_ = EventSpriteRendererProcess.None;
 	}
 
 	public void SpriteSet(List<Sprite> sprites) {

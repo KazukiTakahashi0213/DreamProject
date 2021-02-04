@@ -45,7 +45,7 @@ public class UpdateGameObjectEventManagerExecuteState {
 
 	private delegate void ExecuteFunc(UpdateGameObjectEventManagerExecuteState mine, UpdateGameObjectEventManager updateGameObjectEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess);
 
-	private ExecuteFunc[] executeFuncs_ = new ExecuteFunc[(int)UpdateGameObjectProcess.Max] {
+	private ExecuteFunc[] executeFuncs_ = new ExecuteFunc[(int)UpdateGameObjectEventManagerExecute.Max] {
 		NoneExecute
 		, PosMoveExecute
 		, RotMoveExecute

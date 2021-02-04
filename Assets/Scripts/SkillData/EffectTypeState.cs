@@ -64,8 +64,24 @@ public class EffectTypeState {
 
 		//ダメージアクション（点滅）
 		if (attackSkillData.effectValue_ != 0) {
-			mgr.GetEnemyMonsterParts().SpriteBlinkEventSet(4, 0.06f);
+			mgr.GetEnemyMonsterParts().GetEventMonsterSprite().blinkTimeRegulation_ = 0.06f;
+
+			//点滅の開始
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.48f);
+
+			//点滅の終了
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 		}
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(0.2f);
 
 		//急所の判定
 		float critical = 1;
@@ -180,8 +196,24 @@ public class EffectTypeState {
 
 		//ダメージアクション（点滅）
 		if (attackSkillData.effectValue_ != 0) {
-			mgr.GetPlayerMonsterParts().SpriteBlinkEventSet(4, 0.06f);
+			mgr.GetPlayerMonsterParts().GetEventMonsterSprite().blinkTimeRegulation_ = 0.06f;
+
+			//点滅の開始
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.48f);
+
+			//点滅の終了
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 		}
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(0.2f);
 
 		//ヒットポイントのゲージの変動イベントの設定
 		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);

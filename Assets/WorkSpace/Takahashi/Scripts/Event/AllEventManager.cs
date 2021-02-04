@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AllEventManager {
-	//依存性注入
-	private IInputProvider inputProvider_ = new KeyBoardNormalTriggerInputProvider();
-
 	private t13.TimeCounter sceneCounter_ = new t13.TimeCounter();
 	private List<t13.TimeFluct> sceneFlucts_ = new List<t13.TimeFluct>();
 	private t13.Event<AllEventManager> sceneEvent_;
@@ -37,6 +34,14 @@ public class AllEventManager {
 	private List<SceneState> sceneStates_ = new List<SceneState>();
 	private List<SceneChangeMode> sceneChangeModes_ = new List<SceneChangeMode>();
 
+	private bool eventTriggerNextTrigger_ = false;
+	public void EventTriggerNext() {
+		eventTriggerNextTrigger_ = true;
+	}
+
+	private int eventInputProviderChangeExecuteCounter_ = 0;
+	private List<IInputProvider> inputProviders_ = new List<IInputProvider>();
+
 	//EventManager
 	public void EventWaitSet(float timeRegulation) {
 		eventTimeRegulation_.Add(timeRegulation);
@@ -44,8 +49,8 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(WaitEvent);
 	}
-	public void EventWaitEnterSelectSet() {
-		sceneEvent_.func_add(WaitEnterSelectEvent);
+	public void EventTriggerSet() {
+		sceneEvent_.func_add(TriggerEvent);
 	}
 	public void EventFinishSet() {
 		sceneEvent_.func_add(EventFinishEvent);
@@ -74,6 +79,11 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(SceneChangeEvent);
 	}
+	public void InputProviderChangeEventSet(IInputProvider inputProvider) {
+		inputProviders_.Add(inputProvider);
+
+		sceneEvent_.func_add(InputProviderChangeEvent);
+	}
 	static private bool WaitEvent(AllEventManager mgr) {
 		if (mgr.sceneCounter_.measure(Time.deltaTime, mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_])) {
 			mgr.updateEventExecuteCounter_ += 1;
@@ -83,8 +93,10 @@ public class AllEventManager {
 
 		return false;
 	}
-	static private bool WaitEnterSelectEvent(AllEventManager mgr) {
-		if (mgr.inputProvider_.SelectEnter()) {
+	static private bool TriggerEvent(AllEventManager mgr) {
+		if (mgr.eventTriggerNextTrigger_) {
+			mgr.eventTriggerNextTrigger_ = false;
+
 			return true;
 		}
 
@@ -131,6 +143,13 @@ public class AllEventManager {
 		AllSceneManager.GetInstance().SceneChange(mgr.sceneStates_[mgr.eventSceneChangeExecuteCounter_], mgr.sceneChangeModes_[mgr.eventSceneChangeExecuteCounter_]);
 
 		mgr.eventSceneChangeExecuteCounter_ += 1;
+
+		return true;
+	}
+	static private bool InputProviderChangeEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().inputProvider_ = mgr.inputProviders_[mgr.eventInputProviderChangeExecuteCounter_];
+
+		mgr.eventInputProviderChangeExecuteCounter_ += 1;
 
 		return true;
 	}

@@ -7,6 +7,8 @@ public enum EventSpriteRendererEventManagerExecute {
 	, Anime
 	, ChangeColor
 	, SpriteSet
+	, BlinkStart
+	, BlinkEnd
 	, Max
 }
 
@@ -52,6 +54,21 @@ public class EventSpriteRendererEventManagerExecuteState {
 		}
 	}
 
+	//BlinkStart
+	static private void BlinkStartExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
+		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers().Count; ++i) {
+			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers()[i].ProcessStateBlinkStartExecute(
+				);
+		}
+	}
+	//BlinkEnd
+	static private void BlinkEndExecute(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) {
+		for (int i = 0; i < eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers().Count; ++i) {
+			eventSpriteRendererEventManager.GetExecuteEventSpriteRenderers()[i].ProcessStateBlinkEndExecute(
+				);
+		}
+	}
+
 	private delegate void ExecuteFunc(EventSpriteRendererEventManagerExecuteState mine, EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess);
 
 	private ExecuteFunc[] executeFuncs_ = new ExecuteFunc[(int)EventSpriteRendererEventManagerExecute.Max] {
@@ -59,6 +76,8 @@ public class EventSpriteRendererEventManagerExecuteState {
 		, AnimeExecute
 		, ChangeColorExecute
 		, SpriteSetExecute
+		, BlinkStartExecute
+		, BlinkEndExecute
 	};
 	public void Execute(EventSpriteRendererEventManager eventSpriteRendererEventManager, float timeRegulation, t13.TimeFluctProcess timeFluctProcess) { executeFuncs_[(int)state_](this, eventSpriteRendererEventManager, timeRegulation, timeFluctProcess); }
 }

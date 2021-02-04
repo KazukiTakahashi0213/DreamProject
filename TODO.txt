@@ -13,7 +13,4 @@ dpのアニメーション処理
 相手のトレーナーのAIの処理
 相手のモンスターのAIの処理
 
-UpdateGameObjectにBlinkの追加
-AllSceneManagerにtriggerEventの追加
-eventにinputProviderを増設
 novelのblinkの追加

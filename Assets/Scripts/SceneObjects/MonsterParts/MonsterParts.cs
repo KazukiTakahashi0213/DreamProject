@@ -37,17 +37,6 @@ public class MonsterParts : MonoBehaviour {
 	public t13.TimeFluct GetTimeFluct() { return timeFluct_; }
 	public t13.TimeCounter GetTimeCounter() { return timeCounter_; }
 
-	public void SpriteBlinkEventSet(int times, float changeTimeRegulation) {
-		//ダメージアクション（点滅）
-		for (int i = 0; i < times; ++i) {
-			for (int j = 0; j < 2; ++j) {
-				AllEventManager.GetInstance().UpdateGameObjectSet(eventGameObject_);
-				AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(j == 1);
-				AllEventManager.GetInstance().EventWaitSet(changeTimeRegulation);
-			}
-		}
-	}
-
 	public void ProcessIdleStart() {
 		processState_ = new MonsterPartsProcessIdle();
 	}

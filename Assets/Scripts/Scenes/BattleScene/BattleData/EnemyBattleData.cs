@@ -93,7 +93,7 @@ public class EnemyBattleData : ITrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			//Enterキー
-			AllEventManager.GetInstance().EventWaitEnterSelectSet();
+			AllEventManager.GetInstance().EventTriggerSet();
 
 			//エネミーの入場
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyParts().GetEventGameObject(), new Vector3(3.5f, manager.GetEnemyParts().transform.position.y, manager.GetEnemyParts().transform.position.z));
@@ -101,7 +101,7 @@ public class EnemyBattleData : ITrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
 
 			//Enterキー
-			AllEventManager.GetInstance().EventWaitEnterSelectSet();
+			AllEventManager.GetInstance().EventTriggerSet();
 
 			AllEventManager.GetInstance().EventFinishSet();
 

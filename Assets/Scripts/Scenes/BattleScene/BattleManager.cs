@@ -564,8 +564,21 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
 		}
+
+		//Blinkの開始
+		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().blinkTimeRegulation_ = 0.5f;
+		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().GetBlinkState().state_ = UpdateSpriteRendererProcessBlink.In;
+		AllEventManager.GetInstance().EventSpriteRendererSet(novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite());
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
+		AllEventManager.GetInstance().AllUpdateEventExecute();
+
 		//Enterの押下待ち
-		AllEventManager.GetInstance().EventWaitEnterSelectSet();
+		AllEventManager.GetInstance().EventTriggerSet();
+
+		//Blinkの開始
+		AllEventManager.GetInstance().EventSpriteRendererSet(novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite());
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
+		AllEventManager.GetInstance().AllUpdateEventExecute();
 		{
 			//文字列の設定
 			string enemyFirstMonsterName = EnemyBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;

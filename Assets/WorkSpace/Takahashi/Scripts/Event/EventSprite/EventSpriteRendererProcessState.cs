@@ -6,6 +6,7 @@ public enum EventSpriteRendererProcess {
 	None
 	, Anime
 	, ChangeColor
+	, Blink
 	, Max
 }
 
@@ -115,12 +116,24 @@ public class EventSpriteRendererProcessState {
 		return mine.state_;
 	}
 
+	//Blink
+	static private EventSpriteRendererProcess BlinkUpdate(EventSpriteRendererProcessState mine, EventSpriteRenderer eventSpriteRenderer) {
+		if(eventSpriteRenderer.GetTimeCounter().measure(Time.deltaTime, eventSpriteRenderer.blinkTimeRegulation_)) {
+			eventSpriteRenderer.GetSpriteRenderer().color = new Color(eventSpriteRenderer.GetSpriteRenderer().color.r, eventSpriteRenderer.GetSpriteRenderer().color.g, eventSpriteRenderer.GetSpriteRenderer().color.b, eventSpriteRenderer.GetBlinkState().AlphaValue());
+
+			eventSpriteRenderer.GetBlinkState().state_ = eventSpriteRenderer.GetBlinkState().Next();
+		}
+
+		return mine.state_;
+	}
+
 	private delegate EventSpriteRendererProcess UpdateFunc(EventSpriteRendererProcessState mine, EventSpriteRenderer eventSpriteRenderer);
 
 	private UpdateFunc[] updateFuncs_ = new UpdateFunc[(int)EventSpriteRendererProcess.Max] {
 		NoneUpdate
 		, AnimeUpdate
 		, ChangeColorUpdate
+		, BlinkUpdate
 	};
 	public EventSpriteRendererProcess Update(EventSpriteRenderer eventSpriteRenderer) { return updateFuncs_[(int)state_](this, eventSpriteRenderer); }
 }
