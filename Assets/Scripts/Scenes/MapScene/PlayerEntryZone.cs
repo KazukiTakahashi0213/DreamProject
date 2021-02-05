@@ -9,7 +9,7 @@ public class PlayerEntryZone : MonoBehaviour
     [SerializeField] public Vector2 Right = Vector2.zero;
     [SerializeField] public Vector2 Left = Vector2.zero;
 
-    public HumanMoveMap _collision_object = null; 
+    public EventMoveMap _collision_object = null; 
 
     public bool is_collider { get; set; } = false;
 
@@ -22,18 +22,22 @@ public class PlayerEntryZone : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "Human")
+        if (collision.gameObject.tag == "Event"
+            || collision.gameObject.tag == "Human")
         {
             is_collider = true;
-            _collision_object = collision.gameObject.GetComponent<HumanMoveMap>();
+            _collision_object = collision.gameObject.GetComponent<EventMoveMap>();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "Human")
+        if (collision.gameObject.tag == "Event"
+            || collision.gameObject.tag == "Human")
         {
+            _collision_object.eventActive_ = true;
+
             is_collider = false;
             _collision_object = null;
         }

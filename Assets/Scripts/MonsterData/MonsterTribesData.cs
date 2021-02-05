@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MonsterTribesData : IMonsterTribesData {
 	public MonsterTribesData(int number) {
+		ResourcesGraphicsLoader graphicsLoader = ResourcesGraphicsLoader.GetInstance();
+
 		ResourcesMonsterTribesData data = ResourcesMonsterTribesDatasLoader.GetInstance().GetMonsterDatas(number);
 
 		monsterNumber_ = number;
@@ -20,9 +22,11 @@ public class MonsterTribesData : IMonsterTribesData {
 		firstElement_ = new ElementTypeState((ElementType)data.firstElement_);
 		secondElement_ = new ElementTypeState((ElementType)data.secondElement_);
 
-		frontTex_ = Resources.Load("Graphics/Monster/" + data.texName_ + "/" + data.texName_ + "_Front", typeof(Sprite)) as Sprite;
-		backTex_ = Resources.Load("Graphics/Monster/" + data.texName_ + "/" + data.texName_ + "_Back", typeof(Sprite)) as Sprite;
-		SDTex_ = Resources.Load("Graphics/Monster/" + data.texName_ + "/" + data.texName_ + "_SD", typeof(Sprite)) as Sprite;
+		frontTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_Front");
+		backTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_Back");
+		SDTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_SD");
+		frontDreamTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_FrontDream");
+		backDreamTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_BackDream");
 	}
 
 	public int monsterNumber_ { get; }
@@ -41,4 +45,6 @@ public class MonsterTribesData : IMonsterTribesData {
 	public Sprite frontTex_ { get; }
 	public Sprite backTex_ { get; }
 	public Sprite SDTex_ { get; }
+	public Sprite frontDreamTex_ { get; }
+	public Sprite backDreamTex_ { get; }
 }

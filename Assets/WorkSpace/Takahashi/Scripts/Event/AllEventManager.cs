@@ -35,8 +35,11 @@ public class AllEventManager {
 	private List<SceneChangeMode> sceneChangeModes_ = new List<SceneChangeMode>();
 
 	private bool eventTriggerNextTrigger_ = false;
+	private bool eventTriggerNextActive_ = false;
 	public void EventTriggerNext() {
-		eventTriggerNextTrigger_ = true;
+		if (eventTriggerNextActive_) {
+			eventTriggerNextTrigger_ = true;
+		}
 	}
 
 	private int eventInputProviderChangeExecuteCounter_ = 0;
@@ -94,8 +97,11 @@ public class AllEventManager {
 		return false;
 	}
 	static private bool TriggerEvent(AllEventManager mgr) {
+		mgr.eventTriggerNextActive_ = true;
+
 		if (mgr.eventTriggerNextTrigger_) {
 			mgr.eventTriggerNextTrigger_ = false;
+			mgr.eventTriggerNextActive_ = false;
 
 			return true;
 		}

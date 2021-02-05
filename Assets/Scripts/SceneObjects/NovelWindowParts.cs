@@ -10,6 +10,7 @@ public class NovelWindowParts : MonoBehaviour {
 	[SerializeField] AttackCommandParts attackCommandParts_ = null;
 	[SerializeField] EventText eventText_ = null;
 	[SerializeField] NovelBlinkIconParts novelBlinkIconParts_ = null;
+	[SerializeField] UpdateGameObject updateGameObject_ = null;
 
 	public SpriteRenderer GetNovelWindowSprite() { return novelWindowSprite_; }
 	public Text GetNovelWindowText() { return novelWindowText_; }
@@ -17,4 +18,5 @@ public class NovelWindowParts : MonoBehaviour {
 	public AttackCommandParts GetAttackCommandParts() { return attackCommandParts_; }
 	public EventText GetEventText() { return eventText_; }
 	public NovelBlinkIconParts GetNovelBlinkIconParts() { return novelBlinkIconParts_; }
+	public UpdateGameObject GetUpdateGameObject() { return updateGameObject_; }
 }

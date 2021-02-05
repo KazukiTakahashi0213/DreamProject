@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		nowAttackCommandState_ = new AttackCommand0();
 
 		//BGMの再生
-		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = Resources.Load("Sounds/BGM/BattleScene/Dreamers_Academy_Battle") as AudioClip;
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/BattleScene/Dreamers_Academy_Battle");
 		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
 
 		//エネミーモンスターの読み込み
@@ -555,6 +555,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
 		AllEventManager.GetInstance().AllUpdateEventExecute(2.0f);
+
 		{
 			//文字列の設定
 			EnemyTrainerData enemyTrainerData = EnemyTrainerData.GetInstance();
@@ -575,10 +576,11 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		//Enterの押下待ち
 		AllEventManager.GetInstance().EventTriggerSet();
 
-		//Blinkの開始
+		//Blinkの終了
 		AllEventManager.GetInstance().EventSpriteRendererSet(novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite());
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
 		AllEventManager.GetInstance().AllUpdateEventExecute();
+
 		{
 			//文字列の設定
 			string enemyFirstMonsterName = EnemyBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;

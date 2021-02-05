@@ -139,11 +139,22 @@ public class PlayerBattleData : ITrainerBattleData {
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 			//画像の設定
-			List<Sprite> sprites = new List<Sprite>();
-			sprites.Add(md.tribesData_.backTex_);
-			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
-			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
-			AllEventManager.GetInstance().AllUpdateEventExecute();
+			if (md.battleData_.HaveAbnormalType(AbnormalType.Hero)) {
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(md.tribesData_.backDreamTex_);
+
+				AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
+			else {
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(md.tribesData_.backTex_);
+
+				AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites, new Color32());
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
 
 			//名前とレベルをTextに反映
 			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);

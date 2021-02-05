@@ -39,6 +39,16 @@ public class CommandEventSetProcess : IProcessState {
 			//アニメーション
 			AllEventManager.GetInstance().EventWaitSet(2.0f);
 
+			//画像の変更
+			{
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(playerMonsterData.tribesData_.backDreamTex_);
+				
+				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
+
 			//能力変化の更新
 			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(playerMonsterData);
 
@@ -68,6 +78,16 @@ public class CommandEventSetProcess : IProcessState {
 		if (EnemyBattleData.GetInstance().dreamSyncronize_ == true) {
 			//アニメーション
 			AllEventManager.GetInstance().EventWaitSet(2.0f);
+
+			//画像の変更
+			{
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(enemyMonsterData.tribesData_.frontDreamTex_);
+
+				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
 
 			//能力変化の更新
 			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(enemyMonsterData);

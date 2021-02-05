@@ -5,11 +5,14 @@ using UnityEngine;
 public class PlayerMoveMap : ObjectMoveMap
 {
     [SerializeField] private PlayerEntryZone _entry_zone = null;
+    public PlayerEntryZone GetEntryZone() { return _entry_zone; }
 
     private void Start()
     {
         Init();
         AllSceneManager.GetInstance().inputProvider_ = new KeyBoardInactiveInputProvider();
+
+        ObjectType = MapData.MAP_STATUS.PLAYER;
     }
 
     void Update()
@@ -17,12 +20,6 @@ public class PlayerMoveMap : ObjectMoveMap
         AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
         if (!is_move) return;//falseは動けない
-
-        //話しかける
-        if (allSceneMgr.inputProvider_.SelectEnter() && _entry_zone.is_collider) 
-        {
-            Debug.Log(_entry_zone._collision_object._message); 
-        }
 
         //移動
         if      (allSceneMgr.inputProvider_.UpSelect())     MoveUp();

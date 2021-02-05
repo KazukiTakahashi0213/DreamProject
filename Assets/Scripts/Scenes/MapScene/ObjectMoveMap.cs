@@ -6,8 +6,7 @@ public class ObjectMoveMap : MonoBehaviour
 {
     public float speed = 1.0f;//移動スピード
 
-    [SerializeField]
-    MapData.MAP_STATUS ObjectType = MapData.MAP_STATUS.HUMAN;//オブジェクトの種類
+    protected MapData.MAP_STATUS ObjectType = MapData.MAP_STATUS.HUMAN;//オブジェクトの種類
 
     protected MapData _map = null;
 

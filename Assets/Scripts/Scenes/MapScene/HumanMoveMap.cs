@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanMoveMap : ObjectMoveMap
+public class HumanMoveMap : EventMoveMap
 {
     public enum MOVE_TYPE {NONE,RANDOM,}
 
@@ -10,13 +10,14 @@ public class HumanMoveMap : ObjectMoveMap
 
     [SerializeField] float _move_interval = 3.0f;//動く間隔
 
-    public string _message = "メッセージ";
-
     private float _move_time = 0;
 
     void Start()
     {
         Init();
+        EventInit();
+
+        ObjectType = MapData.MAP_STATUS.HUMAN;
     }
 
     void Update()

@@ -68,8 +68,6 @@ public class EventSpriteRenderer : MonoBehaviour {
 	public void ProcessStateBlinkEndExecute() {
 		spriteRenderer_.color = new Color(spriteRenderer_.color.r, spriteRenderer_.color.g, spriteRenderer_.color.b, blinkAlphaValueArchive_);
 
-		blinkState_.state_ = UpdateSpriteRendererProcessBlink.Out;
-
 		timeCounter_.reset();
 
 		processState_.state_ = EventSpriteRendererProcess.None;

@@ -12,6 +12,7 @@ public class MapData : MonoBehaviour
         WALL,//1：壁
         PLAYER,//2：プレイヤー
         HUMAN,//3：人
+        EVENT,//4：イベント
     }
 
     [SerializeField]Tilemap _tilemap = null;//二次元配列を取得したいtilemapをアタッチ
@@ -33,6 +34,10 @@ public class MapData : MonoBehaviour
 
         foreach (var human in GameObject.FindGameObjectsWithTag("Human")) {
             SetMapStatus(human.GetComponent<Transform>().position, MAP_STATUS.HUMAN);
+        }
+
+        foreach (var human in GameObject.FindGameObjectsWithTag("Event")) {
+            SetMapStatus(human.GetComponent<Transform>().position, MAP_STATUS.EVENT);
         }
 
         DebugLogDataString();
@@ -59,6 +64,7 @@ public class MapData : MonoBehaviour
                 if (_map[y, x] == (int)MAP_STATUS.WALL)   map_str += "壁,";
                 if (_map[y, x] == (int)MAP_STATUS.PLAYER) map_str += "俺,";
                 if (_map[y, x] == (int)MAP_STATUS.HUMAN)  map_str += "人,";
+                if (_map[y, x] == (int)MAP_STATUS.EVENT)  map_str += "動,";
             }
             map_str += "\n";
         }

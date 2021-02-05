@@ -155,6 +155,26 @@ namespace t13 {
 			}
 		}
 
+		//文字列を指定の文字で分割し、結果をListで返す
+		static public List<string> ContextSlice(string sliceContext, string exceptChar) {
+			int startNum = 0;
+			int endNum = 0;
+			List<string> retList = new List<string>();
+
+			while (true) {
+				endNum = sliceContext.IndexOf(exceptChar, startNum);
+				if (endNum == -1) {
+					retList.Add(sliceContext.Substring(startNum, sliceContext.Length - startNum));
+					break;
+				}
+
+				retList.Add(sliceContext.Substring(startNum, endNum - startNum));
+
+				startNum = endNum + 4;
+			}
+
+			return retList;
+		}
 	}
 
 }

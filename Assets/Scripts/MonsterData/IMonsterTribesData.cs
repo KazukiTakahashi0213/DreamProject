@@ -21,4 +21,6 @@ public interface IMonsterTribesData {
 	Sprite frontTex_ { get; }
 	Sprite backTex_ { get; }
 	Sprite SDTex_ { get; }
+	Sprite frontDreamTex_ { get; }
+	Sprite backDreamTex_ { get; }
 }
