@@ -3,18 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour, ISceneManager {
-	[SerializeField] Camera mainCamera_ = null;
-	[SerializeField] PlayerMoveMap playerMoveMap_ = null;
-	[SerializeField] NovelWindowParts novelWindowParts_ = null;
+	[SerializeField] private Camera mainCamera_ = null;
+	[SerializeField] private PlayerMoveMap playerMoveMap_ = null;
+	[SerializeField] private NovelWindowParts novelWindowParts_ = null;
+	[SerializeField] private List<EventMoveMap> sceneObjectMoveMaps_ = new List<EventMoveMap>();
 
 	public NovelWindowParts GetNovelWindowParts() { return novelWindowParts_; }
+	public PlayerMoveMap GetPlayerMoveMap() { return playerMoveMap_; }
+	public List<EventMoveMap> GetSceneObjectMoveMaps() { return sceneObjectMoveMaps_; }
 
 	public void SceneStart() {
+		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+		AllEventManager allEventMgr = AllEventManager.GetInstance();
+
 		//フロントスクリーンをカメラの子にする
 		AllSceneManager.GetInstance().GetPublicFrontScreen().gameObject.transform.SetParent(mainCamera_.transform);
 
 		//ノベルウィンドウをカメラの子にする
 		novelWindowParts_.gameObject.transform.SetParent(mainCamera_.transform);
+
+		//フェードイン
+		allEventMgr.EventSpriteRendererSet(
+			allSceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
+			, null
+			, new Color(allSceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, allSceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, allSceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 0)
+			);
+		allEventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+		allEventMgr.AllUpdateEventExecute(0.4f);
+
+		//イベントの最後
+		allEventMgr.EventFinishSet();
 	}
 
 	public void SceneUpdate() {
@@ -25,7 +43,8 @@ public class MapManager : MonoBehaviour, ISceneManager {
 			allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
 		}
 
-		if (playerMoveMap_.GetEntryZone()._collision_object) {
+		if (playerMoveMap_.GetEntryZone()._collision_object
+			&& !playerMoveMap_.GetMapMoveActive()) {
 			EventMoveMap eventObject = playerMoveMap_.GetEntryZone()._collision_object;
 
 			if (eventObject.GetTriggerState().EventTrigger(playerMoveMap_.GetEntryZone())) {

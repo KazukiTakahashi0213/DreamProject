@@ -14,7 +14,20 @@ public class SaveDataSelectManager : MonoBehaviour, ISceneManager {
 	SELECT_STATUS _select_num = SELECT_STATUS.START;
 
 	public void SceneStart() {
-		AllSceneManager.GetInstance().inputProvider_ = new KeyBoardInactiveInputProvider();
+		AllEventManager eventMgr = AllEventManager.GetInstance();
+		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
+
+		//フェードイン
+		eventMgr.EventSpriteRendererSet(
+			sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
+			, null
+			, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 0)
+			);
+		eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+		eventMgr.AllUpdateEventExecute(0.4f);
+
+		//イベントの最後
+		eventMgr.EventFinishSet();
 	}
 
 	public void SceneUpdate() {
@@ -44,7 +57,7 @@ public class SaveDataSelectManager : MonoBehaviour, ISceneManager {
 				AllEventManager eventMgr = AllEventManager.GetInstance();
 				AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
-				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				//フェードアウト
 				eventMgr.EventSpriteRendererSet(
@@ -57,18 +70,6 @@ public class SaveDataSelectManager : MonoBehaviour, ISceneManager {
 
 				//シーンの切り替え
 				eventMgr.SceneChangeEventSet(SceneState.Map, SceneChangeMode.Change);
-
-				//フェードイン
-				eventMgr.EventSpriteRendererSet(
-					sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
-					, null
-					, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 0)
-					);
-				eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
-				eventMgr.AllUpdateEventExecute(0.4f);
-
-				//イベントの最後
-				eventMgr.EventFinishSet();
 			}
 			if (_select_num == SELECT_STATUS.CONTINUE) {
 				Debug.Log("つづきから");

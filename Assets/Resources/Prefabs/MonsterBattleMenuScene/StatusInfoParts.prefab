@@ -594,7 +594,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 55
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 55
@@ -699,6 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7341c05de09624b42b4a6c1561cd3b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blinkTimeRegulation_: 0.06
   spriteRenderer_: {fileID: 5376620037052485906}
 --- !u!1 &3549759322139329920
 GameObject:
@@ -1156,7 +1157,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 48
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 50
@@ -1474,7 +1475,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 55
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 75
@@ -1686,4 +1687,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7341c05de09624b42b4a6c1561cd3b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blinkTimeRegulation_: 0.06
   spriteRenderer_: {fileID: 4186848366433568344}

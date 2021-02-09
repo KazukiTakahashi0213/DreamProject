@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3258800015406558121}
   - component: {fileID: 5797202344668454879}
   - component: {fileID: 661330234028435831}
+  - component: {fileID: 2823997207474668427}
   m_Layer: 0
   m_Name: Event
   m_TagString: Event
@@ -70,7 +71,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb74b2942fc6984e806ad85b1db775e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateGameObject_: {fileID: 2823997207474668427}
+  eventSpriteRenderer_: {fileID: 0}
   speed: 1
-  startTrigger_: 2
+  ObjectType: 3
+  startTrigger_: 1
   eventActive_: 1
-  _message: "\u30A4\u30D9\u30F3\u30C8\u3060\u3088"
+  executeEventNum_: 1
+  MoveType: 0
+  _move_interval: 3
+--- !u!114 &2823997207474668427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620214303289986396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e50bd1d71a636b4895c956c25726edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addEulerVec3_: {x: 0, y: 0, z: 0}

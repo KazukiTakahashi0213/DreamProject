@@ -5,12 +5,17 @@ using UnityEngine;
 public class PlayerMoveMap : ObjectMoveMap
 {
     [SerializeField] private PlayerEntryZone _entry_zone = null;
+
+    private bool mapMoveActive_ = false;
+
     public PlayerEntryZone GetEntryZone() { return _entry_zone; }
+
+    public bool GetMapMoveActive() { return mapMoveActive_; }
 
     private void Start()
     {
         Init();
-        AllSceneManager.GetInstance().inputProvider_ = new KeyBoardInactiveInputProvider();
+        AllSceneManager.GetInstance().inputProvider_ = new InactiveInputProvider();
 
         ObjectType = MapData.MAP_STATUS.PLAYER;
     }
@@ -28,7 +33,7 @@ public class PlayerMoveMap : ObjectMoveMap
         else if (allSceneMgr.inputProvider_.LeftSelect())   MoveLeft();
 
         //移動できれば移動する
-        TransMove();
+        mapMoveActive_ = TransMove();
     }
 
     protected override void MoveUp()

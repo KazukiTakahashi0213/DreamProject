@@ -17,12 +17,15 @@ public class PlayerBattleData : ITrainerBattleData {
 	public string GetUniqueTrainerName() { return ""; }
 
 	//手持ちのモンスターのデータ
-	private const int MONSTER_MAX_SIZE = 3;
+	private const int MONSTER_MAX_SIZE = 6;
 	private int haveMonsterSize_ = 0;
 	private IMonsterData[] monsterDatas_ = new IMonsterData[MONSTER_MAX_SIZE] {
-		new MonsterData(new MonsterTribesData(0), 0, 50)
-		, new MonsterData(new MonsterTribesData(0), 0, 50)
-		, new MonsterData(new MonsterTribesData(0), 0, 50)
+		new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
 	};
 
 	//戦えるモンスターの数
@@ -222,7 +225,7 @@ public class PlayerBattleData : ITrainerBattleData {
 		manager.ActiveUiCommand();
 		manager.InactiveUiCommand();
 
-		allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+		allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 		changeMonsterNumber_ = 0;
 	}

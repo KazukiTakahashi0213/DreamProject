@@ -12,14 +12,25 @@ public class CommandEventExecuteProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+		AllEventManager eventMgr = AllEventManager.GetInstance();
+		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
 		//交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
+			//フェードイン
+			eventMgr.EventSpriteRendererSet(
+				sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
+				, null
+				, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 0)
+				);
+			eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+			eventMgr.AllUpdateEventExecute(0.4f);
+
+			//交換イベント
 			PlayerBattleData.GetInstance().MonsterChangeEventSet(mgr);
 
 			//イベントの最後
-			AllEventManager.GetInstance().EventFinishSet();
+			eventMgr.EventFinishSet();
 
 			PlayerBattleData.GetInstance().changeMonsterActive_ = false;
 		}
@@ -28,7 +39,7 @@ public class CommandEventExecuteProcess : IProcessState {
 			mgr.GetPlayerStatusInfoParts().ProcessIdleStart();
 			mgr.GetPlayerMonsterParts().ProcessIdleStart();
 			mgr.ActiveUiCommand();
-			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
+			sceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
 			//文字の色の変更
 			IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);

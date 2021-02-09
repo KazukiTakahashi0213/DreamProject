@@ -30,7 +30,6 @@ public class AllEventManager {
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
 
-	private int eventSceneChangeExecuteCounter_ = 0;
 	private List<SceneState> sceneStates_ = new List<SceneState>();
 	private List<SceneChangeMode> sceneChangeModes_ = new List<SceneChangeMode>();
 
@@ -42,7 +41,6 @@ public class AllEventManager {
 		}
 	}
 
-	private int eventInputProviderChangeExecuteCounter_ = 0;
 	private List<IInputProvider> inputProviders_ = new List<IInputProvider>();
 
 	//EventManager
@@ -116,7 +114,6 @@ public class AllEventManager {
 		mgr.eventActiveExecuteCounter_ = 0;
 		mgr.eventActive_.Clear();
 
-		mgr.eventSceneChangeExecuteCounter_ = 0;
 		mgr.sceneStates_.Clear();
 		mgr.sceneChangeModes_.Clear();
 
@@ -139,23 +136,21 @@ public class AllEventManager {
 		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 
-		mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_] -= Time.deltaTime;
-
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 
 		return true;
 	}
 	static private bool SceneChangeEvent(AllEventManager mgr) {
-		AllSceneManager.GetInstance().SceneChange(mgr.sceneStates_[mgr.eventSceneChangeExecuteCounter_], mgr.sceneChangeModes_[mgr.eventSceneChangeExecuteCounter_]);
+		AllSceneManager.GetInstance().SceneChange(mgr.sceneStates_[0], mgr.sceneChangeModes_[0]);
 
-		mgr.eventSceneChangeExecuteCounter_ += 1;
+		EventFinishEvent(mgr);
 
 		return true;
 	}
 	static private bool InputProviderChangeEvent(AllEventManager mgr) {
-		AllSceneManager.GetInstance().inputProvider_ = mgr.inputProviders_[mgr.eventInputProviderChangeExecuteCounter_];
+		AllSceneManager.GetInstance().inputProvider_ = mgr.inputProviders_[0];
 
-		mgr.eventInputProviderChangeExecuteCounter_ += 1;
+		EventFinishEvent(mgr);
 
 		return true;
 	}

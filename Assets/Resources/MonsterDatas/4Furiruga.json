@@ -8,13 +8,7 @@
 		"tribesSpecialDefense_":	"100",
 		"tribesSpeed_":						"100",
 
-		"//ElementType": [
-			"None",
-			"Normal",
-			"Fire",
-			"Water",
-			"Tree"
-		],
+		"//ElementType": ["None","Normal","Fire","Water","Tree"],
 		"firstElement_":					"4",
 		"secondElement_":					"0",
 

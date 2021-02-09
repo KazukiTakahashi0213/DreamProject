@@ -21,9 +21,9 @@ public class EnemyBattleData : ITrainerBattleData {
 	private const int MONSTER_MAX_SIZE = 3;
 	private int haveMonsterSize_ = 0;
 	private IMonsterData[] monsterDatas_ = new IMonsterData[MONSTER_MAX_SIZE] {
-		new MonsterData(new MonsterTribesData(0), 0, 50)
-		, new MonsterData(new MonsterTribesData(0), 0, 50)
-		, new MonsterData(new MonsterTribesData(0), 0, 50)
+		new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
+		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
 	};
 
 	//戦えるモンスターの数

@@ -12,8 +12,8 @@ public class EnemyTrainerData {
 	public string job() { return job_; }
 	public string name() { return name_; }
 
-	private string job_;
-	private string name_;
+	private string job_ = " ";
+	private string name_ = " ";
 
 	//シングルトン
 	private EnemyTrainerData() { }

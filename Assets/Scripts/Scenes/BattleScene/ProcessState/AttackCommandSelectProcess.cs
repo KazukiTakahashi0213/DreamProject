@@ -30,7 +30,7 @@ public class AttackCommandSelectProcess : IProcessState {
 				return new EnemyCommandSelectProcess();
 			}
 			else {
-				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
@@ -110,7 +110,7 @@ public class AttackCommandSelectProcess : IProcessState {
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 
-				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				//コマンドUIの非表示
 				mgr.InactiveUiAttackCommand();
@@ -123,6 +123,9 @@ public class AttackCommandSelectProcess : IProcessState {
 					//dpの変動
 					PlayerBattleData.GetInstance().dreamPoint_ += playerSkillData.upDpValue_;
 				}
+
+				//イベントの最後
+				AllEventManager.GetInstance().EventFinishSet();
 
 				return mgr.nowAttackCommandState_.Execute(mgr);
 			}

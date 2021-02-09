@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyBoardInactiveInputProvider : IInputProvider {
+public class InactiveInputProvider : IInputProvider {
 	public bool UpSelect() {
 		return false;
 	}

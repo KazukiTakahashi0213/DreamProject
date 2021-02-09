@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCommandSelectProcess : IProcessState {
+	private bool eventEnd_ = false;
+
 	public IProcessState BackProcess() {
 		return this;
 	}
@@ -13,14 +15,15 @@ public class EnemyCommandSelectProcess : IProcessState {
 
 	public IProcessState Update(BattleManager mgr) {
 		if (AllEventManager.GetInstance().EventUpdate()) {
-
+			eventEnd_ = true;
 		}
 
 		//敵の思考時間の処理
 		EnemyBattleData.GetInstance().ThinkingTimeCounter();
 
 		//思考時間が終わっていたら
-		if (EnemyBattleData.GetInstance().ThinkingTimeEnd()) {
+		if (EnemyBattleData.GetInstance().ThinkingTimeEnd() 
+			&& eventEnd_) {
 			//タイプ相性の測定
 			int[] typeSimillarResult = new int[3] { 0, 0, 0 };
 			int[] monsterNumbers = new int[3] { 0, 1, 2 };
@@ -134,6 +137,8 @@ public class EnemyCommandSelectProcess : IProcessState {
 					EnemyBattleData.GetInstance().dreamPoint_ += enemySkillData.upDpValue_;
 				}
 			}
+
+			eventEnd_ = false;
 
 			return mgr.nowProcessState().NextProcess();
 		}

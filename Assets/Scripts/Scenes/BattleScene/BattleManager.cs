@@ -24,25 +24,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		//エネミーモンスターの読み込み
 		{
 			//外部でする処理
-			//データの生成
-			IMonsterData md = new MonsterData(new MonsterTribesData(4), 0, 50);
-			//技の取得
-			md.SkillAdd(new SkillData(1));
-			md.SkillAdd(new SkillData(2));
-			md.SkillAdd(new SkillData(3));
-			md.SkillAdd(new SkillData(4));
-			//エネミーの手持ちに追加
-			EnemyBattleData.GetInstance().monsterAdd(md);
 
-			//データの生成
-			IMonsterData md2 = new MonsterData(new MonsterTribesData(2), 0, 50);
-			//技の取得
-			md2.SkillAdd(new SkillData(1));
-			md2.SkillAdd(new SkillData(2));
-			md2.SkillAdd(new SkillData(3));
-			md2.SkillAdd(new SkillData(4));
-			//エネミーの手持ちに追加
-			EnemyBattleData.GetInstance().monsterAdd(md2);
+			//エネミーの先頭のモンスターの取得
+			IMonsterData md = EnemyBattleData.GetInstance().GetMonsterDatas(0);
 
 			//画像の設定
 			enemyMonsterParts_.GetMonsterSprite().sprite = md.tribesData_.frontTex_;
@@ -61,25 +45,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		//プレイヤーモンスターの読み込み
 		{
 			//外部でする処理
-			//データの生成
-			IMonsterData md = new MonsterData(new MonsterTribesData(2), 0, 50);
-			//技の取得
-			md.SkillAdd(new SkillData(1));
-			md.SkillAdd(new SkillData(2));
-			md.SkillAdd(new SkillData(3));
-			md.SkillAdd(new SkillData(4));
-			//プレイヤーの手持ちに追加
-			PlayerBattleData.GetInstance().monsterAdd(md);
 
-			//データの生成
-			IMonsterData md2 = new MonsterData(new MonsterTribesData(4), 0, 50);
-			//技の取得
-			md2.SkillAdd(new SkillData(4));
-			md2.SkillAdd(new SkillData(3));
-			md2.SkillAdd(new SkillData(2));
-			md2.SkillAdd(new SkillData(1));
-			//プレイヤーの手持ちに追加
-			PlayerBattleData.GetInstance().monsterAdd(md2);
+			//エネミーの先頭のモンスターの取得
+			IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);
 
 			//画像の設定
 			playerMonsterParts_.GetMonsterSprite().sprite = md.tribesData_.backTex_;
@@ -120,8 +88,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 
 		//外部でする処理
-		//エネミーのトレーナーデータの設定
-		EnemyTrainerData.GetInstance().SetTrainerData("デバッガー", "テスト");
 
 		//イベントのセット
 		OpeningEventSet();
@@ -156,6 +122,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	[SerializeField] private AudioParts playerAudioParts_ = null;
 	[SerializeField] private AudioParts enemyAudioParts_ = null;
 	[SerializeField] private ScreenParts sleepScreenParts_ = null;
+	[SerializeField] private MagazineParts playerMagazineParts_ = null;
+	[SerializeField] private MagazineParts enemyMagazineParts_ = null;
 
 	public HpGaugeParts GetEnemyMonsterHpGauge() { return enemyStatusInfoParts_.GetFrameParts().GetHpGaugeParts(); }
 	public HpGaugeParts GetPlayerMonsterHpGauge() { return playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts(); }
@@ -172,6 +140,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	public PlayerParts GetPlayerParts() { return playerParts_; }
 	public EnemyParts GetEnemyParts() { return enemyParts_; }
 	public ScreenParts GetSleepScreenParts() { return sleepScreenParts_; }
+	public MagazineParts GetPlayerMagazineParts() { return playerMagazineParts_; }
+	public MagazineParts GetEnemyMagazineParts() { return enemyMagazineParts_; }
 
 	public void AttackCommandSkillInfoTextSet(int number) {
 		IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);
@@ -268,7 +238,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
-				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				//アイドル状態の停止
 				playerStatusInfoParts_.ProcessIdleEnd();
@@ -318,7 +288,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			if (trainerBattleData.GetMonsterDatas(0).nowHitPoint_ <= 0) {
 				//入力の非アクティブ
-				allSceneMgr.inputProvider_ = new KeyBoardInactiveInputProvider();
+				allSceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				//アイドル状態の停止
 				playerStatusInfoParts_.ProcessIdleEnd();
@@ -545,16 +515,65 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	public float GetEventWaitTime() { return eventWaitTime_; }
 
 	void OpeningEventSet() {
-		//フェードイン
-		AllEventManager.GetInstance().EventSpriteRendererSet(AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite(), null, new Color(AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 0));
-		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
-		AllEventManager.GetInstance().AllUpdateEventExecute(0.1f);
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 
+		//フェードイン
+		AllEventManager.GetInstance().EventSpriteRendererSet(AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite(), null, new Color(0, 0, 0, 0));
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 		//プレイヤーとエネミーの入場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+
 		AllEventManager.GetInstance().AllUpdateEventExecute(2.0f);
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);
+
+		//プレイヤーのマガジンの出現
+		AllEventManager.GetInstance().EventSpriteRendererSet(
+			playerMagazineParts_.GetMagazineEventSpriteRenderer()
+			, null
+			, new Color(playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.r, playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.g, playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.b, 1)
+			);
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
+		//エネミーのマガジンの出現
+		AllEventManager.GetInstance().EventSpriteRendererSet(
+			enemyMagazineParts_.GetMagazineEventSpriteRenderer()
+			, null
+			, new Color(enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.r, enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.g, enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.b, 1)
+			);
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.2f);
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);
+
+		for (int i = 0;i < 3; ++i) {
+			//プレイヤーのマガジンの保有演出
+			if(i < PlayerBattleData.GetInstance().GetHaveMonsterSize()) {
+				AllEventManager.GetInstance().EventSpriteRendererSet(
+					playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer()
+					, null
+					, new Color(playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.r, playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.g, playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.b, 1)
+					);
+			}
+
+			//エネミーのマガジンの保有演出
+			if (i < EnemyBattleData.GetInstance().GetHaveMonsterSize()) {
+				AllEventManager.GetInstance().EventSpriteRendererSet(
+					enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer()
+					, null
+					, new Color(enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.r, enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.g, enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.b, 1)
+					);
+			}
+
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.25f);
+		}
 
 		{
 			//文字列の設定
@@ -591,21 +610,42 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
 		}
+
 		//エネミーの退場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f + 9.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
-		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(1.0f);
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+
+		//エネミーのマガジンの消滅
+		AllEventManager.GetInstance().EventSpriteRendererSet(
+			enemyMagazineParts_.GetMagazineEventSpriteRenderer()
+			, null
+			, new Color(enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.r, enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.g, enemyMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.b, 0)
+			);
+
+		//エネミーのマガジンの消滅演出
+		for (int i = 0; i < EnemyBattleData.GetInstance().GetHaveMonsterSize(); ++i) {
+			AllEventManager.GetInstance().EventSpriteRendererSet(
+				enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer()
+				, null
+				, new Color(enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.r, enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.g, enemyMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.b, 0)
+				);
+		}
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
 		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
+
 		//エネミーモンスターの登場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyMonsterParts_.GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
+
 		//エネミーモンスターのインフォメーションの入場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyStatusInfoParts_.GetEventGameObject(), new Vector3(-3.5f, enemyStatusInfoParts_.GetEventGameObject().transform.position.y, enemyStatusInfoParts_.GetEventGameObject().transform.position.z));
-		//AllEventManager.GetInstance().EventGameObjectsPosMoveExecute(0.4f);
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.4f);
+
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
+
 		{
 			//文字列の設定
 			string playerFirstMonsterName = PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.monsterName_;
@@ -615,13 +655,34 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
 		}
+
 		//プレイヤーの退場
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f - 9.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+
+		//プレイヤーのマガジンの消滅
+		AllEventManager.GetInstance().EventSpriteRendererSet(
+			playerMagazineParts_.GetMagazineEventSpriteRenderer()
+			, null
+			, new Color(playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.r, playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.g, playerMagazineParts_.GetMagazineEventSpriteRenderer().GetSpriteRenderer().color.b, 0)
+			);
+
+		//プレイヤーのマガジンの消滅演出
+		for (int i = 0; i < PlayerBattleData.GetInstance().GetHaveMonsterSize(); ++i) {
+			AllEventManager.GetInstance().EventSpriteRendererSet(
+				playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer()
+				, null
+				, new Color(playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.r, playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.g, playerMagazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().color.b, 0)
+				);
+		}
+		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
 		AllEventManager.GetInstance().AllUpdateEventExecute(1.5f);
+
 		//プレイヤーモンスターの登場
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerMonsterParts_.GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
+
 		//プレイヤーモンスターのインフォメーションの入場
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerStatusInfoParts_.GetEventGameObject(), new Vector3(4.0f, playerStatusInfoParts_.GetEventGameObject().transform.position.y, playerStatusInfoParts_.GetEventGameObject().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);

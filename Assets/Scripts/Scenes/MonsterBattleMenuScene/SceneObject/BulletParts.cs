@@ -9,7 +9,7 @@ public class BulletParts : MonoBehaviour {
 	public StatusInfoParts GetEventStatusInfosParts(int number) { return eventStatusInfosParts_[number]; }
 	public int GetEventStatusInfosPartsSize() { return eventStatusInfosParts_.Count; }
 
-	private const float UPDATE_TIME_REGULATION = 0.3f;
+	private const float UPDATE_TIME_REGULATION = 0.4f;
 
 	public void DownRollStatusInfoParts(int addNumber) {
 		//1,2番目を-1.5fずらす
@@ -32,7 +32,7 @@ public class BulletParts : MonoBehaviour {
 		eventStatusInfosParts_[4].GetEventGameObject().ProcessStatePosMoveExecute(
 			0
 			, t13.TimeFluctProcess.Liner
-			, new Vector3(eventStatusInfosParts_[4].GetEventGameObject().transform.position.x, 3.5f, eventStatusInfosParts_[4].GetEventGameObject().transform.position.z)
+			, new Vector3(eventStatusInfosParts_[4].GetEventGameObject().transform.position.x, 2.5f, eventStatusInfosParts_[4].GetEventGameObject().transform.position.z)
 			);
 
 		StatusInfoParts temp = null;
@@ -73,7 +73,7 @@ public class BulletParts : MonoBehaviour {
 		eventStatusInfosParts_[0].GetEventGameObject().ProcessStatePosMoveExecute(
 			0
 			, t13.TimeFluctProcess.Liner
-			, new  Vector3(eventStatusInfosParts_[0].GetEventGameObject().transform.position.x, 0.5f, eventStatusInfosParts_[0].GetEventGameObject().transform.position.z)
+			, new  Vector3(eventStatusInfosParts_[0].GetEventGameObject().transform.position.x, -0.5f, eventStatusInfosParts_[0].GetEventGameObject().transform.position.z)
 			);
 
 		StatusInfoParts beginData = eventStatusInfosParts_[0];

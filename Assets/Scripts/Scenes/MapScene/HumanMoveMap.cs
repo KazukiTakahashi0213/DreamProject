@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HumanMoveMap : EventMoveMap
 {
-    public enum MOVE_TYPE {NONE,RANDOM,}
-
     [SerializeField] MOVE_TYPE MoveType = MOVE_TYPE.NONE;//動く種類を設定
 
     [SerializeField] float _move_interval = 3.0f;//動く間隔
@@ -17,7 +15,7 @@ public class HumanMoveMap : EventMoveMap
         Init();
         EventInit();
 
-        ObjectType = MapData.MAP_STATUS.HUMAN;
+        //ObjectType = MapData.MAP_STATUS.HUMAN;
     }
 
     void Update()

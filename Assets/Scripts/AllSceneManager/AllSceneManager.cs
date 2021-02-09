@@ -87,7 +87,10 @@ public class AllSceneManager : MonoBehaviour {
 	private System.Random random = new System.Random();
 	public System.Random GetRandom() { return random; }
 
-	public IInputProvider inputProvider_ = new KeyBoardInactiveInputProvider();
+	public IInputProvider inputProvider_ = new InactiveInputProvider();
+
+	public float GetEventContextUpdateTime() { return 0.4f; }
+	public float GetEventWaitTime() { return 0.8f; }
 
 	public void SceneChange(SceneState nextScene, SceneChangeMode sceneChangeMode) {
 		SceneActive_ = false;
