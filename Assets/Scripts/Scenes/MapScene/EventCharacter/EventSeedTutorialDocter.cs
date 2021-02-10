@@ -58,26 +58,26 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 		//エネミーの設定
 		enemyTrainerData.SetTrainerData("はかせ", "ヴィクター");
 
-		//ノベル処理
-		eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart1");
-		
-		//ウェイト
-		allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime());
-		
-		//移動処理
-		eventMoveMap.ObjectMovePosYEvent(mapManager.GetPlayerMoveMap(), 3, 1.0f);
-		
-		//ウェイト
-		allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime());
-		
-		//ノベル処理
-		eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart2");
-		
-		//ウェイト
-		allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime() * 2.0f);
-		
-		//ノベル処理
-		eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart3");
+		////ノベル処理
+		//eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart1");
+		//
+		////ウェイト
+		//allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime());
+		//
+		////移動処理
+		//eventMoveMap.ObjectMovePosYEvent(mapManager.GetPlayerMoveMap(), 3, 1.0f);
+		//
+		////ウェイト
+		//allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime());
+		//
+		////ノベル処理
+		//eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart2");
+		//
+		////ウェイト
+		//allEventMgr.EventWaitSet(allSceneMgr.GetEventWaitTime() * 2.0f);
+		//
+		////ノベル処理
+		//eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart3");
 
 		{
 			//データの生成

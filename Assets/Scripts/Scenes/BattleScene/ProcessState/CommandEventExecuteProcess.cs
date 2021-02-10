@@ -16,7 +16,7 @@ public class CommandEventExecuteProcess : IProcessState {
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
 		//交換されていたら
-		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
+		if (PlayerBattleData.GetInstance().changeMonsterActive_) {
 			//フェードイン
 			eventMgr.EventSpriteRendererSet(
 				sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
@@ -35,7 +35,8 @@ public class CommandEventExecuteProcess : IProcessState {
 			PlayerBattleData.GetInstance().changeMonsterActive_ = false;
 		}
 
-		if (AllEventManager.GetInstance().EventUpdate()) {
+		if (AllEventManager.GetInstance().EventUpdate()
+			&& PlayerBattleData.GetInstance().GetMonsterDatas(0).battleActive_) {
 			mgr.GetPlayerStatusInfoParts().ProcessIdleStart();
 			mgr.GetPlayerMonsterParts().ProcessIdleStart();
 			mgr.ActiveUiCommand();

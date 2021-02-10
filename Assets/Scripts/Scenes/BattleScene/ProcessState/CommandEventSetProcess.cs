@@ -13,8 +13,100 @@ public class CommandEventSetProcess : IProcessState {
 	}
 
 	public IProcessState Update(BattleManager mgr) {
-		//dpの演出のイベント
-		AllEventManager.GetInstance().EventWaitSet(2.0f);
+		//DPの演出のイベント
+		mgr.PlayerEnemyStatusInfoPartsDPEffect();
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+		//パワーアップしていたら
+		if (PlayerBattleData.GetInstance().dreamSyncronize_ == true) {
+			//dpの初期化
+			PlayerBattleData.GetInstance().dreamPoint_ = 0;
+			PlayerBattleData.GetInstance().dreamSyncronize_ = false;
+
+			//ゆめの文字色の変更
+			mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
+
+			//DPの演出のイベント
+			mgr.StatusInfoPartsDPEffect(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//画像の変更
+			{
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.backDreamTex_);
+
+				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
+
+			//能力変化の更新
+			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(PlayerBattleData.GetInstance().GetMonsterDatas(0));
+
+			//文字列のイベント
+			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//状態異常のイベントのセット
+			PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//ねむりの終了処理
+			mgr.SleepProcessEnd();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+		}
+
+		//パワーアップしていたら
+		if (EnemyBattleData.GetInstance().dreamSyncronize_ == true) {
+			//dpの初期化
+			EnemyBattleData.GetInstance().dreamPoint_ = 0;
+			EnemyBattleData.GetInstance().dreamSyncronize_ = false;
+
+			//DPの演出のイベント
+			mgr.StatusInfoPartsDPEffect(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//画像の変更
+			{
+				List<Sprite> sprites = new List<Sprite>();
+				sprites.Add(EnemyBattleData.GetInstance().GetMonsterDatas(0).tribesData_.frontDreamTex_);
+
+				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
+				AllEventManager.GetInstance().AllUpdateEventExecute();
+			}
+
+			//能力変化の更新
+			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(EnemyBattleData.GetInstance().GetMonsterDatas(0));
+
+			//文字列のイベント
+			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//状態異常のイベントのセット
+			EnemyBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+		}
 
 		//交換されていたら
 		if (PlayerBattleData.GetInstance().changeMonsterActive_ == true) {
@@ -33,80 +125,6 @@ public class CommandEventSetProcess : IProcessState {
 		//現在、場に出ているモンスターの選択技のデータの取得
 		ISkillData enemySkillData = enemyMonsterData.GetSkillDatas(mgr.enemySelectSkillNumber_);
 		ISkillData playerSkillData = playerMonsterData.GetSkillDatas(mgr.playerSelectSkillNumber_);
-
-		//パワーアップしていたら
-		if (PlayerBattleData.GetInstance().dreamSyncronize_ == true) {
-			//アニメーション
-			AllEventManager.GetInstance().EventWaitSet(2.0f);
-
-			//画像の変更
-			{
-				List<Sprite> sprites = new List<Sprite>();
-				sprites.Add(playerMonsterData.tribesData_.backDreamTex_);
-				
-				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
-				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
-				AllEventManager.GetInstance().AllUpdateEventExecute();
-			}
-
-			//能力変化の更新
-			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(playerMonsterData);
-
-			//文字列のイベント
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-
-			//状態異常のイベントのセット
-			playerMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
-
-			//ゆめの文字色の変更
-			mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
-
-			//ねむりの終了処理
-			mgr.SleepProcessEnd();
-
-			//dpの初期化
-			PlayerBattleData.GetInstance().dreamPoint_ = 0;
-			PlayerBattleData.GetInstance().dreamSyncronize_ = false;
-		}
-
-		//パワーアップしていたら
-		if (EnemyBattleData.GetInstance().dreamSyncronize_ == true) {
-			//アニメーション
-			AllEventManager.GetInstance().EventWaitSet(2.0f);
-
-			//画像の変更
-			{
-				List<Sprite> sprites = new List<Sprite>();
-				sprites.Add(enemyMonsterData.tribesData_.frontDreamTex_);
-
-				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite(), sprites);
-				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
-				AllEventManager.GetInstance().AllUpdateEventExecute();
-			}
-
-			//能力変化の更新
-			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(enemyMonsterData);
-
-			//文字列のイベント
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-
-			//状態異常のイベントのセット
-			enemyMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
-
-			//dpの初期化
-			EnemyBattleData.GetInstance().dreamPoint_ = 0;
-			EnemyBattleData.GetInstance().dreamSyncronize_ = false;
-		}
 
 		//技の優先度で行動順を決める
 		if (enemySkillData.triggerPriority_ < playerSkillData.triggerPriority_) {

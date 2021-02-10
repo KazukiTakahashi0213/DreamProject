@@ -151,6 +151,7 @@ MonoBehaviour:
   baseParts_: {fileID: 5262142479296125107}
   firstAbnormalStateInfoParts_: {fileID: 55687524630803139}
   secondAbnormalStateInfoParts_: {fileID: 3602377831578142536}
+  dpGaugeMeterUpdateImage_: {fileID: 0}
   eventGameObject_: {fileID: 5192767894417079234}
   idleTimeRegulation_: 0.5
 --- !u!114 &5192767894417079234
@@ -677,7 +678,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: aed506cb4b5dc384e922c9b93774976b, type: 3}
-  m_Color: {r: 0.9622642, g: 0.9361645, b: 0.40396938, a: 1}
+  m_Color: {r: 0.9622642, g: 0.9361645, b: 0.40396938, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -834,7 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -983,7 +984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4845065647302001395
 Transform:
   m_ObjectHideFlags: 0
@@ -1045,7 +1046,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7031125358912296633
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,7 +1375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1665,7 +1666,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: aed506cb4b5dc384e922c9b93774976b, type: 3}
-  m_Color: {r: 0.8127647, g: 0.36320752, b: 1, a: 1}
+  m_Color: {r: 0.8127647, g: 0.36320752, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -154,6 +154,17 @@ public class MonsterBattleData : IMonsterBattleData {
 				);
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//表示
+			//文字の色の変更
+			AllEventManager.GetInstance().EventTextSet(
+				statusInfoParts.GetFirstAbnormalStateInfoParts().GetInfoEventText()
+				, ""
+				, new Color(1, 1, 1, 1)
+				);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.ChangeColor);
+
 			//色の変更
 			AllEventManager.GetInstance().EventSpriteRendererSet(
 				statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite()
@@ -163,15 +174,26 @@ public class MonsterBattleData : IMonsterBattleData {
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 
 			AllEventManager.GetInstance().AllUpdateEventExecute();
-
-			//表示
-			AllEventManager.GetInstance().UpdateGameObjectSet(statusInfoParts.GetFirstAbnormalStateInfoParts().GetUpdateGameObject());
-			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 		}
 		else {
 			//非表示
-			AllEventManager.GetInstance().UpdateGameObjectSet(statusInfoParts.GetFirstAbnormalStateInfoParts().GetUpdateGameObject());
-			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
+			//文字の色の変更
+			AllEventManager.GetInstance().EventTextSet(
+				statusInfoParts.GetFirstAbnormalStateInfoParts().GetInfoEventText()
+				, ""
+				, new Color(1, 1, 1, 0)
+				);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.ChangeColor);
+
+			//色の変更
+			AllEventManager.GetInstance().EventSpriteRendererSet(
+				statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite()
+				, null
+				, new Color(statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.r, statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.g, statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.b, 0)
+				);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 		}
 
 		//状態異常の２つ目の表示処理
@@ -183,6 +205,17 @@ public class MonsterBattleData : IMonsterBattleData {
 				);
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//表示
+			//文字の色の変更
+			AllEventManager.GetInstance().EventTextSet(
+				statusInfoParts.GetSecondAbnormalStateInfoParts().GetInfoEventText()
+				, ""
+				, new Color(1, 1, 1, 1)
+				);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.ChangeColor);
+
 			//色の変更
 			AllEventManager.GetInstance().EventSpriteRendererSet(
 				statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite()
@@ -192,15 +225,26 @@ public class MonsterBattleData : IMonsterBattleData {
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 
 			AllEventManager.GetInstance().AllUpdateEventExecute();
-
-			//表示
-			AllEventManager.GetInstance().UpdateGameObjectSet(statusInfoParts.GetSecondAbnormalStateInfoParts().GetUpdateGameObject());
-			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
 		}
 		else {
 			//非表示
-			AllEventManager.GetInstance().UpdateGameObjectSet(statusInfoParts.GetSecondAbnormalStateInfoParts().GetUpdateGameObject());
-			AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
+			//文字の色の変更
+			AllEventManager.GetInstance().EventTextSet(
+				statusInfoParts.GetSecondAbnormalStateInfoParts().GetInfoEventText()
+				, ""
+				, new Color(1, 1, 1, 0)
+				);
+			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.ChangeColor);
+
+			//色の変更
+			AllEventManager.GetInstance().EventSpriteRendererSet(
+				statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite()
+				, null
+				, new Color(statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.r, statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.g, statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.b, 0)
+				);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+
+			AllEventManager.GetInstance().AllUpdateEventExecute();
 		}
 	}
 

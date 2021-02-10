@@ -41,6 +41,7 @@ public class StatusInfoParts : MonoBehaviour {
 	[SerializeField] BaseParts baseParts_ = null;
 	[SerializeField] AbnormalStateInfoParts firstAbnormalStateInfoParts_ = null;
 	[SerializeField] AbnormalStateInfoParts secondAbnormalStateInfoParts_ = null;
+	[SerializeField] UpdateImage dpGaugeMeterUpdateImage_ = null;
 	[SerializeField] UpdateGameObject eventGameObject_ = null;
 	[SerializeField] float idleTimeRegulation_ = 0.5f;
 
@@ -57,6 +58,7 @@ public class StatusInfoParts : MonoBehaviour {
 	public BaseParts GetBaseParts() { return baseParts_; }
 	public AbnormalStateInfoParts GetFirstAbnormalStateInfoParts() { return firstAbnormalStateInfoParts_; }
 	public AbnormalStateInfoParts GetSecondAbnormalStateInfoParts() { return secondAbnormalStateInfoParts_; }
+	public UpdateImage GetDPGaugeMeterUpdateImage() { return dpGaugeMeterUpdateImage_; }
 	public UpdateGameObject GetEventGameObject() { return eventGameObject_; }
 	public float GetIdleTimeRegulation() { return idleTimeRegulation_; }
 

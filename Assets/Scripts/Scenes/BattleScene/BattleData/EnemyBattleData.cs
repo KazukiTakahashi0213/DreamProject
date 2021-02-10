@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBattleData : ITrainerBattleData {
-	public void monsterAdd(IMonsterData addMonster) {
+public class EnemyBattleData : TrainerBattleData {
+	public override void monsterAdd(IMonsterData addMonster) {
 		if (haveMonsterSize_ == MONSTER_MAX_SIZE) return;
 
 		monsterDatas_[haveMonsterSize_] = addMonster;
@@ -11,10 +11,10 @@ public class EnemyBattleData : ITrainerBattleData {
 		battleActiveMonsterSize_ += 1;
 	}
 
-	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
-	public int GetMonsterDatasLength() { return monsterDatas_.Length; }
-	public int GetHaveMonsterSize() { return haveMonsterSize_; }
-	public string GetUniqueTrainerName() { return "あいての　"; }
+	public override IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
+	public override int GetMonsterDatasLength() { return monsterDatas_.Length; }
+	public override int GetHaveMonsterSize() { return haveMonsterSize_; }
+	public override string GetUniqueTrainerName() { return "あいての　"; }
 	public bool GetThinkingEnd() { return thikingEnd_; }
 
 	//手持ちのモンスターのデータ
@@ -34,8 +34,6 @@ public class EnemyBattleData : ITrainerBattleData {
 	//交換する手持ちの番号
 	public int changeMonsterNumber_ = 0;
 
-	//共通のdp
-	public int dreamPoint_ = 0;
 	//パワーアップするか否かのフラグ
 	public bool dreamSyncronize_ = false;
 
@@ -52,7 +50,7 @@ public class EnemyBattleData : ITrainerBattleData {
 	private float poisonCounter_ = 0;
 
 	//倒れた時の処理
-	public void MonsterDownEventSet(BattleManager manager) {
+	public override void MonsterDownEventSet(BattleManager manager) {
 		battleActiveMonsterSize_ -= 1;
 
 		dreamPoint_ += 45;
@@ -70,6 +68,12 @@ public class EnemyBattleData : ITrainerBattleData {
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
+		//DPの演出のイベント
+		manager.StatusInfoPartsDPEffect(this, manager.GetEnemyStatusInfoParts());
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
 		//エネミーのステータスインフォの退場
 		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyStatusInfoParts().GetEventGameObject(), new Vector3(-13.5f, manager.GetEnemyStatusInfoParts().transform.position.y, manager.GetEnemyStatusInfoParts().transform.position.z));
 		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
@@ -83,7 +87,7 @@ public class EnemyBattleData : ITrainerBattleData {
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-		if(battleActiveMonsterSize_ == 0) {
+		if (battleActiveMonsterSize_ == 0) {
 			//文字列の処理
 			AllEventManager.GetInstance().EventTextSet(
 				manager.GetNovelWindowParts().GetEventText()
@@ -211,7 +215,7 @@ public class EnemyBattleData : ITrainerBattleData {
 	}
 
 	//交換処理
-	public void MonsterChangeEventSet(BattleManager manager) {
+	public override void MonsterChangeEventSet(BattleManager manager) {
 		//モンスターの変更が行われていたら
 		if (changeMonsterNumber_ > 0) {
 			IMonsterData md = monsterDatas_[changeMonsterNumber_];

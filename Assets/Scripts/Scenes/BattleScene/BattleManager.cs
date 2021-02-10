@@ -223,7 +223,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 	}
 
-	public void PoisonDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
+	public void PoisonDamageProcess(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
 		//どく状態なら
@@ -270,7 +270,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		return poisonMonsterDown_;
 	}
 
-	public bool BurnsDamageProcess(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
+	public bool BurnsDamageProcess(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts, MonsterParts monsterParts) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
 		//やけど状態なら
@@ -338,7 +338,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			}
 		}
 	}
-	public void ConfusionUseStart(ITrainerBattleData trainerBattleData) {
+	public void ConfusionUseStart(TrainerBattleData trainerBattleData) {
 		//こんらん状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
@@ -346,7 +346,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			trainerBattleData.GetMonsterDatas(0).battleData_.ConfusionTurnSeedCreate();
 		}
 	}
-	public void ConfusionProcessUse(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
+	public void ConfusionProcessUse(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
 		//こんらん状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Confusion
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Confusion) {
@@ -387,7 +387,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 	}
 
-	public void SleepUseStart(ITrainerBattleData trainerBattleData) {
+	public void SleepUseStart(TrainerBattleData trainerBattleData) {
 		//ねむり状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
@@ -395,7 +395,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			trainerBattleData.GetMonsterDatas(0).battleData_.SleepTurnSeedCreate();
 		}
 	}
-	public void SleepProcessUse(ITrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
+	public void SleepProcessUse(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
 		//ねむり状態なら
 		if (trainerBattleData.GetMonsterDatas(0).battleData_.firstAbnormalState_.state_ == AbnormalType.Sleep
 			|| trainerBattleData.GetMonsterDatas(0).battleData_.secondAbnormalState_.state_ == AbnormalType.Sleep) {
@@ -513,6 +513,100 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	private const float eventWaitTime_ = 0.8f;
 	public float GetEventContextUpdateTime() { return eventContextUpdateTime_; }
 	public float GetEventWaitTime() { return eventWaitTime_; }
+
+	public void PlayerEnemyStatusInfoPartsDPEffect() {
+		for (int i = 0; i < 2; ++i) {
+			//プレイヤーのステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				playerStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+				, new Color(playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.r, playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.g, playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.b, 0.3f)
+				);
+
+			//エネミーのステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+				, new Color(enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.r, enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.g, enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.b, 0.3f)
+				);
+
+			AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.1f);
+
+			//プレイヤーのステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				playerStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+				, new Color(playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.r, playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.g, playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.b, 1)
+				);
+
+			//エネミーのステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+				, new Color(enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.r, enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.g, enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().color.b, 1)
+				);
+
+			AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.1f);
+		}
+
+		//プレイヤーのステータスインフォのDPの演出
+		float playerEndFillAmount = t13.Utility.ValueForPercentage(100, PlayerBattleData.GetInstance().dreamPoint_, 1);
+		AllEventManager.GetInstance().UpdateImageSet(
+			playerStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+			, new Color32()
+			, playerEndFillAmount
+			);
+		//エネミーのステータスインフォのDPの演出
+		float enemyEndFillAmount = t13.Utility.ValueForPercentage(100, EnemyBattleData.GetInstance().dreamPoint_, 1);
+		AllEventManager.GetInstance().UpdateImageSet(
+			enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage()
+			, new Color32()
+			, enemyEndFillAmount
+			);
+
+		AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.FillAmountUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
+	}
+
+	public void StatusInfoPartsDPEffect(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
+		for (int i = 0; i < 2; ++i) {
+			//ステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				statusInfoParts.GetDPGaugeMeterUpdateImage()
+				, new Color(statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.r, statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.g, statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.b, 0.3f)
+				);
+			AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.1f);
+
+			//ステータスインフォのDPの点滅演出
+			AllEventManager.GetInstance().UpdateImageSet(
+				statusInfoParts.GetDPGaugeMeterUpdateImage()
+				, new Color(statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.r, statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.g, statusInfoParts.GetDPGaugeMeterUpdateImage().GetImage().color.b, 1)
+				);
+			AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.1f);
+		}
+
+		float endFillAmount = t13.Utility.ValueForPercentage(100, trainerBattleData.dreamPoint_, 1);
+		AllEventManager.GetInstance().UpdateImageSet(
+			statusInfoParts.GetDPGaugeMeterUpdateImage()
+			, new Color32()
+			, endFillAmount
+			);
+
+		AllEventManager.GetInstance().UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute.FillAmountUpdate);
+		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
+	}
 
 	void OpeningEventSet() {
 		//ウェイト

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBattleData : ITrainerBattleData {
-	public void monsterAdd(IMonsterData addMonster) {
+public class PlayerBattleData : TrainerBattleData {
+	public override void monsterAdd(IMonsterData addMonster) {
 		if (haveMonsterSize_ == MONSTER_MAX_SIZE) return;
 
 		monsterDatas_[haveMonsterSize_] = addMonster;
@@ -11,10 +11,10 @@ public class PlayerBattleData : ITrainerBattleData {
 		battleActiveMonsterSize_ += 1;
 	}
 
-	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
-	public int GetMonsterDatasLength() { return monsterDatas_.Length; }
-	public int GetHaveMonsterSize() { return haveMonsterSize_; }
-	public string GetUniqueTrainerName() { return ""; }
+	public override IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
+	public override int GetMonsterDatasLength() { return monsterDatas_.Length; }
+	public override int GetHaveMonsterSize() { return haveMonsterSize_; }
+	public override string GetUniqueTrainerName() { return ""; }
 
 	//手持ちのモンスターのデータ
 	private const int MONSTER_MAX_SIZE = 6;
@@ -36,13 +36,11 @@ public class PlayerBattleData : ITrainerBattleData {
 	//交換する手持ちの番号
 	public int changeMonsterNumber_ = 0;
 
-	//共通のdp
-	public int dreamPoint_ = 0;
 	//パワーアップするか否かのフラグ
 	public bool dreamSyncronize_ = false;
 
 	//倒れた時の処理
-	public void MonsterDownEventSet(BattleManager manager) {
+	public override void MonsterDownEventSet(BattleManager manager) {
 		battleActiveMonsterSize_ -= 1;
 
 		dreamPoint_ += 45;
@@ -56,6 +54,12 @@ public class PlayerBattleData : ITrainerBattleData {
 		//モンスターの画像の非表示
 		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+		//DPの演出のイベント
+		manager.StatusInfoPartsDPEffect(this, manager.GetPlayerStatusInfoParts());
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
@@ -103,7 +107,7 @@ public class PlayerBattleData : ITrainerBattleData {
 	}
 
 	//交換処理
-	public void MonsterChangeEventSet(BattleManager manager) {
+	public override void MonsterChangeEventSet(BattleManager manager) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 		
 		//モンスターの変更が行われていたら

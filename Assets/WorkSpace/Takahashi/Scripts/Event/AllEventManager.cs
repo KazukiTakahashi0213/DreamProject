@@ -17,15 +17,18 @@ public class AllEventManager {
 	private EventTextEventManager eventTextEventManager_ = new EventTextEventManager();
 	private HpGaugePartsEventManager hpGaugePartsEventManager_ = new HpGaugePartsEventManager();
 	private StatusInfoPartsEventManager statusInfoPartsEventManager_ = new StatusInfoPartsEventManager();
+	private UpdateImageEventManager updateImageEventManager_ = new UpdateImageEventManager();
 
 	private int updateEventExecuteCounter_ = 0;
 	private List<float> eventTimeRegulation_ = new List<float>();
 	private List<t13.TimeFluctProcess> eventTimeFluctProcesses_ = new List<t13.TimeFluctProcess>();
+
 	private UpdateGameObjectEventManagerExecute updateGameObjectEventManagerExecute_ = UpdateGameObjectEventManagerExecute.None;
 	private EventSpriteRendererEventManagerExecute eventSpriteRendererEventManagerExecute_ = EventSpriteRendererEventManagerExecute.None;
 	private HpGaugePartsEventManagerExecute hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
 	private EventTextEventManagerExecute eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
 	private StatusInfoPartsEventManagerExecute statusInfoPartsEventManagerExecute_ = StatusInfoPartsEventManagerExecute.None;
+	private UpdateImageEventManagerExecute updateImageEventManagerExecute_ = UpdateImageEventManagerExecute.None;
 
 	private int eventActiveExecuteCounter_ = 0;
 	private List<bool> eventActive_ = new List<bool>();
@@ -65,6 +68,7 @@ public class AllEventManager {
 		hpGaugePartsEventManager_.HpGaugesPartsExecuteSet(hpGaugePartsEventManagerExecute_);
 		eventTextEventManager_.EventTextsExecuteSet(eventTextEventManagerExecute_);
 		statusInfoPartsEventManager_.EventStatusInfosPartsExecuteSet(statusInfoPartsEventManagerExecute_);
+		updateImageEventManager_.UpdateImageExecuteSet(updateImageEventManagerExecute_);
 
 		sceneEvent_.func_add(AllUpdateEventExecuteEvent);
 
@@ -73,6 +77,7 @@ public class AllEventManager {
 		hpGaugePartsEventManagerExecute_ = HpGaugePartsEventManagerExecute.None;
 		eventTextEventManagerExecute_ = EventTextEventManagerExecute.None;
 		statusInfoPartsEventManagerExecute_ = StatusInfoPartsEventManagerExecute.None;
+		updateImageEventManagerExecute_ = UpdateImageEventManagerExecute.None;
 	}
 	public void SceneChangeEventSet(SceneState sceneState, SceneChangeMode sceneChangeMode) {
 		sceneStates_.Add(sceneState);
@@ -118,14 +123,11 @@ public class AllEventManager {
 		mgr.sceneChangeModes_.Clear();
 
 		mgr.eventSpriteEventManager_.EventSpriteRenderersClear();
-
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsClear();
-
 		mgr.eventTextEventManager_.EventTextsClear();
-
 		mgr.hpGaugePartsEventManager_.HpGaugesPartsClear();
-
 		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsClear();
+		mgr.updateImageEventManager_.UpdateImagesClear();
 
 		return mgr.sceneEvent_.event_finish();
 	}
@@ -135,6 +137,7 @@ public class AllEventManager {
 		mgr.hpGaugePartsEventManager_.HpGaugesPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.eventTextEventManager_.EventTextsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 		mgr.statusInfoPartsEventManager_.EventStatusInfosPartsUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
+		mgr.updateImageEventManager_.UpdateImagesUpdateExecute(mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_], mgr.eventTimeFluctProcesses_[mgr.updateEventExecuteCounter_]);
 
 		mgr.sceneEvent_.func_insert(WaitEvent, mgr.sceneEvent_.funcs_num() + 1);
 
@@ -186,8 +189,8 @@ public class AllEventManager {
 	}
 
 	//EventText
-	public void EventTextSet(EventText eventText, string setStr) {
-		eventTextEventManager_.EventTextSet(eventText, setStr);
+	public void EventTextSet(EventText eventText, string setStr, Color32 color = new Color32()) {
+		eventTextEventManager_.EventTextSet(eventText, setStr, color);
 	}
 	public void EventTextsUpdateExecuteSet(EventTextEventManagerExecute setExecute) {
 		eventTextEventManagerExecute_ = setExecute;
@@ -207,6 +210,14 @@ public class AllEventManager {
 	}
 	public void StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute setExecute) {
 		statusInfoPartsEventManagerExecute_ = setExecute;
+	}
+
+	//UpdateImage
+	public void UpdateImageSet(UpdateImage updateImage, Color32 color = new Color32(), float endFillAmount = 1) {
+		updateImageEventManager_.UpdateImageSet(updateImage, color, endFillAmount);
+	}
+	public void UpdateImagesUpdateExecuteSet(UpdateImageEventManagerExecute setExecute) {
+		updateImageEventManagerExecute_ = setExecute;
 	}
 
 	//シングルトン
