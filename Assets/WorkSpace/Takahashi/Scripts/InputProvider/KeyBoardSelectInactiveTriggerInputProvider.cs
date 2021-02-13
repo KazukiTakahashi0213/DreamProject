@@ -24,4 +24,7 @@ public class KeyBoardSelectInactiveTriggerInputProvider : IInputProvider {
 	public bool SelectNovelWindowActive() {
 		return Input.GetKeyDown(KeyCode.W);
 	}
+	public bool SelectMenu() {
+		return Input.GetKeyDown(KeyCode.Space);
+	}
 }

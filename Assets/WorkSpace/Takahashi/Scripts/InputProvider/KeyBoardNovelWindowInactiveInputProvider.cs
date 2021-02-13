@@ -24,4 +24,7 @@ public class KeyBoardNovelWindowInactiveInputProvider : IInputProvider{
 	public bool SelectNovelWindowActive() {
 		return Input.GetKeyDown(KeyCode.W);
 	}
+	public bool SelectMenu() {
+		return false;
+	}
 }
