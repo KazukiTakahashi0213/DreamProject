@@ -19,10 +19,15 @@ public class PlayerMoveMap : ObjectMoveMap
         AllSceneManager.GetInstance().inputProvider_ = new InactiveInputProvider();
 
         ObjectType = MapData.MAP_STATUS.PLAYER;
+
     }
 
     void Update()
     {
+        //移動できれば移動する
+        mapMoveActive_ = TransMove();
+        if (!mapMoveActive_) StopAnim();
+
         AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
         if (!is_move) return;//falseは動けない
@@ -33,9 +38,6 @@ public class PlayerMoveMap : ObjectMoveMap
         else if (allSceneMgr.inputProvider_.RightSelect()) MoveRight();
         else if (allSceneMgr.inputProvider_.LeftSelect()) MoveLeft();
 
-        //移動できれば移動する
-        mapMoveActive_ = TransMove();
-        if(!mapMoveActive_) StopAnim();
     }
 
     protected override void MoveUp()

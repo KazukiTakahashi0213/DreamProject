@@ -7,9 +7,9 @@ public class ObjectMoveMap : MonoBehaviour
     [SerializeField] UpdateGameObject updateGameObject_ = null;
     [SerializeField] EventSpriteRenderer eventSpriteRenderer_ = null;
 
-    [SerializeField] DIRECTION_STATUS direction = DIRECTION_STATUS.UP;//初期のキャラの向き
+    public DIRECTION_STATUS direction = DIRECTION_STATUS.UP;//初期のキャラの向き
 
-    enum DIRECTION_STATUS
+    public enum DIRECTION_STATUS
     {
         UP,
         DOWN,
