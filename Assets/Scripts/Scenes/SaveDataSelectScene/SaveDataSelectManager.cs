@@ -31,33 +31,31 @@ public class SaveDataSelectManager : MonoBehaviour, ISceneManager {
 	}
 
 	public void SceneUpdate() {
-		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
+		AllEventManager eventMgr = AllEventManager.GetInstance();
+		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
 		if (AllEventManager.GetInstance().EventUpdate()) {
-			allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
+			sceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 		}
 
-		if (allSceneMgr.inputProvider_.UpSelect())
+		if (sceneMgr.inputProvider_.UpSelect())
 		{
 			_select_num = SELECT_STATUS.START;
 			_move_cursor.transform.position = _start_text.transform.position;
 		}
 
-		if (allSceneMgr.inputProvider_.DownSelect())
+		if (sceneMgr.inputProvider_.DownSelect())
 		{
 			_select_num = SELECT_STATUS.CONTINUE;
 			_move_cursor.transform.position = _continue_text.transform.position;
 		}
 
-		if (allSceneMgr.inputProvider_.SelectEnter()) {
+		if (sceneMgr.inputProvider_.SelectEnter()) {
 			if (_select_num == SELECT_STATUS.START)
 			{
 				Debug.Log("はじめから");
 
-				AllEventManager eventMgr = AllEventManager.GetInstance();
-				AllSceneManager sceneMgr = AllSceneManager.GetInstance();
-
-				allSceneMgr.inputProvider_ = new InactiveInputProvider();
+				sceneMgr.inputProvider_ = new InactiveInputProvider();
 
 				//フェードアウト
 				eventMgr.EventSpriteRendererSet(

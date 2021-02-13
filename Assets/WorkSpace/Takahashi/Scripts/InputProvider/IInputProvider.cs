@@ -10,4 +10,5 @@ public interface IInputProvider {
 	bool SelectEnter();
 	bool SelectBack();
 	bool SelectNovelWindowActive();
+	bool SelectMenu();
 }

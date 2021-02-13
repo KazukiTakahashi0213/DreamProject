@@ -24,4 +24,7 @@ public class InactiveInputProvider : IInputProvider {
 	public bool SelectNovelWindowActive() {
 		return false;
 	}
+	public bool SelectMenu() {
+		return false;
+	}
 }
