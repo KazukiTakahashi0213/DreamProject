@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneMenuSelectCommandSelectSkill : BaseMapSceneMenuSelectCommandSelectState {
+public class MapSceneMenuSelectCommandSelectSkill : BMapSceneMenuSelectCommandSelectState {
 	public override void SelectEnter(MapManager mapManager) {
 		AllEventManager eventMgr = AllEventManager.GetInstance();
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();

@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseMapSceneMenuSelectCommandSelectState {
+public class BMapSceneMenuSelectCommandSelectState {
 	public virtual void SelectEnter(MapManager mapManager) { }
 }

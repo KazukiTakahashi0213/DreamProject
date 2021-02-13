@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneProcessMenuSelect : BaseMapSceneProcessState {
+public class MapSceneProcessMenuSelect : BMapSceneProcessState {
 	//選択肢制御
 	private int selectNum_ = 0;
 	private MapSceneMenuSelectCommandSelectProvider commandSelectProvider_ = new MapSceneMenuSelectCommandSelectProvider();
@@ -24,7 +24,7 @@ public class MapSceneProcessMenuSelect : BaseMapSceneProcessState {
 			}
 		}
 		else if (allSceneMgr.inputProvider_.DownSelect()) {
-			if (selectNum_ < mapManager.GetCommandParts().GetCommandWindowTextsCount()) {
+			if (selectNum_ < mapManager.GetCommandParts().GetCommandWindowTextsCount() - 1) {
 				t13.UnityUtil.ObjectPosAdd(mapManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, -0.55f, 0));
 
 				++selectNum_;

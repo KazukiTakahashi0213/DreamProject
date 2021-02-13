@@ -33,5 +33,7 @@
 		],
 		"addEnemyAbnormals_": [
 			{"addAbnormal_": "4"}
-		]
+		],
+
+		"effectInfo_": "ぶつりで　こうげきする"
 }

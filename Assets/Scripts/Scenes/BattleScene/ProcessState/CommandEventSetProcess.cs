@@ -200,7 +200,7 @@ public class CommandEventSetProcess : IProcessState {
 
 		//エネミーの文字列の設定
 		string skillUseContext = "あいての　" + attackMonsterData.uniqueName_ + "の\n"
-			+ attackSkillData.skillNname_ + "！";
+			+ attackSkillData.skillName_ + "！";
 
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), skillUseContext);
 		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
@@ -245,7 +245,7 @@ public class CommandEventSetProcess : IProcessState {
 
 		//プレイヤーの文字列の設定
 		string skillUseContext = attackMonsterData.uniqueName_ + "の\n"
-			+ attackSkillData.skillNname_ + "！";
+			+ attackSkillData.skillName_ + "！";
 
 		AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), skillUseContext);
 		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);

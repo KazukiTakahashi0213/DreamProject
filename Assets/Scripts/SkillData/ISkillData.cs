@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ISkillData {
 	int skillNumber_ { get; }
-	string skillNname_ { get; }
+	string skillName_ { get; }
 
 	float effectValue_ { get; }
 
@@ -26,6 +26,8 @@ public interface ISkillData {
 
 	int triggerPriority_ { get; }
 	int criticalParameterRank_ { get; }
+
+	string effectInfo_ { get; }
 
 	void Animetion(EffectParts targetEffectParts);
 }

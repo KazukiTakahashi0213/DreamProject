@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneProcessPlayerMove : BaseMapSceneProcessState {
+public class MapSceneProcessPlayerMove : BMapSceneProcessState {
 	public override MapSceneProcess Update(MapManager mapManager) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 		AllEventManager allEventMgr = AllEventManager.GetInstance();

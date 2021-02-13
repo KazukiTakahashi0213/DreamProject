@@ -33,5 +33,7 @@
 		],
 		"addEnemyAbnormals_": [
 			{"addAbnormal_": "0"}
-		]
+		],
+
+		"effectInfo_": "ーー\nーー"
 }

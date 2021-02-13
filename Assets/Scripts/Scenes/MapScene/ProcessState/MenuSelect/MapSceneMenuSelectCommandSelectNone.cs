@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneMenuSelectCommandSelectNone : BaseMapSceneMenuSelectCommandSelectState {
+public class MapSceneMenuSelectCommandSelectNone : BMapSceneMenuSelectCommandSelectState {
 
 }

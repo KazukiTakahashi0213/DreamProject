@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneProcessNone : BaseMapSceneProcessState {
+public class MapSceneProcessNone : BMapSceneProcessState {
 
 }

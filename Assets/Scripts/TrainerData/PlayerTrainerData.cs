@@ -26,8 +26,23 @@ public class PlayerTrainerData {
 		, new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.None), 0, 50)
 	};
 
+	//手持ちの技のデータ
+	private List<SkillData> skillDatas_ = new List<SkillData>();
+	public SkillData GetSkillDatas(int value) { return skillDatas_[value]; }
+	public int GetSkillDatasCount() { return skillDatas_.Count; }
+
 	//シングルトン
-	private PlayerTrainerData() { }
+	private PlayerTrainerData() {
+		//仮
+		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Mizushuriken));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Uddohanmaa));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Mizushuriken));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Uddohanmaa));
+	}
 
 	static private PlayerTrainerData instance_ = null;
 	static public PlayerTrainerData GetInstance() {

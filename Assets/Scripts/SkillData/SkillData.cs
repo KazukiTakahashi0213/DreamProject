@@ -23,7 +23,7 @@ public class SkillData : ISkillData {
 
 		ResourcesSkillData data = ResourcesSkillDatasLoader.GetInstance().GetSkillDatas(number);
 
-		skillNname_ = data.skillNname_;
+		skillName_ = data.skillNname_;
 
 		effectValue_ = data.effectValue_;
 
@@ -64,6 +64,8 @@ public class SkillData : ISkillData {
 		for (int i = 0; i < data.addEnemyAbnormals_.Length; ++i) {
 			addEnemyAbnormalStates_.Add(new AddAbnormalTypeState((AddAbnormalType)data.addEnemyAbnormals_[i].addAbnormal_));
 		}
+
+		effectInfo_ = data.effectInfo_;
 	}
 	public SkillData(SkillDataNumber skillDataNumber) {
 		//初期化
@@ -75,7 +77,7 @@ public class SkillData : ISkillData {
 
 		ResourcesSkillData data = ResourcesSkillDatasLoader.GetInstance().GetSkillDatas((int)skillDataNumber);
 
-		skillNname_ = data.skillNname_;
+		skillName_ = data.skillNname_;
 
 		effectValue_ = data.effectValue_;
 
@@ -116,10 +118,12 @@ public class SkillData : ISkillData {
 		for (int i = 0; i < data.addEnemyAbnormals_.Length; ++i) {
 			addEnemyAbnormalStates_.Add(new AddAbnormalTypeState((AddAbnormalType)data.addEnemyAbnormals_[i].addAbnormal_));
 		}
+
+		effectInfo_ = data.effectInfo_;
 	}
 
 	public int skillNumber_ { get; }
-	public string skillNname_ { get; }
+	public string skillName_ { get; }
 
 	public float effectValue_ { get; }
 
@@ -143,6 +147,8 @@ public class SkillData : ISkillData {
 	public int criticalParameterRank_ { get; }
 
 	private List<Sprite> animeSprites_ = new List<Sprite>();
+
+	public string effectInfo_ { get; }
 
 	public void Animetion(EffectParts targetEffectParts) {
 		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_, new Color32());

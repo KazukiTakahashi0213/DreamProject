@@ -21,7 +21,7 @@ public class MapSceneMenuSelectCommandSelectProvider {
 
 	public MapSceneMenuSelectCommandSelect state_ = MapSceneMenuSelectCommandSelect.None;
 
-	private List<BaseMapSceneMenuSelectCommandSelectState> baseMapSceneMenuSelectCommandSelectStates_ = new List<BaseMapSceneMenuSelectCommandSelectState>();
+	private List<BMapSceneMenuSelectCommandSelectState> baseMapSceneMenuSelectCommandSelectStates_ = new List<BMapSceneMenuSelectCommandSelectState>();
 
 	public void SelectEnter(MapManager mapManager) { baseMapSceneMenuSelectCommandSelectStates_[(int)state_].SelectEnter(mapManager); }
 }

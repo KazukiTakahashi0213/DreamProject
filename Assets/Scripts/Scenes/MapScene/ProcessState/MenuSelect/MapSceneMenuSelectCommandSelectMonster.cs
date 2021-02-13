@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSceneMenuSelectCommandSelectMonster : BaseMapSceneMenuSelectCommandSelectState {
+public class MapSceneMenuSelectCommandSelectMonster : BMapSceneMenuSelectCommandSelectState {
 
 }

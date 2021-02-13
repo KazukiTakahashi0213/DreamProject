@@ -122,6 +122,8 @@ public class AllEventManager {
 		mgr.sceneStates_.Clear();
 		mgr.sceneChangeModes_.Clear();
 
+		mgr.inputProviders_.Clear();
+
 		mgr.eventSpriteEventManager_.EventSpriteRenderersClear();
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsClear();
 		mgr.eventTextEventManager_.EventTextsClear();

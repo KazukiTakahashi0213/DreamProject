@@ -18,7 +18,7 @@ public class MapSceneProcessProvider {
 
 	public MapSceneProcess state_ = MapSceneProcess.None;
 
-	private List<BaseMapSceneProcessState> baseMapSceneProcessStates_ = new List<BaseMapSceneProcessState>();
+	private List<BMapSceneProcessState> baseMapSceneProcessStates_ = new List<BMapSceneProcessState>();
 
 	public MapSceneProcess Update(MapManager mapManager) { return baseMapSceneProcessStates_[(int)state_].Update(mapManager); }
 }

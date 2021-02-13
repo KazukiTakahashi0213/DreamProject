@@ -37,6 +37,8 @@ public class ResourcesSkillData {
 
 	public ResourcesSkillAddAbnormal[] addPlayerAbnormals_;
 	public ResourcesSkillAddAbnormal[] addEnemyAbnormals_;
+
+	public string effectInfo_;
 }
 
 public class ResourcesSkillDatasLoader {

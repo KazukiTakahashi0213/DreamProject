@@ -64,7 +64,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 			//技をTextに反映
 			for (int i = 0; i < 4; ++i) {
-				novelWindowParts_.GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i).GetText().text = "　" + t13.Utility.StringFullSpaceBackTamp(md.GetSkillDatas(i).skillNname_, 7);
+				novelWindowParts_.GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i).GetText().text = "　" + t13.Utility.StringFullSpaceBackTamp(md.GetSkillDatas(i).skillName_, 7);
 			}
 			//文字の色の変更
 			for(int i = 0;i < 4; ++i) {
