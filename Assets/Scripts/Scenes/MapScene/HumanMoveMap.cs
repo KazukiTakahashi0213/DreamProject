@@ -34,6 +34,6 @@ public class HumanMoveMap : EventMoveMap
             if (rand == 3) MoveLeft();
         }
 
-        TransMove();
+        if (!TransMove()) StopAnim();
     }
 }

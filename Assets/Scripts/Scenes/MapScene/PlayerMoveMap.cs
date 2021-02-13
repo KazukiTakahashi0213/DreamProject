@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMoveMap : ObjectMoveMap
 {
+   
     [SerializeField] private PlayerEntryZone _entry_zone = null;
 
     private bool mapMoveActive_ = false;
@@ -27,13 +28,14 @@ public class PlayerMoveMap : ObjectMoveMap
         if (!is_move) return;//falseは動けない
 
         //移動
-        if      (allSceneMgr.inputProvider_.UpSelect())     MoveUp();
-        else if (allSceneMgr.inputProvider_.DownSelect())   MoveDown();
-        else if (allSceneMgr.inputProvider_.RightSelect())  MoveRight();
-        else if (allSceneMgr.inputProvider_.LeftSelect())   MoveLeft();
+        if (allSceneMgr.inputProvider_.UpSelect()) MoveUp();
+        else if (allSceneMgr.inputProvider_.DownSelect()) MoveDown();
+        else if (allSceneMgr.inputProvider_.RightSelect()) MoveRight();
+        else if (allSceneMgr.inputProvider_.LeftSelect()) MoveLeft();
 
         //移動できれば移動する
         mapMoveActive_ = TransMove();
+        if(!mapMoveActive_) StopAnim();
     }
 
     protected override void MoveUp()

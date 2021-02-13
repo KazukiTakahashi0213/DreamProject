@@ -7,6 +7,16 @@ public class ObjectMoveMap : MonoBehaviour
     [SerializeField] UpdateGameObject updateGameObject_ = null;
     [SerializeField] EventSpriteRenderer eventSpriteRenderer_ = null;
 
+    [SerializeField] DIRECTION_STATUS direction = DIRECTION_STATUS.UP;//初期のキャラの向き
+
+    enum DIRECTION_STATUS
+    {
+        UP,
+        DOWN,
+        RIGHT,
+        LEFT,
+    }
+
     public float speed = 1.0f;//移動スピード
 
     public MapData.MAP_STATUS ObjectType = MapData.MAP_STATUS.PLAYER;//オブジェクトの種類
@@ -15,20 +25,41 @@ public class ObjectMoveMap : MonoBehaviour
 
     protected Vector2 _now_pos = Vector2.zero;
     protected Vector2 _next = Vector2.zero;
+    public Vector2 GetNext() { return _next; }
 
     public bool is_move { get; set; } = true;//falseは動けない(バトル中、話しかけてる最中など)
 
     public UpdateGameObject GetUpdateGameObject() { return updateGameObject_; }
     public EventSpriteRenderer GetEventSpriteRenderer() { return eventSpriteRenderer_; }
 
+    //アニメーション関連
+    [SerializeField] float _walk_interval = 0.2f;
+    [SerializeField] float _stop_interval = 0.4f;
+    SpriteRenderer _sprite_renderer = null;
+    Sprite[] sprites = null;
+    int[] dir_states = new int[4] { 10, 1, 7, 4 };
+
+
     protected void Init()//継承したクラスのスタート関数で必ず呼び出すこと
     {
         _map = GameObject.FindGameObjectWithTag("Map").GetComponent<MapData>();
         _now_pos = transform.position;
+
+        _sprite_renderer = GetComponent<SpriteRenderer>();
+        var name = _sprite_renderer.sprite.name;
+        name = name.Substring(0, name.IndexOf("_"));
+        sprites = Resources.LoadAll<Sprite>("Graphics/CharaChip/" + name);
+    }
+
+    protected void StopAnim()
+    {
+        if (_stop_interval != 0) ChangeSprite(dir_states[(int)direction], _stop_interval);
+        else _sprite_renderer.sprite = sprites[dir_states[(int)direction]];
     }
 
     protected virtual void MoveUp()
     {
+        direction = DIRECTION_STATUS.UP;
         if (_next != Vector2.zero) return;
         var next_pos = new Vector3(_now_pos.x, _now_pos.y + 1, 0);
         if (_map.MoveCheck(next_pos, ObjectType))
@@ -40,6 +71,7 @@ public class ObjectMoveMap : MonoBehaviour
     }
     protected virtual void MoveDown()
     {
+        direction = DIRECTION_STATUS.DOWN;
         if (_next != Vector2.zero) return;
         var next_pos = new Vector3(_now_pos.x, _now_pos.y - 1, 0);
         if (_map.MoveCheck(next_pos, ObjectType))
@@ -51,6 +83,7 @@ public class ObjectMoveMap : MonoBehaviour
     }
     protected virtual void MoveRight()
     {
+        direction = DIRECTION_STATUS.RIGHT;
         if (_next != Vector2.zero) return;
         var next_pos = new Vector3(_now_pos.x + 1, _now_pos.y, 0);
         if (_map.MoveCheck(next_pos, ObjectType))
@@ -63,6 +96,7 @@ public class ObjectMoveMap : MonoBehaviour
 
     protected virtual void MoveLeft()
     {
+        direction = DIRECTION_STATUS.LEFT;
         if (_next != Vector2.zero) return;
         var next_pos = new Vector3(_now_pos.x - 1, _now_pos.y, 0);
         if (_map.MoveCheck(next_pos, ObjectType))
@@ -129,8 +163,25 @@ public class ObjectMoveMap : MonoBehaviour
             }
         }
 
+        ChangeSprite(dir_states[(int)direction], _walk_interval);
+
         return true;
     }
+
+    float sum_time = 0;
+    int[] walk_state = new int[4] { 1, 0, -1, 0 };
+    void ChangeSprite(int e, float _interval)
+    {
+        var interval = _interval;
+        sum_time += Time.deltaTime;
+        for (int i = 0; i < walk_state.Length; i++)
+        {
+            if (interval * i <= sum_time && sum_time < interval * i + 1)
+                _sprite_renderer.sprite = sprites[e + walk_state[i]];
+        }
+        if (interval * walk_state.Length <= sum_time) sum_time = 0;
+    }
+
 
     public void MapMoveUp(int addValue) {
         for (int i = 0; i < addValue; ++i) {

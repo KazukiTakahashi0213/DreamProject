@@ -29,6 +29,8 @@ public class EventMoveMap : ObjectMoveMap {
 	}
 
 	void Update() {
+		if (!TransMove()) StopAnim();//ここの記載順を変更すれば、話しかけたときに足踏み止めたりできると思う。
+
 		if (!is_move) return;
 		if (MoveType == MOVE_TYPE.NONE) return;
 
@@ -42,7 +44,6 @@ public class EventMoveMap : ObjectMoveMap {
 			if (rand == 3) MoveLeft();
 		}
 
-		TransMove();
 	}
 
 	public EventMoveMapTriggerState GetTriggerState() { return triggerState_; }

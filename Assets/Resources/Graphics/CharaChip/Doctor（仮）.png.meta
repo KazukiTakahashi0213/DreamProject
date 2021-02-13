@@ -38,6 +38,42 @@ TextureImporter:
   - first:
       213: 1158362871907741239
     second: Doctor_11
+  - first:
+      213: -6744133203579953759
+    second: "Doctor\uFF08\u4EEE\uFF09_0"
+  - first:
+      213: -8031111112150486163
+    second: "Doctor\uFF08\u4EEE\uFF09_1"
+  - first:
+      213: 5508232128930510384
+    second: "Doctor\uFF08\u4EEE\uFF09_2"
+  - first:
+      213: 7802678723958772721
+    second: "Doctor\uFF08\u4EEE\uFF09_3"
+  - first:
+      213: -3543402117908698306
+    second: "Doctor\uFF08\u4EEE\uFF09_4"
+  - first:
+      213: 6366302644974905686
+    second: "Doctor\uFF08\u4EEE\uFF09_5"
+  - first:
+      213: -8059054843057462047
+    second: "Doctor\uFF08\u4EEE\uFF09_6"
+  - first:
+      213: 7228680981707928804
+    second: "Doctor\uFF08\u4EEE\uFF09_7"
+  - first:
+      213: -2240774426627778121
+    second: "Doctor\uFF08\u4EEE\uFF09_8"
+  - first:
+      213: -2337502397863342664
+    second: "Doctor\uFF08\u4EEE\uFF09_9"
+  - first:
+      213: -5272702172864692264
+    second: "Doctor\uFF08\u4EEE\uFF09_10"
+  - first:
+      213: -1511433017831675546
+    second: "Doctor\uFF08\u4EEE\uFF09_11"
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -123,7 +159,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Doctor_0
+      name: "Doctor\uFF08\u4EEE\uFF09_0"
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d3cc00fb83925440800000000000000
-      internalID: 4923159571906479061
+      spriteID: 1ad13b255960862a0800000000000000
+      internalID: -6744133203579953759
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_1
+      name: "Doctor\uFF08\u4EEE\uFF09_1"
       rect:
         serializedVersion: 2
         x: 14
@@ -158,14 +194,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8c6c40d41950662a0800000000000000
-      internalID: -6744697270320183608
+      spriteID: d63f3908ef2cb8090800000000000000
+      internalID: -8031111112150486163
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_2
+      name: "Doctor\uFF08\u4EEE\uFF09_2"
       rect:
         serializedVersion: 2
         x: 28
@@ -179,14 +215,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d95caee524930cc60800000000000000
-      internalID: 7836326308847732125
+      spriteID: 036fb49ffeb217c40800000000000000
+      internalID: 5508232128930510384
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_3
+      name: "Doctor\uFF08\u4EEE\uFF09_3"
       rect:
         serializedVersion: 2
         x: 0
@@ -200,14 +236,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 542165829178b95a0800000000000000
-      internalID: -6513463893940628923
+      spriteID: 1f39f0685fea84c60800000000000000
+      internalID: 7802678723958772721
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_4
+      name: "Doctor\uFF08\u4EEE\uFF09_4"
       rect:
         serializedVersion: 2
         x: 14
@@ -221,14 +257,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58f9baadedddf40b0800000000000000
-      internalID: -5742127050652934267
+      spriteID: e3b6fa92c8e43dec0800000000000000
+      internalID: -3543402117908698306
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_5
+      name: "Doctor\uFF08\u4EEE\uFF09_5"
       rect:
         serializedVersion: 2
         x: 28
@@ -242,14 +278,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 530dfc56833161ab0800000000000000
-      internalID: -5037818000220106699
+      spriteID: 659eb568686a95850800000000000000
+      internalID: 6366302644974905686
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_6
+      name: "Doctor\uFF08\u4EEE\uFF09_6"
       rect:
         serializedVersion: 2
         x: 0
@@ -263,14 +299,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af9848966522c11c0800000000000000
-      internalID: -4531709370508736006
+      spriteID: 1e42b26a15c782090800000000000000
+      internalID: -8059054843057462047
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_7
+      name: "Doctor\uFF08\u4EEE\uFF09_7"
       rect:
         serializedVersion: 2
         x: 14
@@ -284,14 +320,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8204469e2d2dac5b0800000000000000
-      internalID: -5347229804248416216
+      spriteID: 4e4b25dbd0f615460800000000000000
+      internalID: 7228680981707928804
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_8
+      name: "Doctor\uFF08\u4EEE\uFF09_8"
       rect:
         serializedVersion: 2
         x: 28
@@ -305,14 +341,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9f5ae941323f00cc0800000000000000
-      internalID: -3746727557976906247
+      spriteID: 7b95217f78b27e0e0800000000000000
+      internalID: -2240774426627778121
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_9
+      name: "Doctor\uFF08\u4EEE\uFF09_9"
       rect:
         serializedVersion: 2
         x: 0
@@ -326,14 +362,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c37d42b447a72dd0800000000000000
-      internalID: -2510854353744727099
+      spriteID: 8bd4bb924f58f8fd0800000000000000
+      internalID: -2337502397863342664
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_10
+      name: "Doctor\uFF08\u4EEE\uFF09_10"
       rect:
         serializedVersion: 2
         x: 14
@@ -347,14 +383,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1418fd5e202cd2ae0800000000000000
-      internalID: -1572387377180081855
+      spriteID: 8df38fb4f4993d6b0800000000000000
+      internalID: -5272702172864692264
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Doctor_11
+      name: "Doctor\uFF08\u4EEE\uFF09_11"
       rect:
         serializedVersion: 2
         x: 28
@@ -368,8 +404,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73eef0d05e4531010800000000000000
-      internalID: 1158362871907741239
+      spriteID: 669a85e9daf460be0800000000000000
+      internalID: -1511433017831675546
       vertices: []
       indices: 
       edges: []
