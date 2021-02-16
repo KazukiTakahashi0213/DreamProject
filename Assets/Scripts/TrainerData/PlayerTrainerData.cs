@@ -42,6 +42,8 @@ public class PlayerTrainerData {
 		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
 		skillDatas_.Add(new SkillData(SkillDataNumber.Mizushuriken));
 		skillDatas_.Add(new SkillData(SkillDataNumber.Uddohanmaa));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
+		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
 	}
 
 	static private PlayerTrainerData instance_ = null;

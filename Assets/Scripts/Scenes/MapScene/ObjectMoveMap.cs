@@ -46,15 +46,19 @@ public class ObjectMoveMap : MonoBehaviour
         _now_pos = transform.position;
 
         _sprite_renderer = GetComponent<SpriteRenderer>();
-        var name = _sprite_renderer.sprite.name;
-        name = name.Substring(0, name.IndexOf("_"));
-        sprites = Resources.LoadAll<Sprite>("Graphics/CharaChip/" + name);
+        if (_sprite_renderer.sprite) {
+            var name = _sprite_renderer.sprite.name;
+            name = name.Substring(0, name.IndexOf("_"));
+            sprites = Resources.LoadAll<Sprite>("Graphics/CharaChip/" + name);
+        }
     }
 
     protected void StopAnim()
     {
-        if (_stop_interval != 0) ChangeSprite(dir_states[(int)direction], _stop_interval);
-        else _sprite_renderer.sprite = sprites[dir_states[(int)direction]];
+        if (sprites != null) {
+            if (_stop_interval != 0) ChangeSprite(dir_states[(int)direction], _stop_interval);
+            else _sprite_renderer.sprite = sprites[dir_states[(int)direction]];
+        }
     }
 
     protected virtual void MoveUp()

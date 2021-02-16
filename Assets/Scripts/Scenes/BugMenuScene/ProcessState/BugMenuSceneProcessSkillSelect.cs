@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BugMenuSceneProcessSkillSelect : BBugMenuSceneProcessState {
 	//選択肢制御
-	private int selectNum_ = 0;
+	private int skillSelectNum_ = 0;
+	private int cursorSelectNum_ = 0;
 
 	public override BugMenuSceneProcess Update(BugMenuManager bugMenuManager) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
@@ -14,35 +15,69 @@ public class BugMenuSceneProcessSkillSelect : BBugMenuSceneProcessState {
 		allEventMgr.EventUpdate();
 
 		if (allSceneMgr.inputProvider_.UpSelect()) {
-			if (selectNum_ > 0) {
-				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, 1.0f, 0));
+			//表示する技がまだあったら
+			if (skillSelectNum_ > 0) {
+				--skillSelectNum_;
 
-				--selectNum_;
+				//一番上からスクロールさせようとしたら
+				if (cursorSelectNum_ == 0) {
+					//技の名前を更新する
+					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() - 1);
+					for (int i = startNum; i < bugMenuManager.GetCommandParts().GetCommandWindowTextsCount(); ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerTrainerData.GetSkillDatas(i).skillName_;
+					}
+
+					//upCursorの非表示
+					if (skillSelectNum_ == 0) {
+						bugMenuManager.GetUpCursor().gameObject.SetActive(false);
+					}
+					//downCursorの表示
+					else {
+						bugMenuManager.GetDownCursor().gameObject.SetActive(true);
+					}
+				}
 
 				//技の情報の反映
-				string playPointContext = t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(selectNum_).nowPlayPoint_.ToString()) + "／" + t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(selectNum_).playPoint_.ToString());
+				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerTrainerData.GetSkillDatas(skillSelectNum_));
+			}
+			//カーソルが上に動かせたら
+			if (cursorSelectNum_ > 0) {
+				--cursorSelectNum_;
 
-				bugMenuManager.GetInfoFrameParts().GetTexts(0).text =
-					"PP　　　　" + playPointContext + "\n"
-					+ "わざタイプ／" + playerTrainerData.GetSkillDatas(selectNum_).elementType_.GetName();
-
-				bugMenuManager.GetInfoFrameParts().GetTexts(1).text = playerTrainerData.GetSkillDatas(selectNum_).effectInfo_;
+				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, 1.0f, 0));
 			}
 		}
 		else if (allSceneMgr.inputProvider_.DownSelect()) {
-			if (selectNum_ < playerTrainerData.GetSkillDatasCount() - 1) {
-				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, -1.0f, 0));
+			//表示する技がまだあったら
+			if (skillSelectNum_ < playerTrainerData.GetSkillDatasCount()-1) {
+				++skillSelectNum_;
 
-				++selectNum_;
+				//一番下からスクロールさせようとしたら
+				if(cursorSelectNum_ == bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1) {
+					//技の名前を更新する
+					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1);
+					for (int i = startNum; i < skillSelectNum_+1; ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerTrainerData.GetSkillDatas(i).skillName_;
+					}
+
+					//downCursorの非表示
+					if(skillSelectNum_ == playerTrainerData.GetSkillDatasCount() - 1) {
+						bugMenuManager.GetDownCursor().gameObject.SetActive(false);
+					}
+					//upCursorの非表示
+					else {
+						bugMenuManager.GetUpCursor().gameObject.SetActive(true);
+					}
+				}
 
 				//技の情報の反映
-				string playPointContext = t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(selectNum_).nowPlayPoint_.ToString()) + "／" + t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(selectNum_).playPoint_.ToString());
+				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerTrainerData.GetSkillDatas(skillSelectNum_));
+			}
+			//カーソルが下に動かせたら
+			if (cursorSelectNum_ < bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1) {
+				++cursorSelectNum_;
 
-				bugMenuManager.GetInfoFrameParts().GetTexts(0).text =
-					"PP　　　　" + playPointContext + "\n"
-					+ "わざタイプ／" + playerTrainerData.GetSkillDatas(selectNum_).elementType_.GetName();
-
-				bugMenuManager.GetInfoFrameParts().GetTexts(1).text = playerTrainerData.GetSkillDatas(selectNum_).effectInfo_;
+				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, -1.0f, 0));
 			}
 		}
 		else if (allSceneMgr.inputProvider_.RightSelect()) {

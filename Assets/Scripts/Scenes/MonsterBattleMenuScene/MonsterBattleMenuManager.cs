@@ -13,11 +13,11 @@ public class MonsterBattleMenuManager : MonoBehaviour, ISceneManager {
 		selectMonsterNumber_ = 0;
 
 		//BulletPartsの初期化
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(0).gameObject, new Vector3(0.9f, 2.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(1).gameObject, new Vector3(0.9f, 2.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(2).gameObject, new Vector3(0.9f, 1.0f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(3).gameObject, new Vector3(0.9f, -0.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(4).gameObject, new Vector3(0.9f, -0.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(0).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(0).gameObject.transform.position.x, 2.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(1).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(1).gameObject.transform.position.x, 2.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(2).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(2).gameObject.transform.position.x, 1.0f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(3).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(3).gameObject.transform.position.x, -0.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(4).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(4).gameObject.transform.position.x, -0.5f, 5));
 
 		//MagazinePartsの初期化
 		t13.UnityUtil.ObjectRotMove(magazineParts_.gameObject, Quaternion.AngleAxis(0, new Vector3(0, 0, 1)));
@@ -53,6 +53,9 @@ public class MonsterBattleMenuManager : MonoBehaviour, ISceneManager {
 		for(int i = 0;i < magazineParts_.GetMonsterSDsPartsCount(); ++i) {
 			magazineParts_.GetMonsterSDsParts(i).GetMonsterSDEventSpriteRenderer().GetSpriteRenderer().sprite = PlayerBattleData.GetInstance().GetMonsterDatas(i).tribesData_.SDTex_;
 		}
+
+		//モンスターのパラメーターの反映
+		parameterInfoFrameParts_.MonsterDataReflect(PlayerBattleData.GetInstance().GetMonsterDatas(0));
 
 		//フェードイン
 		eventMgr.EventSpriteRendererSet(
@@ -103,12 +106,19 @@ public class MonsterBattleMenuManager : MonoBehaviour, ISceneManager {
 
 	[SerializeField] private MagazineParts magazineParts_ = null;
 	[SerializeField] private BulletParts bulletParts_ = null;
+	[SerializeField] private SkillInfoFrameParts skillInfoFrameParts_ = null;
+	[SerializeField] private ParameterInfoFrameParts parameterInfoFrameParts_ = null;
+	[SerializeField] private CommandParts monsterActionCommandParts_ = null;
 
 	public MagazineParts GetMagazineParts() { return magazineParts_; }
 	public BulletParts GetBulletParts() { return bulletParts_; }
+	public SkillInfoFrameParts GetSkillInfoFrameParts() { return skillInfoFrameParts_; }
+	public ParameterInfoFrameParts GetParameterInfoFrameParts() { return parameterInfoFrameParts_; }
+	public CommandParts GetMonsterActionCommandParts() { return monsterActionCommandParts_; }
 
 	//ステート
 	private MonsterBattleMenuCommandState nowCommandState_ = new MonsterBattleMenuCommandState(MonsterBattleMenuCommand.MonsterSelect);
+	private BActionCommandStateProvider nowMonsterActionCommandStateProvider_ = new MonsterBattleMenuMonsterActionCommandStateProvider();
 
 	public int selectMonsterNumber_ = 0;
 }

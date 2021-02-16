@@ -53,7 +53,9 @@ public class MonsterBattleMenuCommandState {
 
 		manager.selectMonsterNumber_ += 1;
 		manager.selectMonsterNumber_ %= PlayerBattleData.GetInstance().GetMonsterDatasLength();
-		
+
+		manager.GetParameterInfoFrameParts().MonsterDataReflect(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
+
 		int referMonsterNumber = (manager.selectMonsterNumber_ + 2) % PlayerBattleData.GetInstance().GetMonsterDatasLength();
 
 		manager.GetBulletParts().GetEventStatusInfosParts(manager.GetBulletParts().GetEventStatusInfosPartsSize() - 1).MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(referMonsterNumber));
@@ -76,6 +78,8 @@ public class MonsterBattleMenuCommandState {
 		manager.selectMonsterNumber_ -= 1;
 		manager.selectMonsterNumber_ = System.Math.Abs((manager.selectMonsterNumber_ + PlayerBattleData.GetInstance().GetMonsterDatasLength()) % PlayerBattleData.GetInstance().GetMonsterDatasLength());
 
+		manager.GetParameterInfoFrameParts().MonsterDataReflect(PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_));
+
 		int referMonsterNumber = System.Math.Abs(((manager.selectMonsterNumber_ - 2) + PlayerBattleData.GetInstance().GetMonsterDatasLength()) % PlayerBattleData.GetInstance().GetMonsterDatasLength());
 
 		manager.GetBulletParts().GetEventStatusInfosParts(0).MonsterStatusInfoSet(PlayerBattleData.GetInstance().GetMonsterDatas(referMonsterNumber));
@@ -91,30 +95,7 @@ public class MonsterBattleMenuCommandState {
 		return mine.state_;
 	}
 	static private MonsterBattleMenuCommand MonsterSelectSelectEnter(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
-		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
-		AllEventManager eventMgr = AllEventManager.GetInstance();
-
-		if (PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).battleActive_
-			&& PlayerBattleData.GetInstance().GetMonsterDatas(manager.selectMonsterNumber_).tribesData_.monsterNumber_ != 0) {
-			sceneMgr.inputProvider_ = new InactiveInputProvider();
-
-			PlayerBattleData.GetInstance().changeMonsterNumber_ = manager.selectMonsterNumber_;
-			PlayerBattleData.GetInstance().changeMonsterActive_ = true;
-
-			//フェードアウト
-			eventMgr.EventSpriteRendererSet(
-				sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
-				, null
-				, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 255)
-				);
-			eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
-			eventMgr.AllUpdateEventExecute(0.4f);
-
-			//シーンの切り替え
-			eventMgr.SceneChangeEventSet(SceneState.Battle, SceneChangeMode.Continue);
-		}
-
-		return mine.state_;
+		return MonsterBattleMenuCommand.ActionSelect;
 	}
 	static private MonsterBattleMenuCommand MonsterSelectSelectBack(MonsterBattleMenuCommandState mine, MonsterBattleMenuManager manager) {
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();

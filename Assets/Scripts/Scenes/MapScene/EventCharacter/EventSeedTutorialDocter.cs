@@ -11,10 +11,12 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 	}
 
 	void Update() {
-
+		eventMoveMap_.executeEventNum_ = allEventExecuteNum_;
 	}
 
 	private EventMoveMap eventMoveMap_ = null;
+
+	private static int allEventExecuteNum_ = 1;
 
 	private static void BattleStart(EventMoveMap eventMoveMap, MapManager mapManager) {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
@@ -123,7 +125,6 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 		eventMoveMap.BattleEvent();
 
 		//イベントの停止
-		mapManager.GetSceneObjectMoveMaps()[1].executeEventNum_ = 0;
-		mapManager.GetSceneObjectMoveMaps()[2].executeEventNum_ = 0;
+		allEventExecuteNum_ = 0;
 	}
 }

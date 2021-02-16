@@ -8,9 +8,13 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 
 	//シーン上のオブジェクト
 	[SerializeField] CommandParts commandParts_ = null;
-	[SerializeField] InfoFrameParts infoFrameParts_ = null;
+	[SerializeField] SkillInfoFrameParts infoFrameParts_ = null;
+	[SerializeField] SpriteRenderer downCursor_ = null;
+	[SerializeField] SpriteRenderer upCursor_ = null;
 	public CommandParts GetCommandParts() { return commandParts_; }
-	public InfoFrameParts GetInfoFrameParts() { return infoFrameParts_; }
+	public SkillInfoFrameParts GetInfoFrameParts() { return infoFrameParts_; }
+	public SpriteRenderer GetDownCursor() { return downCursor_; }
+	public SpriteRenderer GetUpCursor() { return upCursor_; }
 
 	public void SceneStart() {
 		AllEventManager eventMgr = AllEventManager.GetInstance();
@@ -26,19 +30,19 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 		}
 
 		//技の名前の反映
-		for (int i = 0;i < playerTrainerData.GetSkillDatasCount(); ++i) {
-			commandParts_.GetCommandWindowTexts(i).text = playerTrainerData.GetSkillDatas(i).skillName_;
+		for (int i = 0;i < commandParts_.GetCommandWindowTextsCount(); ++i) {
+			if (i < playerTrainerData.GetSkillDatasCount()) {
+				commandParts_.GetCommandWindowTexts(i).text = playerTrainerData.GetSkillDatas(i).skillName_;
+			}
 		}
 
 		//技の情報の反映
-		string playPointContext = t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(0).nowPlayPoint_.ToString()) + "／" + t13.Utility.HarfSizeForFullSize(playerTrainerData.GetSkillDatas(0).playPoint_.ToString());
+		infoFrameParts_.SkillInfoReflect(playerTrainerData.GetSkillDatas(0));
 
-		infoFrameParts_.GetTexts(0).text =
-			"PP　　　　" + playPointContext + "\n"
-			+ "わざタイプ／" + playerTrainerData.GetSkillDatas(0).elementType_.GetName();
-
-		infoFrameParts_.GetTexts(1).text = playerTrainerData.GetSkillDatas(0).effectInfo_;
-
+		//技が表以上にあったら
+		if(playerTrainerData.GetSkillDatasCount() > commandParts_.GetCommandWindowTextsCount()) {
+			downCursor_.gameObject.SetActive(true);
+		}
 
 		//フェードイン
 		eventMgr.EventSpriteRendererSet(
