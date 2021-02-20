@@ -22,6 +22,7 @@ public interface IMonsterData {
 	int RealSpeed();
 	void SkillAdd(SkillData addSkill);
 	void SkillSet(SkillData setSkill, int number);
+	void SkillSwap(int changeNumber, int baseNumber);
 
 	float ElementSimillarChecker(ElementTypeState checkElementType);
 	int ElementSimillarCheckerForValue(ElementTypeState checkElementType);

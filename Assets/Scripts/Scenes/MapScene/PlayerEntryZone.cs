@@ -36,8 +36,6 @@ public class PlayerEntryZone : MonoBehaviour
         if (collision.gameObject.tag == "Event"
             || collision.gameObject.tag == "Human")
         {
-            _collision_object.eventActive_ = true;
-
             is_collider = false;
             _collision_object = null;
         }

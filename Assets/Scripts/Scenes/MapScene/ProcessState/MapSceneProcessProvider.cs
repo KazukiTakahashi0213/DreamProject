@@ -5,6 +5,7 @@ using UnityEngine;
 public enum MapSceneProcess {
 	None
 	, PlayerMove
+	, EventExecute
 	, MenuSelect
 	, Max
 }
@@ -13,6 +14,7 @@ public class MapSceneProcessProvider {
 	public MapSceneProcessProvider() {
 		baseMapSceneProcessStates_.Add(new MapSceneProcessNone());
 		baseMapSceneProcessStates_.Add(new MapSceneProcessPlayerMove());
+		baseMapSceneProcessStates_.Add(new MapSceneProcessEventExecute());
 		baseMapSceneProcessStates_.Add(new MapSceneProcessMenuSelect());
 	}
 

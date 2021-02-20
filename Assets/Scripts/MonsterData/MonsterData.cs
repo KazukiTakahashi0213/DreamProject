@@ -75,6 +75,12 @@ public class MonsterData : IMonsterData {
 
 		skillDatas_[number] = setSkill;
 	}
+	public void SkillSwap(int changeNumber, int baseNumber) {
+		ISkillData temp = skillDatas_[baseNumber];
+
+		skillDatas_[baseNumber] = skillDatas_[changeNumber];
+		skillDatas_[changeNumber] = temp;
+	}
 
 	public float ElementSimillarChecker(ElementTypeState checkElementType) {
 		return elementSimillar_[(int)tribesData_.firstElement_.state_, (int)checkElementType.state_] * elementSimillar_[(int)tribesData_.secondElement_.state_, (int)checkElementType.state_];

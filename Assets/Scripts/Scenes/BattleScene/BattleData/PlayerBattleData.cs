@@ -103,7 +103,8 @@ public class PlayerBattleData : TrainerBattleData {
 		}
 
 		//シーンの切り替え
-		AllEventManager.GetInstance().SceneChangeEventSet(SceneState.MonsterBattleMenu, SceneChangeMode.Slide);
+		MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneBattleProcessStateProvider());
+		AllEventManager.GetInstance().SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Slide);
 	}
 
 	//交換処理
@@ -144,6 +145,21 @@ public class PlayerBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+			//モンスターの登場演出
+			{
+				Sprite[] sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("BattleScene/MonsterSetEffect");
+				List<Sprite> animeSprites = new List<Sprite>();
+				for (int i = 0; i < sprites.Length; ++i) {
+					animeSprites.Add(sprites[i]);
+				}
+				AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetPlayerEffectParts().GetEventSpriteRenderer(), animeSprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+				AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
+			}
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() / 2);
 
 			//画像の設定
 			if (md.battleData_.HaveAbnormalType(AbnormalType.Hero)) {

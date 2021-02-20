@@ -23,6 +23,8 @@ public class SkillData : ISkillData {
 
 		ResourcesSkillData data = ResourcesSkillDatasLoader.GetInstance().GetSkillDatas(number);
 
+		skillNumber_ = number;
+
 		skillName_ = data.skillNname_;
 
 		effectValue_ = data.effectValue_;
@@ -40,7 +42,7 @@ public class SkillData : ISkillData {
 		triggerPriority_ = data.triggerPriority_;
 		criticalParameterRank_ = data.criticalParameterRank_;
 
-		Sprite[] sprite = Resources.LoadAll<Sprite>("Graphics/SkillEffect/" + data.effectName_);
+		Sprite[] sprite = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("SkillEffect/" + data.effectName_);
 		for (int i = 0; i < sprite.Length; ++i) {
 			animeSprites_.Add(sprite[i]);
 		}
@@ -77,6 +79,8 @@ public class SkillData : ISkillData {
 
 		ResourcesSkillData data = ResourcesSkillDatasLoader.GetInstance().GetSkillDatas((int)skillDataNumber);
 
+		skillNumber_ = (int)skillDataNumber;
+
 		skillName_ = data.skillNname_;
 
 		effectValue_ = data.effectValue_;
@@ -94,7 +98,7 @@ public class SkillData : ISkillData {
 		triggerPriority_ = data.triggerPriority_;
 		criticalParameterRank_ = data.criticalParameterRank_;
 
-		Sprite[] sprite = Resources.LoadAll<Sprite>("Graphics/SkillEffect/" + data.effectName_);
+		Sprite[] sprite = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("SkillEffect/" + data.effectName_);
 		for (int i = 0; i < sprite.Length; ++i) {
 			animeSprites_.Add(sprite[i]);
 		}
@@ -151,7 +155,7 @@ public class SkillData : ISkillData {
 	public string effectInfo_ { get; }
 
 	public void Animetion(EffectParts targetEffectParts) {
-		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_, new Color32());
+		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_);
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 	}

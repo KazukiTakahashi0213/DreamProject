@@ -49,7 +49,7 @@ public class ObjectMoveMap : MonoBehaviour
         if (_sprite_renderer.sprite) {
             var name = _sprite_renderer.sprite.name;
             name = name.Substring(0, name.IndexOf("_"));
-            sprites = Resources.LoadAll<Sprite>("Graphics/CharaChip/" + name);
+            sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("CharaChip/" + name);
         }
     }
 

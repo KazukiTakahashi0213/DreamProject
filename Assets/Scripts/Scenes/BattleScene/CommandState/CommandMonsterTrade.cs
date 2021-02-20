@@ -42,7 +42,8 @@ public class CommandMonsterTrade : ICommandState {
 		eventMgr.AllUpdateEventExecute(0.4f);
 
 		//シーンの切り替え
-		eventMgr.SceneChangeEventSet(SceneState.MonsterBattleMenu, SceneChangeMode.Slide);
+		MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneBattleProcessStateProvider());
+		eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Slide);
 
 		return mgr.nowProcessState();
 	}

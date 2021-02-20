@@ -24,7 +24,6 @@ public class EventMoveMapTriggerState {
 	//Trigger
 	private static bool TriggerEventTrigger(EventMoveMapTriggerState mine, PlayerEntryZone playerEntryZone) {
 		if(playerEntryZone.is_collider
-			&& playerEntryZone._collision_object.eventActive_
 			&& AllSceneManager.GetInstance().inputProvider_.SelectEnter()) {
 			return true;
 		}
@@ -34,9 +33,7 @@ public class EventMoveMapTriggerState {
 
 	//Touch
 	private static bool TouchEventTrigger(EventMoveMapTriggerState mine, PlayerEntryZone playerEntryZone) {
-		if (playerEntryZone.is_collider
-			&& playerEntryZone._collision_object.eventActive_
-			) {
+		if (playerEntryZone.is_collider) {
 			return true;
 		}
 

@@ -19,6 +19,7 @@ public class MapSceneMenuSelectCommandSelectSkill : BMapSceneMenuSelectCommandSe
 		eventMgr.AllUpdateEventExecute(0.4f);
 
 		//シーンの切り替え
+		BugMenuManager.SetProcessStateProvider(new BugMenuSceneNormalProcessStateProvider());
 		eventMgr.SceneChangeEventSet(SceneState.BugMenu, SceneChangeMode.Change);
 	}
 }

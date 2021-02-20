@@ -10,13 +10,7 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 		eventMoveMap_.GetEventSetFuncs().Add(BattleStart);
 	}
 
-	void Update() {
-		eventMoveMap_.executeEventNum_ = allEventExecuteNum_;
-	}
-
 	private EventMoveMap eventMoveMap_ = null;
-
-	private static int allEventExecuteNum_ = 1;
 
 	private static void BattleStart(EventMoveMap eventMoveMap, MapManager mapManager) {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
@@ -25,9 +19,6 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 		EnemyTrainerData enemyTrainerData = EnemyTrainerData.GetInstance();
 		PlayerBattleData playerBattleData = PlayerBattleData.GetInstance();
 		EnemyBattleData enemyBattleData = EnemyBattleData.GetInstance();
-
-		//操作の変更
-		allSceneMgr.inputProvider_ = new KeyBoardSelectInactiveTriggerInputProvider();
 
 		mapManager.GetNovelWindowParts().GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().blinkTimeRegulation_ = 0.5f;
 
@@ -58,7 +49,7 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 		}
 
 		//エネミーの設定
-		enemyTrainerData.SetTrainerData("はかせ", "ヴィクター");
+		enemyTrainerData.SetTrainerData("はかせ", "ヴィクター", ResourcesGraphicsLoader.GetInstance().GetGraphics("Enemy/Victer0"));
 
 		////ノベル処理
 		//eventMoveMap.NovelEvent(mapManager.GetNovelWindowParts(), "TutorialDocter/BattleStart1");
@@ -90,7 +81,7 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 			md.SkillAdd(new SkillData(SkillDataNumber.Mizushuriken));
 			md.SkillAdd(new SkillData(SkillDataNumber.Uddohanmaa));
 			//プレイヤーの手持ちに追加
-			playerTrainerData.monsterAdd(md);
+			playerTrainerData.MonsterAdd(md);
 		}
 		{
 			//データの生成
@@ -101,7 +92,7 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 			md.SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
 			md.SkillAdd(new SkillData(SkillDataNumber.Taiatari));
 			//プレイヤーの手持ちに追加
-			playerTrainerData.monsterAdd(md);
+			playerTrainerData.MonsterAdd(md);
 		}
 		{
 			//データの生成
@@ -112,7 +103,7 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 			md.SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
 			md.SkillAdd(new SkillData(SkillDataNumber.Taiatari));
 			//プレイヤーの手持ちに追加
-			playerTrainerData.monsterAdd(md);
+			playerTrainerData.MonsterAdd(md);
 		}
 
 		//ウェイト
@@ -123,8 +114,5 @@ public class EventSeedTutorialDocter : MonoBehaviour {
 
 		//戦闘の処理
 		eventMoveMap.BattleEvent();
-
-		//イベントの停止
-		allEventExecuteNum_ = 0;
 	}
 }

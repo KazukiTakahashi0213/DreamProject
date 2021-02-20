@@ -14,7 +14,7 @@ public class TitleManager : MonoBehaviour, ISceneManager {
 			AllEventManager eventMgr = AllEventManager.GetInstance();
 			AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
-			AllSceneManager.GetInstance().inputProvider_ = new InactiveInputProvider();
+			sceneMgr.inputProvider_ = new InactiveInputProvider();
 
 			//フェードアウト
 			eventMgr.EventSpriteRendererSet(

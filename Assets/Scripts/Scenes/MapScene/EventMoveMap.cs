@@ -7,7 +7,7 @@ public class EventMoveMap : ObjectMoveMap {
 
 	private EventMoveMapTriggerState triggerState_ = new EventMoveMapTriggerState(EventMoveMapTrigger.None);
 
-	public bool eventActive_ = true;
+	//public bool eventActive_ = true;
 
 	public int executeEventNum_ = 1;
 

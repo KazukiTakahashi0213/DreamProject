@@ -62,6 +62,7 @@ public class EnemyCommandSelectProcess : IProcessState {
 				}
 			}
 
+			//交換していなかったら
 			if (EnemyBattleData.GetInstance().changeMonsterActive_ == false) {
 
 				//現在、場に出ているモンスターのデータの取得
@@ -123,8 +124,11 @@ public class EnemyCommandSelectProcess : IProcessState {
 
 				//dpが100以上だったら
 				if (EnemyBattleData.GetInstance().dreamPoint_ >= 100) {
-					//パワーアップするか否かのフラグの設定
-					EnemyBattleData.GetInstance().dreamSyncronize_ = true;
+					//パワーアップしていなかったら
+					if (!enemyMD.battleData_.HaveAbnormalType(AbnormalType.Hero)) {
+						//パワーアップするか否かのフラグの設定
+						EnemyBattleData.GetInstance().dreamSyncronize_ = true;
+					}
 				}
 
 				//ppの消費

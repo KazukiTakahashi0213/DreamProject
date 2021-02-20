@@ -25,6 +25,9 @@ public class CommandDream : ICommandState {
 	}
 
 	public IProcessState Execute(BattleManager mgr) {
+		//既にパワーアップしていたら
+		if (PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.HaveAbnormalType(AbnormalType.Hero)) return mgr.nowProcessState();
+
 		//dpが100以上だったら
 		if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
 			if (PlayerBattleData.GetInstance().dreamSyncronize_ == false) {

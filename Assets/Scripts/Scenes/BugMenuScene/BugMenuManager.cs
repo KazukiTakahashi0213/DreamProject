@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BugMenuManager : MonoBehaviour, ISceneManager {
-	private BugMenuSceneProcessProvider processProvider_ = new BugMenuSceneProcessProvider();
-	public BugMenuSceneProcessProvider GetProcessProvider() { return processProvider_; }
+	private BBugMenuSceneProcessStateProvider processProvider_ = new BugMenuSceneNormalProcessStateProvider();
+	public BBugMenuSceneProcessStateProvider GetProcessProvider() { return processProvider_; }
 
 	//シーン上のオブジェクト
 	[SerializeField] CommandParts commandParts_ = null;
@@ -22,12 +22,19 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 		PlayerTrainerData playerTrainerData = PlayerTrainerData.GetInstance();
 
 		//依存性注入
+		processProvider_ = startProcessStateProvider_;
 		processProvider_.state_ = BugMenuSceneProcess.SkillSelect;
 
-		//初期化
+		//文字の初期化
 		for (int i = 0; i < commandParts_.GetCommandWindowTextsCount(); ++i) {
 			commandParts_.GetCommandWindowTexts(i).text = "ーー";
 		}
+
+		//アップカーソルの初期化
+		upCursor_.gameObject.SetActive(false);
+
+		//選択肢の初期化
+		commandParts_.SelectReset(new Vector3(-7.7f, 1.23f, -1));
 
 		//技の名前の反映
 		for (int i = 0;i < commandParts_.GetCommandWindowTextsCount(); ++i) {
@@ -67,4 +74,9 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 	}
 
 	public GameObject GetGameObject() { return gameObject; }
+
+	static private BBugMenuSceneProcessStateProvider startProcessStateProvider_ = new BugMenuSceneNormalProcessStateProvider();
+	static public void SetProcessStateProvider(BBugMenuSceneProcessStateProvider processStateProvider) {
+		startProcessStateProvider_ = processStateProvider;
+	}
 }

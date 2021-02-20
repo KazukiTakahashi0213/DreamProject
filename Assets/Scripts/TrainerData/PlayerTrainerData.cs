@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTrainerData {
-	public void monsterAdd(IMonsterData addMonster) {
+	public void MonsterAdd(IMonsterData addMonster) {
 		if (haveMonsterSize_ == MONSTER_MAX_SIZE) return;
 
 		monsterDatas_[haveMonsterSize_] = addMonster;
 		haveMonsterSize_ += 1;
+	}
+	public void MonsterSwap(int changeNumber, int baseNumber) {
+		IMonsterData temp = monsterDatas_[baseNumber];
+
+		monsterDatas_[baseNumber] = monsterDatas_[changeNumber];
+		monsterDatas_[changeNumber] = temp;
 	}
 
 	public IMonsterData GetMonsterDatas(int num) { return monsterDatas_[num]; }
@@ -27,23 +33,67 @@ public class PlayerTrainerData {
 	};
 
 	//手持ちの技のデータ
+	private const int SKILL_MAX_SIZE = 8;
+	private int haveSkillSize_ = 0;
 	private List<SkillData> skillDatas_ = new List<SkillData>();
+	public int GetHaveSkillSize() { return haveSkillSize_; }
 	public SkillData GetSkillDatas(int value) { return skillDatas_[value]; }
 	public int GetSkillDatasCount() { return skillDatas_.Count; }
 
+	public void skillAdd(SkillData skillData) {
+		//既に所持していたら、追加しない
+		for(int i = 0;i < haveSkillSize_; ++i) {
+			if(skillDatas_[i].skillNumber_ == skillData.skillNumber_) {
+				return;
+			}
+		}
+
+		if(haveSkillSize_ < SKILL_MAX_SIZE) {
+			skillDatas_[haveSkillSize_] = skillData;
+		}
+		else {
+			skillDatas_.Add(skillData);
+		}
+
+		haveSkillSize_ += 1;
+	}
+
 	//シングルトン
 	private PlayerTrainerData() {
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+		skillDatas_.Add(new SkillData(SkillDataNumber.None));
+
 		//仮
-		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Mizushuriken));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Uddohanmaa));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Mizushuriken));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Uddohanmaa));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Taiatari));
-		skillDatas_.Add(new SkillData(SkillDataNumber.Hiitosutanpu));
+		MonsterAdd(new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.Maikon), 0, 50));
+		monsterDatas_[0].SkillAdd(new SkillData(SkillDataNumber.Taiatari));
+		monsterDatas_[0].SkillAdd(new SkillData(SkillDataNumber.Uddohanmaa));
+		monsterDatas_[0].SkillAdd(new SkillData(SkillDataNumber.Mizushuriken));
+		monsterDatas_[0].SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
+		MonsterAdd(new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.Furiruma), 0, 50));
+		monsterDatas_[1].SkillAdd(new SkillData(SkillDataNumber.Taiatari));
+		monsterDatas_[1].SkillAdd(new SkillData(SkillDataNumber.Uddohanmaa));
+		monsterDatas_[1].SkillAdd(new SkillData(SkillDataNumber.Mizushuriken));
+		monsterDatas_[1].SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
+		MonsterAdd(new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.Furiruga), 0, 50));
+		monsterDatas_[2].SkillAdd(new SkillData(SkillDataNumber.Taiatari));
+		monsterDatas_[2].SkillAdd(new SkillData(SkillDataNumber.Uddohanmaa));
+		monsterDatas_[2].SkillAdd(new SkillData(SkillDataNumber.Mizushuriken));
+		monsterDatas_[2].SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
+		MonsterAdd(new MonsterData(new MonsterTribesData(MonsterTribesDataNumber.Bauporisu), 0, 50));
+		monsterDatas_[3].SkillAdd(new SkillData(SkillDataNumber.Taiatari));
+		monsterDatas_[3].SkillAdd(new SkillData(SkillDataNumber.Uddohanmaa));
+		monsterDatas_[3].SkillAdd(new SkillData(SkillDataNumber.Mizushuriken));
+		monsterDatas_[3].SkillAdd(new SkillData(SkillDataNumber.Hiitosutanpu));
+
+		skillAdd(new SkillData(SkillDataNumber.Taiatari));
+		skillAdd(new SkillData(SkillDataNumber.Taiatari));
+		skillAdd(new SkillData(SkillDataNumber.Mizushuriken));
 	}
 
 	static private PlayerTrainerData instance_ = null;

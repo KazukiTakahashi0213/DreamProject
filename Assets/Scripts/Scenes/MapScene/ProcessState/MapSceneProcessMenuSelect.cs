@@ -4,59 +4,57 @@ using UnityEngine;
 
 public class MapSceneProcessMenuSelect : BMapSceneProcessState {
 	//選択肢制御
-	private int selectNum_ = 0;
 	private MapSceneMenuSelectCommandSelectProvider commandSelectProvider_ = new MapSceneMenuSelectCommandSelectProvider();
 	public MapSceneMenuSelectCommandSelectProvider GetCommandSelectProvider() { return commandSelectProvider_; }
 
 	public override MapSceneProcess Update(MapManager mapManager) {
-		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
-		AllEventManager allEventMgr = AllEventManager.GetInstance();
+		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
+		AllEventManager eventMgr = AllEventManager.GetInstance();
 
 		AllEventManager.GetInstance().EventUpdate();
 
-		if (allSceneMgr.inputProvider_.UpSelect()) {
-			if (selectNum_ > 0) {
-				t13.UnityUtil.ObjectPosAdd(mapManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, 0.55f, 0));
+		if (sceneMgr.inputProvider_.UpSelect()) {
+			if (mapManager.GetCommandParts().GetSelectNumber() > 0) {
+				mapManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 0.55f, 0));
 
-				--selectNum_;
-
-				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)selectNum_;
+				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)mapManager.GetCommandParts().GetSelectNumber();
 			}
 		}
-		else if (allSceneMgr.inputProvider_.DownSelect()) {
-			if (selectNum_ < mapManager.GetCommandParts().GetCommandWindowTextsCount() - 1) {
-				t13.UnityUtil.ObjectPosAdd(mapManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, -0.55f, 0));
+		else if (sceneMgr.inputProvider_.DownSelect()) {
+			if (mapManager.GetCommandParts().GetSelectNumber() < mapManager.GetCommandParts().GetCommandWindowTextsCount() - 1) {
+				mapManager.GetCommandParts().CommandSelect(1, new Vector3(0, -0.55f, 0));
 
-				++selectNum_;
-
-				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)selectNum_;
+				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)mapManager.GetCommandParts().GetSelectNumber();
 			}
 		}
-		else if (allSceneMgr.inputProvider_.RightSelect()) {
+		else if (sceneMgr.inputProvider_.RightSelect()) {
 		}
-		else if (allSceneMgr.inputProvider_.LeftSelect()) {
+		else if (sceneMgr.inputProvider_.LeftSelect()) {
 		}
-		else if (allSceneMgr.inputProvider_.SelectEnter()) {
-			//allEventMgr.EventTriggerNext();
+		else if (sceneMgr.inputProvider_.SelectEnter()) {
 			commandSelectProvider_.SelectEnter(mapManager);
+
+			commandSelectProvider_.state_ = MapSceneMenuSelectCommandSelect.None;
 		}
-		else if (allSceneMgr.inputProvider_.SelectBack()) {
+		else if (sceneMgr.inputProvider_.SelectBack()) {
 			mapManager.GetPlayerMoveMap().is_move = true;
 			mapManager.GetCommandParts().gameObject.SetActive(false);
 
 			//操作の変更
-			allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+			sceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+
+			commandSelectProvider_.state_ = MapSceneMenuSelectCommandSelect.None;
 
 			return MapSceneProcess.PlayerMove;
 		}
-		else if (allSceneMgr.inputProvider_.SelectNovelWindowActive()) {
+		else if (sceneMgr.inputProvider_.SelectNovelWindowActive()) {
 		}
-		else if (allSceneMgr.inputProvider_.SelectMenu()) {
+		else if (sceneMgr.inputProvider_.SelectMenu()) {
 			mapManager.GetPlayerMoveMap().is_move = true;
 			mapManager.GetCommandParts().gameObject.SetActive(false);
 
 			//操作の変更
-			allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+			sceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
 
 			return MapSceneProcess.PlayerMove;
 		}

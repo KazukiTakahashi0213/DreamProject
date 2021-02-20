@@ -9,6 +9,7 @@ public class MapSceneProcessPlayerMove : BMapSceneProcessState {
 
 		AllEventManager.GetInstance().EventUpdate();
 
+		//イベントがエントリーゾーンにあって、動いていなかったら
 		if (mapManager.GetPlayerMoveMap().GetEntryZone()._collision_object
 			&& !mapManager.GetPlayerMoveMap().GetMapMoveActive()) {
 			EventMoveMap eventObject = mapManager.GetPlayerMoveMap().GetEntryZone()._collision_object;
@@ -16,7 +17,11 @@ public class MapSceneProcessPlayerMove : BMapSceneProcessState {
 			if (eventObject.GetTriggerState().EventTrigger(mapManager.GetPlayerMoveMap().GetEntryZone())) {
 				eventObject.GetEventSetFuncs()[eventObject.executeEventNum_](eventObject, mapManager);
 
-				eventObject.eventActive_ = false;
+				//操作の変更
+				allSceneMgr.inputProvider_ = new KeyBoardSelectInactiveTriggerInputProvider();
+
+				mapManager.eventBackProcess_ = mapManager.GetProcessProvider().state_;
+				return MapSceneProcess.EventExecute;
 			}
 		}
 

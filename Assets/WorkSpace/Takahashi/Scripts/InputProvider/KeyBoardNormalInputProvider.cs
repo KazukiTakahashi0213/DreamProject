@@ -16,10 +16,10 @@ public class KeyBoardNormalInputProvider : IInputProvider {
 		return Input.GetKey(KeyCode.LeftArrow);
 	}
 	public bool SelectEnter() {
-		return Input.GetKey(KeyCode.Z);
+		return Input.GetKeyDown(KeyCode.Z);
 	}
 	public bool SelectBack() {
-		return Input.GetKey(KeyCode.X);
+		return Input.GetKeyDown(KeyCode.X);
 	}
 	public bool SelectNovelWindowActive() {
 		return Input.GetKey(KeyCode.W);

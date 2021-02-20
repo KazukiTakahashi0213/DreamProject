@@ -158,6 +158,21 @@ public class EnemyBattleData : TrainerBattleData {
 		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 		AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
+		//モンスターの登場演出
+		{
+			Sprite[] sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("BattleScene/MonsterSetEffect");
+			List<Sprite> animeSprites = new List<Sprite>();
+			for (int i = 0; i < sprites.Length; ++i) {
+				animeSprites.Add(sprites[i]);
+			}
+			AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyEffectParts().GetEventSpriteRenderer(), animeSprites);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
+		}
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() / 2);
+
 		//画像の設定
 		if (monsterDatas_[0].battleData_.HaveAbnormalType(AbnormalType.Hero)) {
 			List<Sprite> sprites = new List<Sprite>();
@@ -249,6 +264,21 @@ public class EnemyBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+			//モンスターの登場演出
+			{
+				Sprite[] sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("BattleScene/MonsterSetEffect");
+				List<Sprite> animeSprites = new List<Sprite>();
+				for (int i = 0; i < sprites.Length; ++i) {
+					animeSprites.Add(sprites[i]);
+				}
+				AllEventManager.GetInstance().EventSpriteRendererSet(manager.GetEnemyEffectParts().GetEventSpriteRenderer(), animeSprites);
+				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+				AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
+			}
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() / 2);
 
 			//画像の設定
 			if (monsterDatas_[0].battleData_.HaveAbnormalType(AbnormalType.Hero)) {

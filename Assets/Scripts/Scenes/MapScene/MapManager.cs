@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour, ISceneManager {
 	MapSceneProcessProvider processProvider_ = new MapSceneProcessProvider();
+	public MapSceneProcess eventBackProcess_ = MapSceneProcess.None;
 
 	[SerializeField] private Camera mainCamera_ = null;
 	[SerializeField] private PlayerMoveMap playerMoveMap_ = null;
@@ -25,8 +26,18 @@ public class MapManager : MonoBehaviour, ISceneManager {
 		//依存性注入
 		processProvider_.state_ = MapSceneProcess.PlayerMove;
 
+		//主人公の移動の変更
+		playerMoveMap_.is_move = true;
+
 		//フロントスクリーンをカメラの子にする
+		AllSceneManager.GetInstance().GetPublicFrontScreen().gameObject.transform.position = new Vector3(mainCamera_.transform.position.x, mainCamera_.transform.position.y, -9.5f);
 		AllSceneManager.GetInstance().GetPublicFrontScreen().gameObject.transform.SetParent(mainCamera_.transform);
+
+		//選択肢の非表示
+		commandParts_.gameObject.SetActive(false);
+
+		//選択肢の初期化
+		commandParts_.SelectReset(new Vector3(-0.6f, 0.85f, -4));
 
 		//フェードイン
 		allEventMgr.EventSpriteRendererSet(

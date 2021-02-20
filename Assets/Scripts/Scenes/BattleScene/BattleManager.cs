@@ -21,10 +21,11 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/BattleScene/Dreamers_Academy_Battle");
 		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
 
+		//エネミーの画像の設定
+		enemyParts_.GetMonsterSprite().sprite = EnemyTrainerData.GetInstance().GetSprite();
+
 		//エネミーモンスターの読み込み
 		{
-			//外部でする処理
-
 			//エネミーの先頭のモンスターの取得
 			IMonsterData md = EnemyBattleData.GetInstance().GetMonsterDatas(0);
 
@@ -44,8 +45,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		//プレイヤーモンスターの読み込み
 		{
-			//外部でする処理
-
 			//エネミーの先頭のモンスターの取得
 			IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);
 
@@ -86,8 +85,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			//状態異常の反映
 			md.battleData_.AbnormalSetStatusInfoPartsEventSet(playerStatusInfoParts_);
 		}
-
-		//外部でする処理
 
 		//イベントのセット
 		OpeningEventSet();
@@ -728,6 +725,21 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
 
+		//モンスターの登場演出
+		{
+			Sprite[] sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("BattleScene/MonsterSetEffect");
+			List<Sprite> animeSprites = new List<Sprite>();
+			for (int i = 0; i < sprites.Length; ++i) {
+				animeSprites.Add(sprites[i]);
+			}
+			AllEventManager.GetInstance().EventSpriteRendererSet(enemyEffectParts_.GetEventSpriteRenderer(), animeSprites);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
+		}
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);
+
 		//エネミーモンスターの登場
 		AllEventManager.GetInstance().UpdateGameObjectSet(enemyMonsterParts_.GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(true);
@@ -772,6 +784,21 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 
 		AllEventManager.GetInstance().AllUpdateEventExecute(1.5f);
+
+		//モンスターの登場演出
+		{
+			Sprite[] sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("BattleScene/MonsterSetEffect");
+			List<Sprite> animeSprites = new List<Sprite>();
+			for (int i = 0; i < sprites.Length; ++i) {
+				animeSprites.Add(sprites[i]);
+			}
+			AllEventManager.GetInstance().EventSpriteRendererSet(playerEffectParts_.GetEventSpriteRenderer(), animeSprites);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
+		}
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);
 
 		//プレイヤーモンスターの登場
 		AllEventManager.GetInstance().UpdateGameObjectSet(playerMonsterParts_.GetEventGameObject());
