@@ -139,6 +139,10 @@ public class EventMoveMap : ObjectMoveMap {
 		PlayerBattleData playerBattleData = PlayerBattleData.GetInstance();
 		EnemyBattleData enemyBattleData = EnemyBattleData.GetInstance();
 
+		//BGMの再生
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/BattleScene/Dreamers_Battle");
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
+
 		//白
 		allEventMgr.EventSpriteRendererSet(
 			allSceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
@@ -204,6 +208,6 @@ public class EventMoveMap : ObjectMoveMap {
 		playerBattleData.monsterAdd(playerTrainerData.GetMonsterDatas(2));
 
 		//シーンの切り替え
-		allEventMgr.SceneChangeEventSet(SceneState.Battle, SceneChangeMode.Change);
+		allEventMgr.SceneChangeEventSet(SceneState.Battle, SceneChangeMode.Slide);
 	}
 }

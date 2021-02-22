@@ -96,18 +96,32 @@ public class EnemyBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
-			//Enterキー
-			AllEventManager.GetInstance().EventTriggerSet();
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() * 2);
 
 			//エネミーの入場
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyParts().GetEventGameObject(), new Vector3(3.5f, manager.GetEnemyParts().transform.position.y, manager.GetEnemyParts().transform.position.z));
 			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
 			AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
 
-			//Enterキー
-			AllEventManager.GetInstance().EventTriggerSet();
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
-			AllEventManager.GetInstance().EventFinishSet();
+			//フェードアウト
+			AllEventManager.GetInstance().EventSpriteRendererSet(
+				AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite()
+				, null
+				, new Color(AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, AllSceneManager.GetInstance().GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 255)
+				);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+			AllEventManager.GetInstance().AllUpdateEventExecute(2.0f);
+
+			//シーンの切り替え
+			AllEventManager.GetInstance().SceneChangeEventSet(SceneState.Map, SceneChangeMode.Continue);
+
+			//勝ちの設定
+			PlayerTrainerData.GetInstance().battleEnd_ = true;
+			PlayerTrainerData.GetInstance().battleResult_ = true;
 
 			return;
 		}
@@ -379,4 +393,5 @@ public class EnemyBattleData : TrainerBattleData {
 		instance_ = new EnemyBattleData();
 		return instance_;
 	}
+	static public void ReleaseInstance() { instance_ = null; }
 }

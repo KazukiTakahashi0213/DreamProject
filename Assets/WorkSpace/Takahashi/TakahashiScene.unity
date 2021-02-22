@@ -133,6 +133,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6578929507147473458, guid: f7c49514c66393243ac2269e57de50e3,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578929507147473458, guid: f7c49514c66393243ac2269e57de50e3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8530645237663988979, guid: f7c49514c66393243ac2269e57de50e3,
         type: 3}
       propertyPath: m_Color.a

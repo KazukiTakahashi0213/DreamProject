@@ -5,6 +5,10 @@ using UnityEngine;
 public class TitleManager : MonoBehaviour, ISceneManager {
 	public void SceneStart() {
 		AllSceneManager.GetInstance().inputProvider_ = new KeyBoardNormalTriggerInputProvider();
+
+		//BGMの再生
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/TitleScene/Dreamers_Title");
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
 	}
 
 	public void SceneUpdate() {

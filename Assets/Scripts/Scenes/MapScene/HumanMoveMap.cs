@@ -14,8 +14,6 @@ public class HumanMoveMap : EventMoveMap
     {
         Init();
         EventInit();
-
-        //ObjectType = MapData.MAP_STATUS.HUMAN;
     }
 
     void Update()

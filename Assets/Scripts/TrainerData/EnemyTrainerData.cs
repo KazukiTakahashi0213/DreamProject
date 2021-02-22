@@ -28,4 +28,5 @@ public class EnemyTrainerData {
 		instance_ = new EnemyTrainerData();
 		return instance_;
 	}
+	static public void ReleaseInstance() { instance_ = null; }
 }

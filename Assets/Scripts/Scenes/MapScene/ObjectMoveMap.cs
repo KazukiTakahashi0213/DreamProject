@@ -24,8 +24,13 @@ public class ObjectMoveMap : MonoBehaviour
     protected MapData _map = null;
 
     protected Vector2 _now_pos = Vector2.zero;
+    protected Vector3 _start_pos = Vector3.zero;
     protected Vector2 _next = Vector2.zero;
     public Vector2 GetNext() { return _next; }
+    public void ResetNowPos() { 
+        _now_pos = _start_pos;
+        transform.position = _start_pos;
+    }
 
     public bool is_move { get; set; } = true;//falseは動けない(バトル中、話しかけてる最中など)
 
@@ -35,18 +40,20 @@ public class ObjectMoveMap : MonoBehaviour
     //アニメーション関連
     [SerializeField] float _walk_interval = 0.2f;
     [SerializeField] float _stop_interval = 0.4f;
+    [SerializeField] private bool animeSpritesActive_ = false;
     SpriteRenderer _sprite_renderer = null;
     Sprite[] sprites = null;
     int[] dir_states = new int[4] { 10, 1, 7, 4 };
-
 
     protected void Init()//継承したクラスのスタート関数で必ず呼び出すこと
     {
         _map = GameObject.FindGameObjectWithTag("Map").GetComponent<MapData>();
         _now_pos = transform.position;
+        _start_pos = transform.position;
 
         _sprite_renderer = GetComponent<SpriteRenderer>();
-        if (_sprite_renderer.sprite) {
+        if (animeSpritesActive_
+            && _sprite_renderer.sprite) {
             var name = _sprite_renderer.sprite.name;
             name = name.Substring(0, name.IndexOf("_"));
             sprites = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("CharaChip/" + name);
@@ -55,17 +62,17 @@ public class ObjectMoveMap : MonoBehaviour
 
     protected void StopAnim()
     {
-        if (sprites != null) {
-            if (_stop_interval != 0) ChangeSprite(dir_states[(int)direction], _stop_interval);
-            else _sprite_renderer.sprite = sprites[dir_states[(int)direction]];
-        }
+        if (sprites == null) return;
+
+        if (_stop_interval != 0) ChangeSprite(dir_states[(int)direction], _stop_interval);
+        else _sprite_renderer.sprite = sprites[dir_states[(int)direction]];
     }
 
     protected virtual void MoveUp()
     {
         direction = DIRECTION_STATUS.UP;
         if (_next != Vector2.zero) return;
-        var next_pos = new Vector3(_now_pos.x, _now_pos.y + 1, 0);
+        var next_pos = new Vector2(_now_pos.x, _now_pos.y + 1);
         if (_map.MoveCheck(next_pos, ObjectType))
         {
             _next.y = 1;
@@ -77,7 +84,7 @@ public class ObjectMoveMap : MonoBehaviour
     {
         direction = DIRECTION_STATUS.DOWN;
         if (_next != Vector2.zero) return;
-        var next_pos = new Vector3(_now_pos.x, _now_pos.y - 1, 0);
+        var next_pos = new Vector2(_now_pos.x, _now_pos.y - 1);
         if (_map.MoveCheck(next_pos, ObjectType))
         {
             _next.y = -1;
@@ -89,7 +96,7 @@ public class ObjectMoveMap : MonoBehaviour
     {
         direction = DIRECTION_STATUS.RIGHT;
         if (_next != Vector2.zero) return;
-        var next_pos = new Vector3(_now_pos.x + 1, _now_pos.y, 0);
+        var next_pos = new Vector2(_now_pos.x + 1, _now_pos.y);
         if (_map.MoveCheck(next_pos, ObjectType))
         {
             _next.x = 1;
@@ -102,7 +109,7 @@ public class ObjectMoveMap : MonoBehaviour
     {
         direction = DIRECTION_STATUS.LEFT;
         if (_next != Vector2.zero) return;
-        var next_pos = new Vector3(_now_pos.x - 1, _now_pos.y, 0);
+        var next_pos = new Vector2(_now_pos.x - 1, _now_pos.y);
         if (_map.MoveCheck(next_pos, ObjectType))
         {
             _next.x = -1;
@@ -121,7 +128,7 @@ public class ObjectMoveMap : MonoBehaviour
             transform.Translate(_next * speed * Time.deltaTime);
             if (_now_pos.y + _next.y <= transform.position.y)
             {
-                transform.position = new Vector2(_now_pos.x, _now_pos.y + _next.y);
+                transform.position = new Vector3(_now_pos.x, _now_pos.y + _next.y, _start_pos.z);
                 _map.SetMapStatus(_now_pos, _map.GetNextTileMapStatus());
                 _now_pos = transform.position;
                 _next = Vector2.zero;
@@ -134,7 +141,7 @@ public class ObjectMoveMap : MonoBehaviour
             transform.Translate(_next * speed * Time.deltaTime);
             if (_now_pos.y + _next.y >= transform.position.y)
             {
-                transform.position = new Vector2(_now_pos.x, _now_pos.y + _next.y);
+                transform.position = new Vector3(_now_pos.x, _now_pos.y + _next.y, _start_pos.z);
                 _map.SetMapStatus(_now_pos, _map.GetNextTileMapStatus());
                 _now_pos = transform.position;
                 _next = Vector2.zero;
@@ -147,7 +154,7 @@ public class ObjectMoveMap : MonoBehaviour
             transform.Translate(_next * speed * Time.deltaTime);
             if (_now_pos.x + _next.x <= transform.position.x)
             {
-                transform.position = new Vector2(_now_pos.x + _next.x, _now_pos.y);
+                transform.position = new Vector3(_now_pos.x + _next.x, _now_pos.y, _start_pos.z);
                 _map.SetMapStatus(_now_pos, _map.GetNextTileMapStatus());
                 _now_pos = transform.position;
                 _next = Vector2.zero;
@@ -160,7 +167,7 @@ public class ObjectMoveMap : MonoBehaviour
             transform.Translate(_next * speed * Time.deltaTime);
             if (_now_pos.x + _next.x >= transform.position.x)
             {
-                transform.position = new Vector2(_now_pos.x + _next.x, _now_pos.y);
+                transform.position = new Vector3(_now_pos.x + _next.x, _now_pos.y, _start_pos.z);
                 _map.SetMapStatus(_now_pos, _map.GetNextTileMapStatus());
                 _now_pos = transform.position;
                 _next = Vector2.zero;

@@ -17,10 +17,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		nowCommandState_ = new CommandAttack();
 		nowAttackCommandState_ = new AttackCommand0();
 
-		//BGMの再生
-		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/BattleScene/Dreamers_Academy_Battle");
-		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
-
 		//エネミーの画像の設定
 		enemyParts_.GetMonsterSprite().sprite = EnemyTrainerData.GetInstance().GetSprite();
 

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerEntryZone : MonoBehaviour
 {
-    [SerializeField] public Vector2 Up = Vector2.zero;
-    [SerializeField] public Vector2 Down = Vector2.zero;
-    [SerializeField] public Vector2 Right = Vector2.zero;
-    [SerializeField] public Vector2 Left = Vector2.zero;
+    [SerializeField] public Vector3 Up = Vector3.zero;
+    [SerializeField] public Vector3 Down = Vector3.zero;
+    [SerializeField] public Vector3 Right = Vector3.zero;
+    [SerializeField] public Vector3 Left = Vector3.zero;
 
     public EventMoveMap _collision_object = null; 
 

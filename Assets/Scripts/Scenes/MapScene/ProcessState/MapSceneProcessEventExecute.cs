@@ -6,11 +6,17 @@ public class MapSceneProcessEventExecute : BMapSceneProcessState {
 	public override MapSceneProcess Update(MapManager mapManager) {
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
+		PlayerTrainerData playerData = PlayerTrainerData.GetInstance();
 
-		if (AllEventManager.GetInstance().EventUpdate()) {
-			allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+		//プレイヤーが動いていなかったら
+		if (!mapManager.GetPlayerMoveMap().GetMapMoveActive()) {
+			if (AllEventManager.GetInstance().EventUpdate()) {
+				allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
 
-			return mapManager.eventBackProcess_;
+				mapManager.GetPlayerMoveMap().is_move = true;
+
+				return mapManager.eventBackProcess_;
+			}
 		}
 
 		if (allSceneMgr.inputProvider_.UpSelect()) {

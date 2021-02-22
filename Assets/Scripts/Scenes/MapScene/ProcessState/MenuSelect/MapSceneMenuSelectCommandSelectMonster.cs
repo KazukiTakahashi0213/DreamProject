@@ -7,7 +7,14 @@ public class MapSceneMenuSelectCommandSelectMonster : BMapSceneMenuSelectCommand
 		AllEventManager eventMgr = AllEventManager.GetInstance();
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
 
+		//操作の変更
 		sceneMgr.inputProvider_ = new InactiveInputProvider();
+
+		//選択肢の非表示
+		mapManager.GetCommandParts().gameObject.SetActive(false);
+
+		//選択肢の初期化
+		mapManager.GetCommandParts().SelectReset(new Vector3(-0.6f, 0.85f, -4));
 
 		//フェードアウト
 		eventMgr.EventSpriteRendererSet(
@@ -20,6 +27,6 @@ public class MapSceneMenuSelectCommandSelectMonster : BMapSceneMenuSelectCommand
 
 		//シーンの切り替え
 		MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneNormalProcessStateProvider());
-		eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Change);
+		eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Slide);
 	}
 }
