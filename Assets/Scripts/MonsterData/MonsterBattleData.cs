@@ -39,9 +39,6 @@ public class MonsterBattleData : IMonsterBattleData {
 
 		avoidRateParameterRank_ = 0;
 		hitRateParameterRank_ = 0;
-
-		firstAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
-		secondAbnormalState_ = new AbnormalTypeState(AbnormalType.None);
 	}
 
 	public void AttackParameterRankAdd(int value) {
@@ -143,6 +140,50 @@ public class MonsterBattleData : IMonsterBattleData {
 
 	public int GetAvoidRateParameterRank() { return avoidRateParameterRank_; }
 	public int GetHitRateParameterRank() { return hitRateParameterRank_; }
+
+	public void AbnormalSetStatusInfoParts(StatusInfoParts statusInfoParts) {
+		//状態異常の１つ目の表示処理
+		if (firstAbnormalState_.state_ != AbnormalType.None) {
+			//文字の変更
+			statusInfoParts.GetFirstAbnormalStateInfoParts().GetInfoEventText().GetText().text = firstAbnormalState_.GetName();
+
+			//表示
+			//文字の色の変更
+			statusInfoParts.GetFirstAbnormalStateInfoParts().GetInfoEventText().GetText().color = new Color(1, 1, 1, 1);
+
+			//色の変更
+			statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color = firstAbnormalState_.GetColor();
+		}
+		else {
+			//非表示
+			//文字の色の変更
+			statusInfoParts.GetFirstAbnormalStateInfoParts().GetInfoEventText().GetText().color = new Color(1, 1, 1, 0);
+
+			//色の変更
+			statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color = new Color(statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.r, statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.g, statusInfoParts.GetFirstAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.b, 0);
+		}
+
+		//状態異常の２つ目の表示処理
+		if (secondAbnormalState_.state_ != AbnormalType.None) {
+			//文字の変更
+			statusInfoParts.GetSecondAbnormalStateInfoParts().GetInfoEventText().GetText().text = secondAbnormalState_.GetName();
+
+			//表示
+			//文字の色の変更
+			statusInfoParts.GetSecondAbnormalStateInfoParts().GetInfoEventText().GetText().color = new Color(1, 1, 1, 1);
+
+			//色の変更
+			statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color = secondAbnormalState_.GetColor();
+		}
+		else {
+			//非表示
+			//文字の色の変更
+			statusInfoParts.GetSecondAbnormalStateInfoParts().GetInfoEventText().GetText().color = new Color(1, 1, 1, 0);
+
+			//色の変更
+			statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color = new Color(statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.r, statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.g, statusInfoParts.GetSecondAbnormalStateInfoParts().GetBaseEventSprite().GetSpriteRenderer().color.b, 0);
+		}
+	}
 
 	public void AbnormalSetStatusInfoPartsEventSet(StatusInfoParts statusInfoParts) {
 		//状態異常の１つ目の表示処理

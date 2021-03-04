@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class BugMenuManager : MonoBehaviour, ISceneManager {
 	private BBugMenuSceneProcessStateProvider processProvider_ = new BugMenuSceneNormalProcessStateProvider();
+	private BugMenuSceneInputSoundProvider inputSoundProvider_ = new BugMenuSceneInputSoundProvider();
 	public BBugMenuSceneProcessStateProvider GetProcessProvider() { return processProvider_; }
+	public BugMenuSceneInputSoundProvider GetInputSoundProvider() { return inputSoundProvider_; }
+
+	private List<SkillData> skillTradeActiveSkills_ = new List<SkillData>();
+	public SkillData GetSkillTradeActiveSkills(int number) { return skillTradeActiveSkills_[number]; }
+	public int GetSkillTradeActiveSkillsCount() { return skillTradeActiveSkills_.Count; }
+	public void SkillTradeActiveSkillsAdd(SkillData skillData) {
+		if (!PlayerTrainerData.GetInstance().GetMonsterDatas(MonsterMenuManager.skillTradeSelectMonsterNumber_).SkillTradeCheck(skillData.elementType_.state_)) return;
+
+		skillTradeActiveSkills_.Add(skillData);
+	}
+
 
 	//シーン上のオブジェクト
 	[SerializeField] CommandParts commandParts_ = null;
@@ -19,11 +31,11 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 	public void SceneStart() {
 		AllEventManager eventMgr = AllEventManager.GetInstance();
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
-		PlayerTrainerData playerTrainerData = PlayerTrainerData.GetInstance();
 
 		//依存性注入
 		processProvider_ = startProcessStateProvider_;
 		processProvider_.state_ = BugMenuSceneProcess.SkillSelect;
+		inputSoundProvider_.state_ = BugMenuSceneInputSoundState.Normal;
 
 		//文字の初期化
 		for (int i = 0; i < commandParts_.GetCommandWindowTextsCount(); ++i) {
@@ -36,20 +48,8 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 		//選択肢の初期化
 		commandParts_.SelectReset(new Vector3(-7.7f, 1.23f, -1));
 
-		//技の名前の反映
-		for (int i = 0;i < commandParts_.GetCommandWindowTextsCount(); ++i) {
-			if (i < playerTrainerData.GetSkillDatasCount()) {
-				commandParts_.GetCommandWindowTexts(i).text = playerTrainerData.GetSkillDatas(i).skillName_;
-			}
-		}
-
-		//技の情報の反映
-		infoFrameParts_.SkillInfoReflect(playerTrainerData.GetSkillDatas(0));
-
-		//技が表以上にあったら
-		if(playerTrainerData.GetSkillDatasCount() > commandParts_.GetCommandWindowTextsCount()) {
-			downCursor_.gameObject.SetActive(true);
-		}
+		//初期化
+		processProvider_.init(this);
 
 		//フェードイン
 		eventMgr.EventSpriteRendererSet(
@@ -70,7 +70,7 @@ public class BugMenuManager : MonoBehaviour, ISceneManager {
 	}
 
 	public void SceneEnd() {
-
+		skillTradeActiveSkills_.Clear();
 	}
 
 	public GameObject GetGameObject() { return gameObject; }

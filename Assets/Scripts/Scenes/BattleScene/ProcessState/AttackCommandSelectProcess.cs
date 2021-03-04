@@ -106,7 +106,11 @@ public class AttackCommandSelectProcess : IProcessState {
 		else if (allSceneMgr.inputProvider_.SelectEnter()) {
 			ISkillData playerSkillData = PlayerBattleData.GetInstance().GetMonsterDatas(0).GetSkillDatas(mgr.playerSelectSkillNumber_);
 
-			if (playerSkillData.nowPlayPoint_ > 0) {
+			if (playerSkillData.nowPlayPoint_ > 0
+				&& playerSkillData.skillNumber_ != (int)SkillDataNumber.None) {
+				//SE
+				mgr.GetInputSoundProvider().SelectEnter();
+
 				mgr.GetPlayerStatusInfoParts().ProcessIdleEnd();
 				mgr.GetPlayerMonsterParts().ProcessIdleEnd();
 

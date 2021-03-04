@@ -7,11 +7,10 @@ public enum SceneState {
 	SaveDataSelect,
 	Map,
 	BugMenu,
-	MonsterBugMenu,
 	MonsterMenu,
-	MonsterMenuInfo,
-	MonsterParameterCustom,
 	Battle,
+	Ending,
+	GameContinue,
 	Max
 }
 
@@ -71,11 +70,10 @@ public class AllSceneManager : MonoBehaviour {
 		"SaveDataSelectScene",
 		"MapScene",
 		"BugMenuScene",
-		"MonsterBugMenuScene",
 		"MonsterMenuScene",
-		"MonsterMenuInfoScene",
-		"MonsterParameterCustomScene",
 		"BattleScene",
+		"EndingScene",
+		"GameContinueScene"
 	};
 
 	private ISceneManager[] sceneState = new ISceneManager[(int)SceneState.Max];

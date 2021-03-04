@@ -65,6 +65,12 @@ namespace t13 {
 
 			return processState_.InOutFluct(this, count, startPos, endPos, regulation_time);
 		}
+
+		public void Reset() {
+			range_ = 0;
+			startPos_archive_ = 0;
+			firstFluct_ = true;
+		}
 	}
 
 }

@@ -154,6 +154,7 @@ MonoBehaviour:
   dpGaugeMeterUpdateImage_: {fileID: 0}
   eventGameObject_: {fileID: 5192767894417079234}
   idleTimeRegulation_: 0.5
+  entryPosY_: 0
 --- !u!114 &5192767894417079234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +337,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 53fa4cfce73185e44836ee5db38beb3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2ac2abe0a0b61d3438696b6722196925, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -417,7 +418,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6133da3b2c69bdb439be8572bf46f874, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6c718a1fea5340343a557b034b0d047f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1108,7 +1109,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4347560582355182495
 RectTransform:
   m_ObjectHideFlags: 0

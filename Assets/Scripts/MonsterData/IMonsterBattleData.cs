@@ -26,6 +26,7 @@ public interface IMonsterBattleData {
 	int GetAvoidRateParameterRank();
 	int GetHitRateParameterRank();
 
+	void AbnormalSetStatusInfoParts(StatusInfoParts statusInfoParts);
 	void AbnormalSetStatusInfoPartsEventSet(StatusInfoParts statusInfoParts);
 	void RefreshAbnormalType(AbnormalType refreshAbnormalType);
 	bool HaveAbnormalType(AbnormalType haveAbnormalType);

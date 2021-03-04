@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class StatusInfoParts : MonoBehaviour {
 	//EntryPoint
-	void Start() {
-		//初期位置の保存
-		entryPosY_ = transform.position.y;
-	}
-
 	void Update() {
 		//メイン処理
 		processState_.state_ = processState_.Update(this);
@@ -35,8 +30,6 @@ public class StatusInfoParts : MonoBehaviour {
 	private float timeRegulation_ = 0;
 	private Color32 endColor_ = new Color32();
 
-	private float entryPosY_;
-
 	[SerializeField] FrameParts frameParts_ = null;
 	[SerializeField] BaseParts baseParts_ = null;
 	[SerializeField] AbnormalStateInfoParts firstAbnormalStateInfoParts_ = null;
@@ -44,6 +37,7 @@ public class StatusInfoParts : MonoBehaviour {
 	[SerializeField] UpdateImage dpGaugeMeterUpdateImage_ = null;
 	[SerializeField] UpdateGameObject eventGameObject_ = null;
 	[SerializeField] float idleTimeRegulation_ = 0.5f;
+	[SerializeField] private float entryPosY_ = 0;
 
 	public void SetProcessIdleState(IStatusInfoPartsProcessIdleState state) { processIdleState_ = state; }
 	public IStatusInfoPartsProcessIdleState GetProcessIdleState() { return processIdleState_; }
@@ -104,41 +98,6 @@ public class StatusInfoParts : MonoBehaviour {
 		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(monsterData.RealHitPoint(), monsterData.nowHitPoint_, 1);
 		frameParts_.GetHpGaugeParts().ProcessStateGaugeUpdateExecute(0, t13.TimeFluctProcess.Liner, monsterData, hpGaugeFillAmount);
 
-		//状態異常の反映
-		//状態異常の１つ目の表示処理
-		if (monsterData.battleData_.firstAbnormalState_.state_ != AbnormalType.None) {
-			//文字の変更
-			firstAbnormalStateInfoParts_.GetInfoEventText().GetText().text = monsterData.battleData_.firstAbnormalState_.GetName();
-
-			//色の変更
-			float colorAlphaTemp = firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.a;
-			firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color = monsterData.battleData_.firstAbnormalState_.GetColor();
-			firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color = new Color(firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.r, firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.g, firstAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.b, colorAlphaTemp);
-
-			//表示
-			firstAbnormalStateInfoParts_.GetUpdateGameObject().gameObject.SetActive(true);
-		}
-		else {
-			//非表示
-			firstAbnormalStateInfoParts_.GetUpdateGameObject().gameObject.SetActive(false);
-		}
-
-		//状態異常の２つ目の表示処理
-		if (monsterData.battleData_.secondAbnormalState_.state_ != AbnormalType.None) {
-			//文字の変更
-			secondAbnormalStateInfoParts_.GetInfoEventText().GetText().text = monsterData.battleData_.secondAbnormalState_.GetName();
-
-			//色の変更
-			float colorAlphaTemp = secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.a;
-			secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color = monsterData.battleData_.secondAbnormalState_.GetColor();
-			secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color = new Color(secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.r, secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.g, secondAbnormalStateInfoParts_.GetBaseEventSprite().GetSpriteRenderer().color.b, colorAlphaTemp);
-
-			//表示
-			secondAbnormalStateInfoParts_.GetUpdateGameObject().gameObject.SetActive(true);
-		}
-		else {
-			//非表示
-			secondAbnormalStateInfoParts_.GetUpdateGameObject().gameObject.SetActive(false);
-		}
+		monsterData.battleData_.AbnormalSetStatusInfoParts(this);
 	}
 }

@@ -10,6 +10,9 @@ public class AttackCommand2 : IAttackCommandState {
 		return this;
 	}
 	public IAttackCommandState RightSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().RightSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -18,6 +21,9 @@ public class AttackCommand2 : IAttackCommandState {
 		return new AttackCommand3();
 	}
 	public IAttackCommandState UpSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().UpSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 

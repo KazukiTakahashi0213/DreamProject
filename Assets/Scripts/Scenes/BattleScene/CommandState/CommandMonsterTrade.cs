@@ -10,6 +10,9 @@ public class CommandMonsterTrade : ICommandState {
 		return this;
 	}
 	public ICommandState RightSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().RightSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -17,6 +20,9 @@ public class CommandMonsterTrade : ICommandState {
 		return new CommandEscape();
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().UpSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -27,6 +33,9 @@ public class CommandMonsterTrade : ICommandState {
 	public IProcessState Execute(BattleManager mgr) {
 		AllEventManager eventMgr = AllEventManager.GetInstance();
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
+
+		//SE
+		mgr.GetInputSoundProvider().SelectEnter();
 
 		mgr.InactiveUiCommand();
 

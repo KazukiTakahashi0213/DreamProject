@@ -5,111 +5,112 @@ using UnityEngine;
 public class BugMenuSceneMonsterMenuSkillTradeProcessSkillSelect : BBugMenuSceneProcessState {
 	//選択肢制御
 	private int skillSelectNum_ = 0;
-	private int cursorSelectNum_ = 0;
 
 	public override BugMenuSceneProcess Update(BugMenuManager bugMenuManager) {
-		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
-		AllEventManager allEventMgr = AllEventManager.GetInstance();
-		PlayerTrainerData playerTrainerData = PlayerTrainerData.GetInstance();
+		AllEventManager eventMgr = AllEventManager.GetInstance();
+		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
+		PlayerTrainerData playerData = PlayerTrainerData.GetInstance();
 
-		allEventMgr.EventUpdate();
+		eventMgr.EventUpdate();
 
-		if (allSceneMgr.inputProvider_.UpSelect()) {
+		if (sceneMgr.inputProvider_.UpSelect()) {
 			//表示する技がまだあったら
 			if (skillSelectNum_ > 0) {
+				//SE
+				bugMenuManager.GetInputSoundProvider().UpSelect();
+
 				--skillSelectNum_;
+				bugMenuManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 1.0f, 0));
 
 				//一番上からスクロールさせようとしたら
-				if (cursorSelectNum_ == 0) {
+				if (bugMenuManager.GetCommandParts().GetSelectNumber() == -1) {
 					//技の名前を更新する
-					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() - 1);
-					for (int i = startNum; i < bugMenuManager.GetCommandParts().GetCommandWindowTextsCount(); ++i) {
-						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerTrainerData.GetSkillDatas(i).skillName_;
+					for (int i = skillSelectNum_, j = 0; i < skillSelectNum_ + bugMenuManager.GetCommandParts().GetCommandWindowTextsCount(); ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(j).text = "　" + bugMenuManager.GetSkillTradeActiveSkills(i).skillName_;
+
+						++j;
 					}
 
-					//upCursorの非表示
+					//カーソルを戻す
+					bugMenuManager.GetCommandParts().CommandSelect(1, new Vector3(0, -1.0f, 0));
+
+					//downCursorの表示
+					bugMenuManager.GetDownCursor().gameObject.SetActive(true);
+
 					if (skillSelectNum_ == 0) {
+						//upCursorの表示
 						bugMenuManager.GetUpCursor().gameObject.SetActive(false);
 					}
-					//downCursorの表示
-					else {
-						bugMenuManager.GetDownCursor().gameObject.SetActive(true);
-					}
 				}
 
 				//技の情報の反映
-				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerTrainerData.GetSkillDatas(skillSelectNum_));
-			}
-			//カーソルが上に動かせたら
-			if (cursorSelectNum_ > 0) {
-				--cursorSelectNum_;
-
-				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, 1.0f, 0));
+				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(bugMenuManager.GetSkillTradeActiveSkills(skillSelectNum_));
 			}
 		}
-		else if (allSceneMgr.inputProvider_.DownSelect()) {
+		else if (sceneMgr.inputProvider_.DownSelect()) {
 			//表示する技がまだあったら
-			if (skillSelectNum_ < playerTrainerData.GetHaveSkillSize() - 1) {
+			if (skillSelectNum_ < bugMenuManager.GetSkillTradeActiveSkillsCount() - 1) {
+				//SE
+				bugMenuManager.GetInputSoundProvider().DownSelect();
+
 				++skillSelectNum_;
+				bugMenuManager.GetCommandParts().CommandSelect(1, new Vector3(0, -1.0f, 0));
 
 				//一番下からスクロールさせようとしたら
-				if (cursorSelectNum_ == bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() - 1) {
+				if (bugMenuManager.GetCommandParts().GetSelectNumber() == bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()) {
 					//技の名前を更新する
-					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() - 1);
-					for (int i = startNum; i < skillSelectNum_ + 1; ++i) {
-						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerTrainerData.GetSkillDatas(i).skillName_;
+					for (int i = skillSelectNum_ - bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() + 1, j = 0; i < skillSelectNum_ + 1; ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(j).text = "　" + bugMenuManager.GetSkillTradeActiveSkills(i).skillName_;
+
+						++j;
 					}
 
-					//downCursorの非表示
-					if (skillSelectNum_ == playerTrainerData.GetSkillDatasCount() - 1) {
+					//カーソルを戻す
+					bugMenuManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 1.0f, 0));
+
+					//upCursorの表示
+					bugMenuManager.GetUpCursor().gameObject.SetActive(true);
+
+					if (skillSelectNum_ == bugMenuManager.GetSkillTradeActiveSkillsCount() - 1) {
+						//downCursorの表示
 						bugMenuManager.GetDownCursor().gameObject.SetActive(false);
-					}
-					//upCursorの非表示
-					else {
-						bugMenuManager.GetUpCursor().gameObject.SetActive(true);
 					}
 				}
 
 				//技の情報の反映
-				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerTrainerData.GetSkillDatas(skillSelectNum_));
-			}
-			//カーソルが下に動かせたら
-			if (cursorSelectNum_ < playerTrainerData.GetHaveSkillSize() - 1) {
-				++cursorSelectNum_;
-
-				t13.UnityUtil.ObjectPosAdd(bugMenuManager.GetCommandParts().GetCursorParts().gameObject, new Vector3(0, -1.0f, 0));
+				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(bugMenuManager.GetSkillTradeActiveSkills(skillSelectNum_));
 			}
 		}
-		else if (allSceneMgr.inputProvider_.RightSelect()) {
+		else if (sceneMgr.inputProvider_.RightSelect()) {
 		}
-		else if (allSceneMgr.inputProvider_.LeftSelect()) {
+		else if (sceneMgr.inputProvider_.LeftSelect()) {
 		}
-		else if (allSceneMgr.inputProvider_.SelectEnter()) {
-			AllEventManager eventMgr = AllEventManager.GetInstance();
-			AllSceneManager sceneMgr = AllSceneManager.GetInstance();
+		else if (sceneMgr.inputProvider_.SelectEnter()) {
+			//技を習得できるか
+			if (playerData.GetMonsterDatas(MonsterMenuManager.skillTradeSelectMonsterNumber_).SkillTradeCheck(bugMenuManager.GetSkillTradeActiveSkills(skillSelectNum_).elementType_.state_)) {
+				//SE
+				bugMenuManager.GetInputSoundProvider().SelectEnter();
 
-			MonsterMenuManager.skillTradeActive_ = true;
-			MonsterMenuManager.skillTradeSkillData_ = new SkillData(playerTrainerData.GetSkillDatas(skillSelectNum_).skillNumber_);
+				MonsterMenuManager.skillTradeActive_ = true;
+				MonsterMenuManager.skillTradeSkillData_ = new SkillData((SkillDataNumber)bugMenuManager.GetSkillTradeActiveSkills(skillSelectNum_).skillNumber_);
 
-			sceneMgr.inputProvider_ = new InactiveInputProvider();
+				sceneMgr.inputProvider_ = new InactiveInputProvider();
 
-			//フェードアウト
-			eventMgr.EventSpriteRendererSet(
-				sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
-				, null
-				, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 255)
-				);
-			eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
-			eventMgr.AllUpdateEventExecute(0.4f);
+				//フェードアウト
+				eventMgr.EventSpriteRendererSet(
+					sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()
+					, null
+					, new Color(sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.r, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.g, sceneMgr.GetPublicFrontScreen().GetEventScreenSprite().GetSpriteRenderer().color.b, 255)
+					);
+				eventMgr.EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
+				eventMgr.AllUpdateEventExecute(0.4f);
 
-			//シーンの切り替え
-			MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneNormalProcessStateProvider());
-			eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Continue);
+				//シーンの切り替え
+				MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneNormalProcessStateProvider());
+				eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Continue);
+			}
 		}
-		else if (allSceneMgr.inputProvider_.SelectBack()) {
-			AllEventManager eventMgr = AllEventManager.GetInstance();
-			AllSceneManager sceneMgr = AllSceneManager.GetInstance();
-
+		else if (sceneMgr.inputProvider_.SelectBack()) {
 			MonsterMenuManager.skillTradeActive_ = true;
 			MonsterMenuManager.skillTradeSkillData_ = null;
 
@@ -128,9 +129,9 @@ public class BugMenuSceneMonsterMenuSkillTradeProcessSkillSelect : BBugMenuScene
 			MonsterMenuManager.SetProcessStateProvider(new MonsterMenuSceneNormalProcessStateProvider());
 			eventMgr.SceneChangeEventSet(SceneState.MonsterMenu, SceneChangeMode.Continue);
 		}
-		else if (allSceneMgr.inputProvider_.SelectNovelWindowActive()) {
+		else if (sceneMgr.inputProvider_.SelectNovelWindowActive()) {
 		}
-		else if (allSceneMgr.inputProvider_.SelectMenu()) {
+		else if (sceneMgr.inputProvider_.SelectMenu()) {
 		}
 
 		return bugMenuManager.GetProcessProvider().state_;

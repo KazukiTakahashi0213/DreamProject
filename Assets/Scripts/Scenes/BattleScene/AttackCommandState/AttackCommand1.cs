@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AttackCommand1 : IAttackCommandState {
 	public IAttackCommandState DownSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().DownSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -12,6 +15,9 @@ public class AttackCommand1 : IAttackCommandState {
 		return new AttackCommand3();
 	}
 	public IAttackCommandState LeftSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().LeftSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 

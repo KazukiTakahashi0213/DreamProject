@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterMenuSceneNormalProcessMonsterActionSelect : BMonsterMenuSceneProcessState {
-	private MonsterNormalMenuSceneMonsterActionCommandExecuteStateProvider nowMonsterActionCommandExecuteStateProvider_ = new MonsterNormalMenuSceneMonsterActionCommandExecuteStateProvider(MonsterNormalMenuSceneMonsterActionCommandExecute.Trade);
+	private MonsterNormalMenuSceneMonsterActionCommandExecuteStateProvider nowMonsterActionCommandExecuteStateProvider_ = new MonsterNormalMenuSceneMonsterActionCommandExecuteStateProvider(MonsterNormalMenuSceneMonsterActionCommandExecute.Swap);
 
 	public override MonsterMenuSceneProcess Update(MonsterMenuManager monsterMenuManager) {
 		AllSceneManager sceneMgr = AllSceneManager.GetInstance();
@@ -12,23 +12,25 @@ public class MonsterMenuSceneNormalProcessMonsterActionSelect : BMonsterMenuScen
 		eventMgr.EventUpdate();
 
 		if (sceneMgr.inputProvider_.UpSelect()) {
-			if (monsterMenuManager.selectMonsterActionCommandNumber_ > 0) {
-				monsterMenuManager.selectMonsterActionCommandNumber_ -= 1;
+			if (monsterMenuManager.GetMonsterActionCommandParts().GetSelectNumber()+1 > 0) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().UpSelect();
 
-				nowMonsterActionCommandExecuteStateProvider_.state_ = (MonsterNormalMenuSceneMonsterActionCommandExecute)monsterMenuManager.selectMonsterActionCommandNumber_ + 1;
+				//選択肢の処理
+				monsterMenuManager.GetMonsterActionCommandParts().CommandSelect(-1, new Vector3(0, 0.55f, 0));
 
-				//カーソルの移動
-				t13.UnityUtil.ObjectPosAdd(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().gameObject, new Vector3(0, 0.55f, 0));
+				nowMonsterActionCommandExecuteStateProvider_.state_ = (MonsterNormalMenuSceneMonsterActionCommandExecute)monsterMenuManager.GetMonsterActionCommandParts().GetSelectNumber();
 			}
 		}
 		else if (sceneMgr.inputProvider_.DownSelect()) {
-			if (monsterMenuManager.selectMonsterActionCommandNumber_ < monsterMenuManager.GetMonsterActionCommandParts().GetCommandWindowTextsCount() - 1) {
-				monsterMenuManager.selectMonsterActionCommandNumber_ += 1;
+			if (monsterMenuManager.GetMonsterActionCommandParts().GetSelectNumber() < monsterMenuManager.GetMonsterActionCommandParts().GetCommandWindowTextsCount() - 1) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().DownSelect();
 
-				nowMonsterActionCommandExecuteStateProvider_.state_ = (MonsterNormalMenuSceneMonsterActionCommandExecute)monsterMenuManager.selectMonsterActionCommandNumber_ + 1;
+				//選択肢の処理
+				monsterMenuManager.GetMonsterActionCommandParts().CommandSelect(1, new Vector3(0, -0.55f, 0));
 
-				//カーソルの移動
-				t13.UnityUtil.ObjectPosAdd(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().gameObject, new Vector3(0, -0.55f, 0));
+				nowMonsterActionCommandExecuteStateProvider_.state_ = (MonsterNormalMenuSceneMonsterActionCommandExecute)monsterMenuManager.GetMonsterActionCommandParts().GetSelectNumber();
 			}
 		}
 		else if (sceneMgr.inputProvider_.RightSelect()) {
@@ -36,12 +38,14 @@ public class MonsterMenuSceneNormalProcessMonsterActionSelect : BMonsterMenuScen
 		else if (sceneMgr.inputProvider_.LeftSelect()) {
 		}
 		else if (sceneMgr.inputProvider_.SelectEnter()) {
+			//SE
+			monsterMenuManager.GetInputSoundProvider().SelectEnter();
+
 			nowMonsterActionCommandExecuteStateProvider_.Execute(monsterMenuManager);
 
 			//モンスターの行動の選択肢の初期化
-			nowMonsterActionCommandExecuteStateProvider_.state_ = MonsterNormalMenuSceneMonsterActionCommandExecute.Trade;
-			monsterMenuManager.selectMonsterActionCommandNumber_ = 0;
-			t13.UnityUtil.ObjectPosMove(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().gameObject, new Vector3(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().transform.position.x, 0.85f + monsterMenuManager.GetMonsterActionCommandParts().gameObject.transform.position.y, monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().transform.position.z));
+			nowMonsterActionCommandExecuteStateProvider_.state_ = MonsterNormalMenuSceneMonsterActionCommandExecute.Swap;
+			monsterMenuManager.GetMonsterActionCommandParts().SelectReset(new Vector3(-0.6f, 0.85f, -4));
 		}
 		else if (sceneMgr.inputProvider_.SelectBack()) {
 			monsterMenuManager.GetMonsterActionCommandParts().gameObject.SetActive(false);
@@ -50,9 +54,8 @@ public class MonsterMenuSceneNormalProcessMonsterActionSelect : BMonsterMenuScen
 			AllSceneManager.GetInstance().inputProvider_ = new KeyBoardNormalInputProvider();
 
 			//モンスターの行動の選択肢の初期化
-			nowMonsterActionCommandExecuteStateProvider_.state_ = MonsterNormalMenuSceneMonsterActionCommandExecute.Trade;
-			monsterMenuManager.selectMonsterActionCommandNumber_ = 0;
-			t13.UnityUtil.ObjectPosMove(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().gameObject, new Vector3(monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().transform.position.x, 0.85f + monsterMenuManager.GetMonsterActionCommandParts().gameObject.transform.position.y, monsterMenuManager.GetMonsterActionCommandParts().GetCursorParts().transform.position.z));
+			nowMonsterActionCommandExecuteStateProvider_.state_ = MonsterNormalMenuSceneMonsterActionCommandExecute.Swap;
+			monsterMenuManager.GetMonsterActionCommandParts().SelectReset(new Vector3(-0.6f, 0.85f, -4));
 
 			return MonsterMenuSceneProcess.MonsterSelect;
 		}

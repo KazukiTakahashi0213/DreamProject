@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class MonsterParts : MonoBehaviour {
 	//EntryPoint
-	void Start() {
-		//初期位置の保存
-		entryPosY_ = transform.position.y;
-	}
-
 	void Update() {
 		processState_ = processState_.Update(this);
 	}
@@ -17,14 +12,13 @@ public class MonsterParts : MonoBehaviour {
 	[SerializeField] private EventSpriteRenderer eventMonsterSprite_ = null;
 	[SerializeField] private UpdateGameObject eventGameObject_ = null;
 	[SerializeField] float idleTimeRegulation_ = 0.5f;
+	[SerializeField] private float entryPosY_ = 0;
 
 	private IMonsterPartsProcessState processState_ = new MonsterPartsProcessNone();
 	private IMonsterPartsProcessIdleState processIdleState_ = new MonsterPartsProcessIdleDown();
 
 	private t13.TimeFluct timeFluct_ = new t13.TimeFluct();
 	private t13.TimeCounter timeCounter_ = new t13.TimeCounter();
-
-	private float entryPosY_;
 
 	public SpriteRenderer GetMonsterSprite() { return monsterSprite_; }
 	public EventSpriteRenderer GetEventMonsterSprite() { return eventMonsterSprite_; }

@@ -4,71 +4,65 @@ using UnityEngine;
 
 public enum SkillDataNumber {
 	None
-	, Taiatari
-	, Hiitosutanpu
-	, Mizushuriken
-	, Uddohanmaa
+	, Totugeki
+	, Baandoraibu
+	, Suimenngiri
+	, Happabureedo
+	, Shougekiha
+	, Neppa
+	, Wootaagan
+	, Happabiimu
+	, Heddoatakku
+	, Bakunetupanchi
+	, Taidaruhando
+	, Gurandturii
+	, Daihoukou
+	, Neesisen
+	, Maddoshotto
+	, Siidobomu
+	, Hasamiuchi
+	, Hyakutonpuresu
+	, Mienaite
+	, Dairinshou
+	, Areishotto
+	, Mienaikoe
+	, Tumedetuku
+	, Aianpuresu
+	, Sanninme
+	, Musinokona
+	, Aianbiimu
+	, Turukamesuberi
+	, Musinatakku
+	, Faiasoodo
+	, Suiryuuuchi
+	, Grooturii
+	, Midaresasi
+	, Aiansoodo
+	, Hyouipanchi
+	, Otakebi
+	, Tainetuhakka
+	, Taihuun
+	, Ibaranotoge
+	, Kurosuekoo
+	, Reerugan
+	, Usikoku
+	, Honoonokiri
+	, Dokunokiri
+	, Nemurinokiri
+	, Memainokiri
+	, Kousoku
+	, Ketui
+	, Kenbu
+	, Mahouseisei
+	, Tetunokokoro
+	, Sinkousin
+	, Baasutoappu
+	, Rimeikaa
 	, Max
 }
 
 public class SkillData : ISkillData {
 	//EntryPoint
-	public SkillData(int number) {
-		//初期化
-		addPlayerParameterRanks_ = new List<AddParameterRankState>();
-		addEnemyParameterRanks_ = new List<AddParameterRankState>();
-
-		addPlayerAbnormalStates_ = new List<AddAbnormalTypeState>();
-		addEnemyAbnormalStates_ = new List<AddAbnormalTypeState>();
-
-		ResourcesSkillData data = ResourcesSkillDatasLoader.GetInstance().GetSkillDatas(number);
-
-		skillNumber_ = number;
-
-		skillName_ = data.skillNname_;
-
-		effectValue_ = data.effectValue_;
-
-		optionEffectTriggerRateValue_ = data.optionEffectTriggerRateValue_;
-		hitRateValue_ = data.hitRateValue_;
-		upDpValue_ = data.upDpValue_;
-
-		playPoint_ = data.playPoint_;
-		nowPlayPoint_ = playPoint_;
-
-		elementType_ = new ElementTypeState((ElementType)data.elementType_);
-		effectType_ = new EffectTypeState((EffectType)data.effectType_[0], (EffectAttackType)data.effectType_[1]);
-
-		triggerPriority_ = data.triggerPriority_;
-		criticalParameterRank_ = data.criticalParameterRank_;
-
-		Sprite[] sprite = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("SkillEffect/" + data.effectName_);
-		for (int i = 0; i < sprite.Length; ++i) {
-			animeSprites_.Add(sprite[i]);
-		}
-
-		for(int i = 0;i < data.addPlayerParameterRanks_.Length; ++i) {
-			addPlayerParameterRanks_.Add(
-				new AddParameterRankState((AddParameterRank)data.addPlayerParameterRanks_[i].addParameterRank_
-				, data.addPlayerParameterRanks_[i].value_
-				));
-		}
-		for (int i = 0; i < data.addEnemyParameterRanks_.Length; ++i) {
-			addEnemyParameterRanks_.Add(
-				new AddParameterRankState((AddParameterRank)data.addEnemyParameterRanks_[i].addParameterRank_
-				, data.addEnemyParameterRanks_[i].value_
-				));
-		}
-
-		for (int i = 0; i < data.addPlayerAbnormals_.Length; ++i) {
-			addPlayerAbnormalStates_.Add(new AddAbnormalTypeState((AddAbnormalType)data.addPlayerAbnormals_[i].addAbnormal_));
-		}
-		for (int i = 0; i < data.addEnemyAbnormals_.Length; ++i) {
-			addEnemyAbnormalStates_.Add(new AddAbnormalTypeState((AddAbnormalType)data.addEnemyAbnormals_[i].addAbnormal_));
-		}
-
-		effectInfo_ = data.effectInfo_;
-	}
 	public SkillData(SkillDataNumber skillDataNumber) {
 		//初期化
 		addPlayerParameterRanks_ = new List<AddParameterRankState>();
@@ -98,9 +92,15 @@ public class SkillData : ISkillData {
 		triggerPriority_ = data.triggerPriority_;
 		criticalParameterRank_ = data.criticalParameterRank_;
 
-		Sprite[] sprite = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("SkillEffect/" + data.effectName_);
-		for (int i = 0; i < sprite.Length; ++i) {
-			animeSprites_.Add(sprite[i]);
+		if (data.effectName_ == "NoneEffect") {
+			effectAnimeSprites_.Add(ResourcesGraphicsLoader.GetInstance().GetGraphics("SkillEffect/" + data.effectName_));
+		}
+		else {
+			Sprite[] sprite = ResourcesGraphicsLoader.GetInstance().GetGraphicsAll("SkillEffect/" + data.effectName_);
+			for (int i = 0; i < sprite.Length; ++i) {
+				effectAnimeSprites_.Add(sprite[i]);
+			}
+			effectSound_ = ResourcesSoundsLoader.GetInstance().GetSounds("SE/SkillEffect/" + data.effectName_);
 		}
 
 		for (int i = 0; i < data.addPlayerParameterRanks_.Length; ++i) {
@@ -150,12 +150,17 @@ public class SkillData : ISkillData {
 	public int triggerPriority_ { get; }
 	public int criticalParameterRank_ { get; }
 
-	private List<Sprite> animeSprites_ = new List<Sprite>();
+	private List<Sprite> effectAnimeSprites_ = new List<Sprite>();
+	private AudioClip effectSound_ = null;
 
 	public string effectInfo_ { get; }
 
-	public void Animetion(EffectParts targetEffectParts) {
-		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), animeSprites_);
+	public void EffectAnimetionEventSet(EffectParts targetEffectParts) {
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(effectSound_);
+
+		//アニメーション
+		AllEventManager.GetInstance().EventSpriteRendererSet(targetEffectParts.GetEventSpriteRenderer(), effectAnimeSprites_);
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
 		AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 	}

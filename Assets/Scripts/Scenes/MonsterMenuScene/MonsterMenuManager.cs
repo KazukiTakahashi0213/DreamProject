@@ -10,6 +10,7 @@ public class MonsterMenuManager : MonoBehaviour, ISceneManager {
 		//依存性注入
 		nowProcessState_ = startProcessStateProvider_;
 		nowProcessState_.state_ = MonsterMenuSceneProcess.MonsterSelect;
+		inputSoundProvider_.state_ = MonsterMenuSceneInputSoundState.MonsterSelect;
 
 		selectMonsterNumber_ = 0;
 
@@ -19,20 +20,14 @@ public class MonsterMenuManager : MonoBehaviour, ISceneManager {
 		//技の選択肢の初期化
 
 		//BulletPartsの初期化
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(0).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(0).gameObject.transform.position.x, 2.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(1).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(1).gameObject.transform.position.x, 2.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(2).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(2).gameObject.transform.position.x, 1.0f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(3).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(3).gameObject.transform.position.x, -0.5f, 5));
-		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(4).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(4).gameObject.transform.position.x, -0.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(0).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(0).gameObject.transform.localPosition.x, 3.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(1).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(1).gameObject.transform.localPosition.x, 3.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(2).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(2).gameObject.transform.localPosition.x, 2.0f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(3).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(3).gameObject.transform.localPosition.x, 0.5f, 5));
+		t13.UnityUtil.ObjectPosMove(bulletParts_.GetEventStatusInfosParts(4).gameObject, new Vector3(bulletParts_.GetEventStatusInfosParts(4).gameObject.transform.localPosition.x, 0.5f, 5));
 
 		//MagazinePartsの初期化
-		magazineParts_.GetEventGameObject().addEulerVec3_ = new Vector3(0, 0, 0);
-
-		t13.UnityUtil.ObjectRotMove(magazineParts_.gameObject, Quaternion.AngleAxis(0, new Vector3(0, 0, 1)));
-
-		for(int i = 0;i < magazineParts_.GetMonsterSDsPartsCount(); ++i) {
-			t13.UnityUtil.ObjectRotMove(magazineParts_.GetMonsterSDsParts(i).gameObject, Quaternion.AngleAxis(0, new Vector3(0, 0, 1)));
-		}
+		magazineParts_.Initialize();
 
 		//StatusInfosPartsの色の変更
 		for (int i = 0;i < (bulletParts_.GetEventStatusInfosPartsSize() / 2)+1; ++i) {
@@ -45,6 +40,12 @@ public class MonsterMenuManager : MonoBehaviour, ISceneManager {
 				bulletParts_.GetEventStatusInfosParts(bulletParts_.GetEventStatusInfosPartsSize() - 1 - i).ProcessStateColorUpdateExecute(0, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, (byte)(255 / ((i % 2) + 1))));
 			}
 		}
+
+		//状態異常の表示、非表示
+		bulletParts_.GetEventStatusInfosParts(0).GetFirstAbnormalStateInfoParts().gameObject.SetActive(false);
+		bulletParts_.GetEventStatusInfosParts(0).GetSecondAbnormalStateInfoParts().gameObject.SetActive(false);
+		bulletParts_.GetEventStatusInfosParts(bulletParts_.GetEventStatusInfosPartsSize()-1).GetFirstAbnormalStateInfoParts().gameObject.SetActive(false);
+		bulletParts_.GetEventStatusInfosParts(bulletParts_.GetEventStatusInfosPartsSize()-1).GetSecondAbnormalStateInfoParts().gameObject.SetActive(false);
 
 		//初期化
 		nowProcessState_.init(this);
@@ -96,11 +97,11 @@ public class MonsterMenuManager : MonoBehaviour, ISceneManager {
 
 	//ステート
 	private BMonsterMenuSceneProcessStateProvider nowProcessState_ = null;
+	private MonsterMenuSceneInputSoundProvider inputSoundProvider_ = new MonsterMenuSceneInputSoundProvider();
 	public BMonsterMenuSceneProcessStateProvider GetNowProcessState() { return nowProcessState_; }
+	public MonsterMenuSceneInputSoundProvider GetInputSoundProvider() { return inputSoundProvider_; }
 
 	public int selectMonsterNumber_ = 0;
-
-	public int selectMonsterActionCommandNumber_ = 0;
 
 	//入れ替え
 	public bool swapActive_ = false;
@@ -109,6 +110,7 @@ public class MonsterMenuManager : MonoBehaviour, ISceneManager {
 	//技の習得
 	static public bool skillTradeActive_ = false;
 	static public SkillData skillTradeSkillData_ = null;
+	static public int skillTradeSelectMonsterNumber_ = 0;
 
 	static private BMonsterMenuSceneProcessStateProvider startProcessStateProvider_ = new MonsterMenuSceneBattleProcessStateProvider();
 	static public void SetProcessStateProvider(BMonsterMenuSceneProcessStateProvider processStateProvider) {

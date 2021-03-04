@@ -7,6 +7,7 @@ public enum MapSceneMenuSelectCommandSelect {
 	, Monster
 	, Skill
 	, Report
+	, Title
 	, Back
 	, Max
 }
@@ -16,6 +17,7 @@ public class MapSceneMenuSelectCommandSelectProvider {
 		baseMapSceneMenuSelectCommandSelectStates_.Add(new MapSceneMenuSelectCommandSelectMonster());
 		baseMapSceneMenuSelectCommandSelectStates_.Add(new MapSceneMenuSelectCommandSelectSkill());
 		baseMapSceneMenuSelectCommandSelectStates_.Add(new MapSceneMenuSelectCommandSelectReport());
+		baseMapSceneMenuSelectCommandSelectStates_.Add(new MapSceneMenuSelectCommandSelectTitle());
 		baseMapSceneMenuSelectCommandSelectStates_.Add(new MapSceneMenuSelectCommandSelectBack());
 	}
 

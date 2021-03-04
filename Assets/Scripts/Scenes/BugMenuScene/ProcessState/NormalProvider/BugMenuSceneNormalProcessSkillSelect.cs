@@ -16,63 +16,69 @@ public class BugMenuSceneNormalProcessSkillSelect : BBugMenuSceneProcessState {
 		if (sceneMgr.inputProvider_.UpSelect()) {
 			//表示する技がまだあったら
 			if (skillSelectNum_ > 0) {
+				//SE
+				bugMenuManager.GetInputSoundProvider().UpSelect();
+
 				--skillSelectNum_;
+				bugMenuManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 1.0f, 0));
 
 				//一番上からスクロールさせようとしたら
-				if (bugMenuManager.GetCommandParts().GetSelectNumber() == 0) {
+				if (bugMenuManager.GetCommandParts().GetSelectNumber() == -1) {
 					//技の名前を更新する
-					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() - 1);
-					for (int i = startNum; i < bugMenuManager.GetCommandParts().GetCommandWindowTextsCount(); ++i) {
-						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerData.GetSkillDatas(i).skillName_;
+					for (int i = skillSelectNum_, j = 0; i < skillSelectNum_ + bugMenuManager.GetCommandParts().GetCommandWindowTextsCount(); ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(j).text = "　" + playerData.GetSkillDatas(i).skillName_;
+
+						++j;
 					}
 
-					//upCursorの非表示
-					if (skillSelectNum_ == 0) {
-						bugMenuManager.GetUpCursor().gameObject.SetActive(false);
-					}
+					//カーソルを戻す
+					bugMenuManager.GetCommandParts().CommandSelect(1, new Vector3(0, -1.0f, 0));
+
 					//downCursorの表示
-					else {
-						bugMenuManager.GetDownCursor().gameObject.SetActive(true);
+					bugMenuManager.GetDownCursor().gameObject.SetActive(true);
+
+					if (skillSelectNum_ == 0) {
+						//upCursorの表示
+						bugMenuManager.GetUpCursor().gameObject.SetActive(false);
 					}
 				}
 
 				//技の情報の反映
 				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerData.GetSkillDatas(skillSelectNum_));
-			}
-			//カーソルが上に動かせたら
-			if (bugMenuManager.GetCommandParts().GetSelectNumber() > 0) {
-				bugMenuManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 1.0f, 0));
 			}
 		}
 		else if (sceneMgr.inputProvider_.DownSelect()) {
 			//表示する技がまだあったら
 			if (skillSelectNum_ < playerData.GetHaveSkillSize()-1) {
+				//SE
+				bugMenuManager.GetInputSoundProvider().DownSelect();
+
 				++skillSelectNum_;
+				bugMenuManager.GetCommandParts().CommandSelect(1, new Vector3(0, -1.0f, 0));
 
 				//一番下からスクロールさせようとしたら
-				if(bugMenuManager.GetCommandParts().GetSelectNumber() == bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1) {
+				if (bugMenuManager.GetCommandParts().GetSelectNumber() == bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()) {
 					//技の名前を更新する
-					int startNum = skillSelectNum_ % (bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1);
-					for (int i = startNum; i < skillSelectNum_+1; ++i) {
-						bugMenuManager.GetCommandParts().GetCommandWindowTexts(i - startNum).text = playerData.GetSkillDatas(i).skillName_;
+					for (int i = skillSelectNum_ - bugMenuManager.GetCommandParts().GetCommandWindowTextsCount() + 1, j = 0; i < skillSelectNum_ + 1; ++i) {
+						bugMenuManager.GetCommandParts().GetCommandWindowTexts(j).text = "　" + playerData.GetSkillDatas(i).skillName_;
+
+						++j;
 					}
 
-					//downCursorの非表示
-					if(skillSelectNum_ == playerData.GetSkillDatasCount() - 1) {
+					//カーソルを戻す
+					bugMenuManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 1.0f, 0));
+
+					//upCursorの表示
+					bugMenuManager.GetUpCursor().gameObject.SetActive(true);
+
+					if(skillSelectNum_ == playerData.GetHaveSkillSize()-1) {
+						//downCursorの表示
 						bugMenuManager.GetDownCursor().gameObject.SetActive(false);
-					}
-					//upCursorの非表示
-					else {
-						bugMenuManager.GetUpCursor().gameObject.SetActive(true);
 					}
 				}
 
 				//技の情報の反映
 				bugMenuManager.GetInfoFrameParts().SkillInfoReflect(playerData.GetSkillDatas(skillSelectNum_));
-			}
-			//カーソルが下に動かせたら
-			if (bugMenuManager.GetCommandParts().GetSelectNumber() < bugMenuManager.GetCommandParts().GetCommandWindowTextsCount()-1) {
-				bugMenuManager.GetCommandParts().CommandSelect(1, new Vector3(0, -1.0f, 0));
 			}
 		}
 		else if (sceneMgr.inputProvider_.RightSelect()) {

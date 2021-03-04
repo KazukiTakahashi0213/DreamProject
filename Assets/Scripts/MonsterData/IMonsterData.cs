@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IMonsterData {
 	IMonsterTribesData tribesData_ { get; }
-	IMonsterBattleData battleData_ { get; }
+	IMonsterBattleData battleData_ { get; set; }
 	int exp_ { get; }
 	int level_ { get; }
 	string uniqueName_ { get; set; }
@@ -20,10 +20,15 @@ public interface IMonsterData {
 	int RealSpecialAttack();
 	int RealSpecialDefense();
 	int RealSpeed();
+
 	void SkillAdd(SkillData addSkill);
 	void SkillSet(SkillData setSkill, int number);
 	void SkillSwap(int changeNumber, int baseNumber);
 
+	void BattleDataReset();
+
 	float ElementSimillarChecker(ElementTypeState checkElementType);
 	int ElementSimillarCheckerForValue(ElementTypeState checkElementType);
+
+	bool SkillTradeCheck(ElementType skillElementType);
 }

@@ -7,6 +7,9 @@ public class CommandEscape : ICommandState {
 		return this;
 	}
 	public ICommandState LeftSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().LeftSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -17,6 +20,9 @@ public class CommandEscape : ICommandState {
 		return this;
 	}
 	public ICommandState UpSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().UpSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 

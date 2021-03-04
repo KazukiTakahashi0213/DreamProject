@@ -12,6 +12,9 @@ public class MonsterMenuSceneBattleProcessSkillSelect : BMonsterMenuSceneProcess
 
 		if (sceneMgr.inputProvider_.UpSelect()) {
 			if (monsterMenuManager.GetSkillCommandParts().GetSelectNumber() - 1 > 0) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().UpSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillCommandParts().CommandSelect(-2, new Vector3(0, 1.72f, 0));
 
@@ -21,6 +24,9 @@ public class MonsterMenuSceneBattleProcessSkillSelect : BMonsterMenuSceneProcess
 		}
 		else if (sceneMgr.inputProvider_.DownSelect()) {
 			if (monsterMenuManager.GetSkillCommandParts().GetSelectNumber() + 1 < monsterMenuManager.GetSkillCommandParts().GetCommandWindowTextsCount() - 1) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().DownSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillCommandParts().CommandSelect(2, new Vector3(0, -1.72f, 0));
 
@@ -30,6 +36,9 @@ public class MonsterMenuSceneBattleProcessSkillSelect : BMonsterMenuSceneProcess
 		}
 		else if (sceneMgr.inputProvider_.RightSelect()) {
 			if (monsterMenuManager.GetSkillCommandParts().GetSelectNumber() % 2 == 0) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().RightSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillCommandParts().CommandSelect(1, new Vector3(6.08f, 0, 0));
 
@@ -39,6 +48,9 @@ public class MonsterMenuSceneBattleProcessSkillSelect : BMonsterMenuSceneProcess
 		}
 		else if (sceneMgr.inputProvider_.LeftSelect()) {
 			if (monsterMenuManager.GetSkillCommandParts().GetSelectNumber() % 2 == 1) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().LeftSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillCommandParts().CommandSelect(-1, new Vector3(-6.08f, 0, 0));
 

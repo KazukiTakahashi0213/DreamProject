@@ -8,69 +8,69 @@ namespace t13 {
 	public class UnityUtil {
 		//moveObjectのx軸をmoveFluctで移動させる
 		static public void ObjectInFluctUpdatePosX(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation) {
-			Vector3 objectPos = moveObject.transform.position;
+			Vector3 objectPos = moveObject.transform.localPosition;
 
 			objectPos.x = moveFluct.InFluct(count, objectPos.x, endValue, regulation);
-			moveObject.transform.position = objectPos;
+			moveObject.transform.localPosition = objectPos;
 		}
 		//moveObjectのy軸をmoveFluctで移動させる
 		static public void ObjectInFluctUpdatePosY(GameObject moveObject, t13.TimeFluct moveFluct, float endValue, float count, float regulation) {
-			Vector3 objectPos = moveObject.transform.position;
+			Vector3 objectPos = moveObject.transform.localPosition;
 
 			objectPos.y = moveFluct.InFluct(count, objectPos.y, endValue, regulation);
-			moveObject.transform.position = objectPos;
+			moveObject.transform.localPosition = objectPos;
 		}
 		//moveObjectのz軸をmoveFluctで移動させる
 		static public void ObjectInFluctUpdatePosZ(GameObject moveObject, t13.TimeFluct moveFluct, float endValue, float count, float regulation) {
-			Vector3 objectPos = moveObject.transform.position;
+			Vector3 objectPos = moveObject.transform.localPosition;
 
 			objectPos.z = moveFluct.InFluct(count, objectPos.z, endValue, regulation);
-			moveObject.transform.position = objectPos;
+			moveObject.transform.localPosition = objectPos;
 		}
 
 		//moveObjectのx軸をmoveFluctで回転させる
 		static public void ObjectInFluctUpdateRotX(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
-			Quaternion objectRot = moveObject.transform.rotation;
+			Quaternion objectRot = moveObject.transform.localRotation;
 
 			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.x + addEuler, endValue, regulation);
-			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(1, 0, 0));
+			moveObject.transform.localRotation = Quaternion.AngleAxis(angleAxis, new Vector3(1, 0, 0));
 		}
 		//moveObjectのy軸をmoveFluctで回転させる
 		static public void ObjectInFluctUpdateRotY(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
-			Quaternion objectRot = moveObject.transform.rotation;
+			Quaternion objectRot = moveObject.transform.localRotation;
 
 			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.y + addEuler, endValue, regulation);
-			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 1, 0));
+			moveObject.transform.localRotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 1, 0));
 		}
 		//moveObjectのz軸をmoveFluctで回転させる
 		static public void ObjectInFluctUpdateRotZ(GameObject moveObject, TimeFluct moveFluct, float endValue, float count, float regulation, float addEuler = 0) {
-			Quaternion objectRot = moveObject.transform.rotation;
+			Quaternion objectRot = moveObject.transform.localRotation;
 
 			float angleAxis = moveFluct.InFluct(count, objectRot.eulerAngles.z + addEuler, endValue, regulation);
-			moveObject.transform.rotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 0, 1));
+			moveObject.transform.localRotation = Quaternion.AngleAxis(angleAxis, new Vector3(0, 0, 1));
 		}
 
 		//moveObjをmovePosに移動させる
 		static public void ObjectPosMove(GameObject moveObj, Vector3 movePos) {
-			Vector3 objPos = moveObj.transform.position;
+			Vector3 objPos = moveObj.transform.localPosition;
 			objPos = movePos;
 
-			moveObj.transform.position = objPos;
+			moveObj.transform.localPosition = objPos;
 		}
 		//moveObjをmoveRotに移動させる
 		static public void ObjectRotMove(GameObject moveObj, Quaternion moveRot) {
-			Quaternion objRot = moveObj.transform.rotation;
+			Quaternion objRot = moveObj.transform.localRotation;
 			objRot = moveRot;
 
-			moveObj.transform.rotation = objRot;
+			moveObj.transform.localRotation = objRot;
 		}
 
 		//moveObjをmovePos分、移動させる
 		static public void ObjectPosAdd(GameObject moveObj, Vector3 movePos) {
-			Vector3 objPos = moveObj.transform.position;
+			Vector3 objPos = moveObj.transform.localPosition;
 			objPos += movePos;
 
-			moveObj.transform.position = objPos;
+			moveObj.transform.localPosition = objPos;
 		}
 
 		//fillImageをfillFluctで拡大縮小させる

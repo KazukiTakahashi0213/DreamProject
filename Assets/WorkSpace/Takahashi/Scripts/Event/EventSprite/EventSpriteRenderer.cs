@@ -72,6 +72,15 @@ public class EventSpriteRenderer : MonoBehaviour {
 
 		processState_.state_ = EventSpriteRendererProcess.None;
 	}
+	public void ProcessReset() {
+		timeCounter_.reset();
+
+		for (int i = 0; i < timeFlucts_.Length; ++i) {
+			timeFlucts_[i].Reset();
+		}
+
+		processState_.state_ = EventSpriteRendererProcess.None;
+	}
 
 	public void SpriteSet(List<Sprite> sprites) {
 		spriteRenderer_.sprite = sprites[nowAnimeSpriteNumber_];

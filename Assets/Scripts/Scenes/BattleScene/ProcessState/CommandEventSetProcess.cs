@@ -29,20 +29,33 @@ public class CommandEventSetProcess : IProcessState {
 			mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
 
 			//DPの演出のイベント
-			mgr.StatusInfoPartsDPEffect(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts());
+			mgr.StatusInfoPartsDPEffectEventSet(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts());
 
 			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
+			//BGMの音量の減少
+			AllEventManager.GetInstance().BGMAudioVolumeChangeEventSet(0.15f);
+
+			//パワーアップの演出
+			mgr.GetDreamEffectParts().DreamSyncronizeEventSet(PlayerBattleData.GetInstance().GetMonsterDatas(0), new Vector3(-13.0f, 0.8f, -1.0f), new Vector3(13.0f, 0.8f, -1.0f));
+			
 			//画像の変更
 			{
 				List<Sprite> sprites = new List<Sprite>();
 				sprites.Add(PlayerBattleData.GetInstance().GetMonsterDatas(0).tribesData_.backDreamTex_);
-
+			
 				AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite(), sprites);
 				AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.SpriteSet);
 				AllEventManager.GetInstance().AllUpdateEventExecute();
 			}
+
+			//BGMの変更
+			AllEventManager.GetInstance().BGMAudioClipChangeEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathDreamers_Rock()));
+			
+			//BGMの再生
+			AllEventManager.GetInstance().BGMAudioVolumeChangeEventSet(0.3f);
+			AllEventManager.GetInstance().BGMAudioPlayEventSet();
 
 			//能力変化の更新
 			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(PlayerBattleData.GetInstance().GetMonsterDatas(0));
@@ -51,9 +64,6 @@ public class CommandEventSetProcess : IProcessState {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 			//状態異常のイベントのセット
 			PlayerBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
@@ -75,10 +85,16 @@ public class CommandEventSetProcess : IProcessState {
 			EnemyBattleData.GetInstance().dreamSyncronize_ = false;
 
 			//DPの演出のイベント
-			mgr.StatusInfoPartsDPEffect(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts());
+			mgr.StatusInfoPartsDPEffectEventSet(EnemyBattleData.GetInstance(), mgr.GetEnemyStatusInfoParts());
 
 			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			//BGMの音量の減少
+			AllEventManager.GetInstance().BGMAudioVolumeChangeEventSet(0.15f);
+
+			//パワーアップの演出
+			mgr.GetDreamEffectParts().DreamSyncronizeEventSet(EnemyBattleData.GetInstance().GetMonsterDatas(0), new Vector3(13.0f, 0.8f, -1.0f), new Vector3(-13.0f, 0.8f, -1.0f));
 
 			//画像の変更
 			{
@@ -90,6 +106,9 @@ public class CommandEventSetProcess : IProcessState {
 				AllEventManager.GetInstance().AllUpdateEventExecute();
 			}
 
+			//BGMの再生
+			AllEventManager.GetInstance().BGMAudioVolumeChangeEventSet(0.3f);
+
 			//能力変化の更新
 			string abnormalStateContext = new AddAbnormalTypeState(AddAbnormalType.Hero).AddAbnormalTypeExecute(EnemyBattleData.GetInstance().GetMonsterDatas(0));
 
@@ -97,9 +116,6 @@ public class CommandEventSetProcess : IProcessState {
 			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 			//状態異常のイベントのセット
 			EnemyBattleData.GetInstance().GetMonsterDatas(0).battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
@@ -209,7 +225,8 @@ public class CommandEventSetProcess : IProcessState {
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		//技のイベントの設定
-		attackSkillData.effectType_.ExecuteEnemyEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+		bool skillResult = attackSkillData.effectType_.ExecuteEnemyEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+		if (!skillResult) return;
 
 		//追加効果の判定
 		bool optionEffectTrigger = AllSceneManager.GetInstance().GetRandom().Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
@@ -217,10 +234,10 @@ public class CommandEventSetProcess : IProcessState {
 		//追加効果の処理
 		if (optionEffectTrigger) {
 			//能力変化の処理
-			ParameterRankEventSet(mgr, defenseMonsterData, attackSkillData, attackMonsterData);
+			EnemyParameterRankEventSet(mgr, defenseMonsterData, attackSkillData, attackMonsterData);
 
 			//状態異常の処理
-			AbnormalEventSet(mgr, defenseMonsterData, attackSkillData, attackMonsterData);
+			EnemyAbnormalEventSet(mgr, defenseMonsterData, attackSkillData, attackMonsterData);
 		}
 
 		if (defenseMonsterData.nowHitPoint_ <= 0) {
@@ -254,7 +271,8 @@ public class CommandEventSetProcess : IProcessState {
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		//技のイベントの設定
-		attackSkillData.effectType_.ExecutePlayerEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+		bool skillResult = attackSkillData.effectType_.ExecutePlayerEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+		if (!skillResult) return;
 
 		//追加効果の判定
 		bool optionEffectTrigger = AllSceneManager.GetInstance().GetRandom().Next(1, 101) <= attackSkillData.optionEffectTriggerRateValue_;
@@ -262,10 +280,10 @@ public class CommandEventSetProcess : IProcessState {
 		//追加効果の処理
 		if (optionEffectTrigger) {
 			//能力変化の処理
-			ParameterRankEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+			PlayerParameterRankEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
 
 			//状態異常の処理
-			AbnormalEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
+			PlayerAbnormalEventSet(mgr, attackMonsterData, attackSkillData, defenseMonsterData);
 		}
 
 		if (defenseMonsterData.nowHitPoint_ <= 0) {
@@ -284,7 +302,7 @@ public class CommandEventSetProcess : IProcessState {
 		}
 	}
 
-	private void ParameterRankEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
+	private void PlayerParameterRankEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
 		if (attackSkillData.addPlayerParameterRanks_[0].state_ != AddParameterRank.None) {
 
 			if (attackSkillData.addPlayerParameterRanks_.Count > 0) {
@@ -327,7 +345,51 @@ public class CommandEventSetProcess : IProcessState {
 			}
 		}
 	}
-	private void AbnormalEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
+	private void EnemyParameterRankEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
+		if (attackSkillData.addPlayerParameterRanks_[0].state_ != AddParameterRank.None) {
+
+			if (attackSkillData.addPlayerParameterRanks_.Count > 0) {
+				//アニメーション
+				AllEventManager.GetInstance().EventWaitSet(1.0f);
+			}
+
+			//エネミーへの能力変化の処理
+			for (int i = 0; i < attackSkillData.addEnemyParameterRanks_.Count; ++i) {
+				//能力変化の更新
+				string parameterRankContext = attackSkillData.addPlayerParameterRanks_[i].AddParameterExecute(enemyMonsterData);
+
+				//文字列のイベント
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "あいての　" + parameterRankContext);
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+		}
+
+		if (attackSkillData.addEnemyParameterRanks_[0].state_ != AddParameterRank.None) {
+
+			if (attackSkillData.addEnemyParameterRanks_.Count > 0) {
+				//アニメーション
+				AllEventManager.GetInstance().EventWaitSet(1.0f);
+			}
+
+			//プレイヤーへの能力変化の処理
+			for (int i = 0; i < attackSkillData.addPlayerParameterRanks_.Count; ++i) {
+				//能力変化の更新
+				string parameterRankContext = attackSkillData.addEnemyParameterRanks_[i].AddParameterExecute(playerMonsterData);
+
+				//文字列のイベント
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), parameterRankContext);
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+		}
+	}
+
+	private void PlayerAbnormalEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
 		if (attackSkillData.addPlayerAbnormalStates_[0].state_ != AddAbnormalType.None) {
 
 			if (attackSkillData.addPlayerAbnormalStates_.Count > 0) {
@@ -390,4 +452,68 @@ public class CommandEventSetProcess : IProcessState {
 			mgr.ConfusionUseStart(EnemyBattleData.GetInstance());
 		}
 	}
+	private void EnemyAbnormalEventSet(BattleManager mgr, IMonsterData playerMonsterData, ISkillData attackSkillData, IMonsterData enemyMonsterData) {
+		if (attackSkillData.addPlayerAbnormalStates_[0].state_ != AddAbnormalType.None) {
+
+			if (attackSkillData.addPlayerAbnormalStates_.Count > 0) {
+				//アニメーション
+				AllEventManager.GetInstance().EventWaitSet(1.0f);
+			}
+
+			//エネミーへの状態異常の処理
+			for (int i = 0; i < attackSkillData.addEnemyAbnormalStates_.Count; ++i) {
+				//能力変化の更新
+				string abnormalStateContext = attackSkillData.addPlayerAbnormalStates_[i].AddAbnormalTypeExecute(enemyMonsterData);
+
+				//文字列のイベント
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "あいての　" + abnormalStateContext);
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+
+			//状態異常のイベントのセット
+			enemyMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetEnemyStatusInfoParts());
+
+			//ねむりの処理の初期化
+			mgr.SleepProcessStart();
+			mgr.SleepUseStart(EnemyBattleData.GetInstance());
+
+			//こんらんの状態の初期化
+			mgr.ConfusionUseStart(EnemyBattleData.GetInstance());
+		}
+
+		if (attackSkillData.addEnemyAbnormalStates_[0].state_ != AddAbnormalType.None) {
+
+			if (attackSkillData.addEnemyAbnormalStates_.Count > 0) {
+				//アニメーション
+				AllEventManager.GetInstance().EventWaitSet(1.0f);
+			}
+
+			//プレイヤーへの状態異常の処理
+			for (int i = 0; i < attackSkillData.addPlayerAbnormalStates_.Count; ++i) {
+				//能力変化の更新
+				string abnormalStateContext = attackSkillData.addEnemyAbnormalStates_[i].AddAbnormalTypeExecute(playerMonsterData);
+
+				//文字列のイベント
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), abnormalStateContext);
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+
+			//状態異常のイベントのセット
+			playerMonsterData.battleData_.AbnormalSetStatusInfoPartsEventSet(mgr.GetPlayerStatusInfoParts());
+
+			//ねむりの処理の初期化
+			mgr.SleepProcessStart();
+			mgr.SleepUseStart(PlayerBattleData.GetInstance());
+
+			//こんらんの状態の初期化
+			mgr.ConfusionUseStart(PlayerBattleData.GetInstance());
+		}
+	}
+
 }

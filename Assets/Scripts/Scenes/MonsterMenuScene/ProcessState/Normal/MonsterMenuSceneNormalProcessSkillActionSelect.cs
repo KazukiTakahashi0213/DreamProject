@@ -105,19 +105,25 @@ public class MonsterMenuSceneNormalProcessSkillActionSelect : BMonsterMenuSceneP
 		}
 
 		if (sceneMgr.inputProvider_.UpSelect()) {
-			if (monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber() > 0) {
+			if (monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber()+1 > 0) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().UpSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillActionCommandParts().CommandSelect(-1, new Vector3(0, 0.55f, 0));
 
-				nowSkillActionCommandExecuteStateProvider_.state_ = (MonsterMenuSceneSkillActionCommandExecute)monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber() + 1;
+				nowSkillActionCommandExecuteStateProvider_.state_ = (MonsterMenuSceneSkillActionCommandExecute)monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber();
 			}
 		}
 		else if (sceneMgr.inputProvider_.DownSelect()) {
 			if (monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber() < monsterMenuManager.GetSkillActionCommandParts().GetCommandWindowTextsCount() - 1) {
+				//SE
+				monsterMenuManager.GetInputSoundProvider().DownSelect();
+
 				//選択肢の処理
 				monsterMenuManager.GetSkillActionCommandParts().CommandSelect(1, new Vector3(0, -0.55f, 0));
 
-				nowSkillActionCommandExecuteStateProvider_.state_ = (MonsterMenuSceneSkillActionCommandExecute)monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber() + 1;
+				nowSkillActionCommandExecuteStateProvider_.state_ = (MonsterMenuSceneSkillActionCommandExecute)monsterMenuManager.GetSkillActionCommandParts().GetSelectNumber();
 			}
 		}
 		else if (sceneMgr.inputProvider_.RightSelect()) {
@@ -125,6 +131,9 @@ public class MonsterMenuSceneNormalProcessSkillActionSelect : BMonsterMenuSceneP
 		else if (sceneMgr.inputProvider_.LeftSelect()) {
 		}
 		else if (sceneMgr.inputProvider_.SelectEnter()) {
+			//SE
+			monsterMenuManager.GetInputSoundProvider().SelectEnter();
+
 			nowSkillActionCommandExecuteStateProvider_.Execute(monsterMenuManager);
 
 			//スキルの行動の選択肢の初期化

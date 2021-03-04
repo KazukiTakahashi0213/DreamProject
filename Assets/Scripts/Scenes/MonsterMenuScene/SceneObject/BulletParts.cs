@@ -11,13 +11,13 @@ public class BulletParts : MonoBehaviour {
 
 	private const float UPDATE_TIME_REGULATION = 0.4f;
 
-	public void DownRollStatusInfoParts(int addNumber) {
+	public void DownRollStatusInfoParts() {
 		//1,2番目を-1.5fずらす
 		for (int i = 1; i < eventStatusInfosParts_.Count - 2; ++i) {
 			eventStatusInfosParts_[i].GetEventGameObject().ProcessStatePosMoveExecute(
 				UPDATE_TIME_REGULATION
 				, t13.TimeFluctProcess.Liner
-				, new Vector3(eventStatusInfosParts_[i].transform.position.x, eventStatusInfosParts_[i].transform.position.y - 1.5f, eventStatusInfosParts_[i].transform.position.z)
+				, new Vector3(eventStatusInfosParts_[i].transform.localPosition.x, eventStatusInfosParts_[i].transform.localPosition.y - 1.5f, eventStatusInfosParts_[i].transform.localPosition.z)
 				) ;
 			eventStatusInfosParts_[i].ProcessStateColorUpdateExecute(UPDATE_TIME_REGULATION, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, (byte)(255 / i)));
 		}
@@ -32,7 +32,7 @@ public class BulletParts : MonoBehaviour {
 		eventStatusInfosParts_[4].GetEventGameObject().ProcessStatePosMoveExecute(
 			0
 			, t13.TimeFluctProcess.Liner
-			, new Vector3(eventStatusInfosParts_[4].GetEventGameObject().transform.position.x, 2.5f, eventStatusInfosParts_[4].GetEventGameObject().transform.position.z)
+			, new Vector3(eventStatusInfosParts_[4].GetEventGameObject().transform.localPosition.x, 3.5f, eventStatusInfosParts_[4].GetEventGameObject().transform.localPosition.z)
 			);
 
 		StatusInfoParts temp = null;
@@ -52,13 +52,13 @@ public class BulletParts : MonoBehaviour {
 
 		eventStatusInfosParts_[0] = temp2;
 	}
-	public void UpRollStatusInfoParts(int addNumber) {
+	public void UpRollStatusInfoParts() {
 		//2,3番目を1.5fずらす
 		for (int i = 2; i < eventStatusInfosParts_.Count - 1; ++i) {
 			eventStatusInfosParts_[i].GetEventGameObject().ProcessStatePosMoveExecute(
 				UPDATE_TIME_REGULATION
 				, t13.TimeFluctProcess.Liner
-				, new Vector3(eventStatusInfosParts_[i].transform.position.x, eventStatusInfosParts_[i].transform.position.y + 1.5f, eventStatusInfosParts_[i].transform.position.z)
+				, new Vector3(eventStatusInfosParts_[i].transform.localPosition.x, eventStatusInfosParts_[i].transform.localPosition.y + 1.5f, eventStatusInfosParts_[i].transform.localPosition.z)
 				);
 			eventStatusInfosParts_[i].ProcessStateColorUpdateExecute(UPDATE_TIME_REGULATION, t13.TimeFluctProcess.Liner, new Color32(0, 0, 0, (byte)(255 / (((i + 1) % 2) + 1))));
 		}
@@ -73,7 +73,7 @@ public class BulletParts : MonoBehaviour {
 		eventStatusInfosParts_[0].GetEventGameObject().ProcessStatePosMoveExecute(
 			0
 			, t13.TimeFluctProcess.Liner
-			, new  Vector3(eventStatusInfosParts_[0].GetEventGameObject().transform.position.x, -0.5f, eventStatusInfosParts_[0].GetEventGameObject().transform.position.z)
+			, new  Vector3(eventStatusInfosParts_[0].GetEventGameObject().transform.localPosition.x, 0.5f, eventStatusInfosParts_[0].GetEventGameObject().transform.localPosition.z)
 			);
 
 		StatusInfoParts beginData = eventStatusInfosParts_[0];

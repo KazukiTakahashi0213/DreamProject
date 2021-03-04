@@ -36,6 +36,14 @@ public class AllEventManager {
 	private List<SceneState> sceneStates_ = new List<SceneState>();
 	private List<SceneChangeMode> sceneChangeModes_ = new List<SceneChangeMode>();
 
+	private int eventBGMAudioExecuteCounter_ = 0;
+	private List<float> eventBGMAudioVolumes_ = new List<float>();
+	private List<AudioClip> eventBGMAudioClips_ = new List<AudioClip>();
+
+	private int eventSEAudioExecuteCounter_ = 0;
+	private List<float> eventSEAudioVolumes_ = new List<float>();
+	private List<AudioClip> eventSEAudioClips_ = new List<AudioClip>();
+
 	private bool eventTriggerNextTrigger_ = false;
 	private bool eventTriggerNextActive_ = false;
 	public void EventTriggerNext() {
@@ -90,6 +98,33 @@ public class AllEventManager {
 
 		sceneEvent_.func_add(InputProviderChangeEvent);
 	}
+	public void BGMAudioVolumeChangeEventSet(float volume) {
+		eventBGMAudioVolumes_.Add(volume);
+		eventBGMAudioClips_.Add(null);
+
+		sceneEvent_.func_add(BGMAudioVolumeChangeEvent);
+	}
+	public void BGMAudioClipChangeEventSet(AudioClip clip) {
+		eventBGMAudioVolumes_.Add(0);
+		eventBGMAudioClips_.Add(clip);
+
+		sceneEvent_.func_add(BGMAudioClipChangeEvent);
+	}
+	public void BGMAudioPlayEventSet() {
+		sceneEvent_.func_add(BGMAudioPlayEvent);
+	}
+	public void SEAudioVolumeChangeEventSet(float volume) {
+		eventSEAudioVolumes_.Add(volume);
+		eventSEAudioClips_.Add(null);
+
+		sceneEvent_.func_add(SEAudioVolumeChangeEvent);
+	}
+	public void SEAudioPlayOneShotEventSet(AudioClip clip) {
+		eventSEAudioVolumes_.Add(0);
+		eventSEAudioClips_.Add(clip);
+
+		sceneEvent_.func_add(SEAudioPlayOnshotEvent);
+	}
 	static private bool WaitEvent(AllEventManager mgr) {
 		if (mgr.sceneCounter_.measure(Time.deltaTime, mgr.eventTimeRegulation_[mgr.updateEventExecuteCounter_])) {
 			mgr.updateEventExecuteCounter_ += 1;
@@ -124,6 +159,14 @@ public class AllEventManager {
 
 		mgr.inputProviders_.Clear();
 
+		mgr.eventBGMAudioExecuteCounter_ = 0;
+		mgr.eventBGMAudioVolumes_.Clear();
+		mgr.eventBGMAudioClips_.Clear();
+
+		mgr.eventSEAudioExecuteCounter_ = 0;
+		mgr.eventSEAudioVolumes_.Clear();
+		mgr.eventSEAudioClips_.Clear();
+
 		mgr.eventSpriteEventManager_.EventSpriteRenderersClear();
 		mgr.updateGameObjectEventManager_.UpdateGameObjectsClear();
 		mgr.eventTextEventManager_.EventTextsClear();
@@ -156,6 +199,39 @@ public class AllEventManager {
 		AllSceneManager.GetInstance().inputProvider_ = mgr.inputProviders_[0];
 
 		EventFinishEvent(mgr);
+
+		return true;
+	}
+	static private bool BGMAudioVolumeChangeEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetBGMAudioSource().volume = mgr.eventBGMAudioVolumes_[mgr.eventBGMAudioExecuteCounter_];
+
+		mgr.eventBGMAudioExecuteCounter_ += 1;
+
+		return true;
+	}
+	static private bool BGMAudioClipChangeEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetBGMAudioSource().clip = mgr.eventBGMAudioClips_[mgr.eventBGMAudioExecuteCounter_];
+
+		mgr.eventBGMAudioExecuteCounter_ += 1;
+
+		return true;
+	}
+	static private bool BGMAudioPlayEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetBGMAudioSource().Play();
+
+		return true;
+	}
+	static private bool SEAudioVolumeChangeEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetSEAudioSource().volume = mgr.eventSEAudioVolumes_[mgr.eventSEAudioExecuteCounter_];
+
+		mgr.eventSEAudioExecuteCounter_ += 1;
+
+		return true;
+	}
+	static private bool SEAudioPlayOnshotEvent(AllEventManager mgr) {
+		AllSceneManager.GetInstance().GetPublicAudioParts().GetSEAudioSource().PlayOneShot(mgr.eventSEAudioClips_[mgr.eventSEAudioExecuteCounter_]);
+
+		mgr.eventSEAudioExecuteCounter_ += 1;
 
 		return true;
 	}

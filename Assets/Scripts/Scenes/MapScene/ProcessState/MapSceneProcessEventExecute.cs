@@ -11,11 +11,29 @@ public class MapSceneProcessEventExecute : BMapSceneProcessState {
 		//プレイヤーが動いていなかったら
 		if (!mapManager.GetPlayerMoveMap().GetMapMoveActive()) {
 			if (AllEventManager.GetInstance().EventUpdate()) {
-				allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+				if (mapManager.monsterTradeSelectActive_) {
+					mapManager.monsterTradeSelectActive_ = false;
 
-				mapManager.GetPlayerMoveMap().is_move = true;
+					//操作の変更
+					allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
 
-				return mapManager.eventBackProcess_;
+					//選択肢の名前の反映
+					for (int i = 0; i < mapManager.GetTradeMonsterSelectCommandParts().GetCommandWindowTextsCount()-1; ++i) {
+						mapManager.GetTradeMonsterSelectCommandParts().GetCommandWindowTexts(i).text = "　" + EnemyBattleData.GetInstance().GetMonsterDatas(i).tribesData_.monsterName_;
+					}
+
+					//選択肢の表示
+					mapManager.GetTradeMonsterSelectCommandParts().gameObject.SetActive(true);
+
+					return MapSceneProcess.TradeMonsterSelect;
+				}
+				else {
+					allSceneMgr.inputProvider_ = new KeyBoardNormalInputProvider();
+
+					mapManager.GetPlayerMoveMap().is_move = true;
+
+					return mapManager.eventBackProcess_;
+				}
 			}
 		}
 

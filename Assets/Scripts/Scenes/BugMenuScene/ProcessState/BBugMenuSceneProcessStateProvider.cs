@@ -15,5 +15,5 @@ public class BBugMenuSceneProcessStateProvider {
 
 	public BugMenuSceneProcess Update(BugMenuManager bugMenuManager) { return states_[(int)state_].Update(bugMenuManager); }
 
-	public virtual void init() { }
+	public virtual void init(BugMenuManager bugMenuManager) { }
 }

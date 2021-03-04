@@ -65,11 +65,14 @@ public class EnemyBattleData : TrainerBattleData {
 		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyMonsterParts().GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
 
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterDown()));
+
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 		//DPの演出のイベント
-		manager.StatusInfoPartsDPEffect(this, manager.GetEnemyStatusInfoParts());
+		manager.StatusInfoPartsDPEffectEventSet(this, manager.GetEnemyStatusInfoParts());
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
@@ -88,6 +91,10 @@ public class EnemyBattleData : TrainerBattleData {
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 		if (battleActiveMonsterSize_ == 0) {
+			//BGMの再生
+			AllEventManager.GetInstance().BGMAudioClipChangeEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathDreamers_Win()));
+			AllEventManager.GetInstance().BGMAudioPlayEventSet();
+
 			//文字列の処理
 			AllEventManager.GetInstance().EventTextSet(
 				manager.GetNovelWindowParts().GetEventText()
@@ -102,10 +109,10 @@ public class EnemyBattleData : TrainerBattleData {
 			//エネミーの入場
 			AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetEnemyParts().GetEventGameObject(), new Vector3(3.5f, manager.GetEnemyParts().transform.position.y, manager.GetEnemyParts().transform.position.z));
 			AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
-			AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
+			AllEventManager.GetInstance().AllUpdateEventExecute(1.5f);
 
 			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() * 2);
 
 			//フェードアウト
 			AllEventManager.GetInstance().EventSpriteRendererSet(
@@ -171,6 +178,9 @@ public class EnemyBattleData : TrainerBattleData {
 			);
 		AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
 		AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
+
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterSet()));
 
 		//モンスターの登場演出
 		{
@@ -249,6 +259,9 @@ public class EnemyBattleData : TrainerBattleData {
 		if (changeMonsterNumber_ > 0) {
 			IMonsterData md = monsterDatas_[changeMonsterNumber_];
 
+			//先頭のパラメーターをリセット
+			monsterDatas_[0].battleData_.RankReset();
+
 			AllEventManager.GetInstance().EventTextSet(manager.GetNovelWindowParts().GetEventText(), EnemyTrainerData.GetInstance().name() + "は\n"
 				+ monsterDatas_[0].uniqueName_ + "を　ひっこめた！");
 			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
@@ -278,6 +291,9 @@ public class EnemyBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+			//SE
+			AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterSet()));
 
 			//モンスターの登場演出
 			{

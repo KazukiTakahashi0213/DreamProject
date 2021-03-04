@@ -11,14 +11,45 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 		//依存性注入
 		allSceneMgr.inputProvider_ = new KeyBoardNormalTriggerInputProvider();
+		inputSoundProvider_.state_ = BattleSceneInputSoundState.Normal;
 
 		//初期Stateを設定
 		nowProcessState_ = new OpeningProcess();
 		nowCommandState_ = new CommandAttack();
 		nowAttackCommandState_ = new AttackCommand0();
 
-		//エネミーの画像の設定
+		//エネミー、プレイヤーの位置の初期化
+		playerParts_.transform.localPosition = new Vector3(13.0f, -1.4f, 5);
+		enemyParts_.transform.localPosition = new Vector3(-13.5f, 3.0f, 5);
+
+		//エネミー、プレイヤーのステータスインフォの初期化
+		playerStatusInfoParts_.transform.localPosition = new Vector3(13.5f, -1.25f, 5);
+		enemyStatusInfoParts_.transform.localPosition = new Vector3(-13.5f, 3.4f, 5);
+		playerStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().fillAmount = 0;
+		enemyStatusInfoParts_.GetDPGaugeMeterUpdateImage().GetImage().fillAmount = 0;
+		playerStatusInfoParts_.ProcessIdleEnd();
+		playerMonsterParts_.ProcessIdleEnd();
+
+		//エネミー、プレイヤーのモンスターの非表示
+		playerMonsterParts_.gameObject.SetActive(false);
+		enemyMonsterParts_.gameObject.SetActive(false);
+
+		//睡眠スクリーンの初期化
+		sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color = new Color(sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.r, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.g, sleepScreenParts_.GetEventScreenSprite().GetSpriteRenderer().color.b, 0);
+
+		//コマンドパーツの初期化
+		novelWindowParts_.GetCommandParts().gameObject.SetActive(false);
+		novelWindowParts_.GetAttackCommandParts().gameObject.SetActive(false);
+		novelWindowParts_.GetNovelWindowText().text = "";
+		novelWindowParts_.GetCommandParts().GetCommandWindowTexts(1).color = new Color32(50, 50, 50, 255);
+
+		//カーソルの初期化
+		cursorParts_.gameObject.SetActive(false);
+
+		//プレイヤー、エネミーの画像の設定
+		playerParts_.GetEventSprite().GetSpriteRenderer().sprite = ResourcesGraphicsLoader.GetInstance().GetGraphics("Player/PlayerMonsterSet0");
 		enemyParts_.GetMonsterSprite().sprite = EnemyTrainerData.GetInstance().GetSprite();
+
 
 		//エネミーモンスターの読み込み
 		{
@@ -28,15 +59,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			//画像の設定
 			enemyMonsterParts_.GetMonsterSprite().sprite = md.tribesData_.frontTex_;
 
-			//名前とレベルをTextに反映
-			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
-			enemyStatusInfoParts_.GetBaseParts().GetInfoEventText().GetText().text = monsterViewName + "　　Lｖ" + t13.Utility.HarfSizeForFullSize(md.level_.ToString());
-
-			//HPゲージの調整
-			enemyStatusInfoParts_.GetFrameParts().GetHpGaugeParts().GetGauge().fillAmount = t13.Utility.ValueForPercentage(md.RealHitPoint(), md.nowHitPoint_, 1);
-
-			//状態異常の反映
-			md.battleData_.AbnormalSetStatusInfoPartsEventSet(enemyStatusInfoParts_);
+			//ステータスインフォに反映
+			enemyStatusInfoParts_.MonsterStatusInfoSet(md);
 		}
 
 		//プレイヤーモンスターの読み込み
@@ -47,15 +71,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			//画像の設定
 			playerMonsterParts_.GetMonsterSprite().sprite = md.tribesData_.backTex_;
 
-			//名前とレベルをTextに反映
-			string monsterViewName = t13.Utility.StringFullSpaceBackTamp(md.uniqueName_, 6);
-			playerStatusInfoParts_.GetBaseParts().GetInfoEventText().GetText().text = monsterViewName + "　　Lｖ" + t13.Utility.HarfSizeForFullSize(md.level_.ToString());
-
-			//HPをTextに反映
-			playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts().GetInfoText().text = t13.Utility.HarfSizeForFullSize(md.nowHitPoint_.ToString()) + "／" + t13.Utility.HarfSizeForFullSize(md.RealHitPoint().ToString());
-
-			//HPゲージの調整
-			playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts().GetGauge().fillAmount = t13.Utility.ValueForPercentage(md.RealHitPoint(), md.nowHitPoint_, 1);
+			//ステータスインフォに反映
+			playerStatusInfoParts_.MonsterStatusInfoSet(md);
 
 			//技をTextに反映
 			for (int i = 0; i < 4; ++i) {
@@ -77,9 +94,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 					novelWindowParts_.GetAttackCommandParts().GetSkillParts().GetSkillEventTexts(i).GetText().color = new Color32(50, 50, 50, 255);
 				}
 			}
-
-			//状態異常の反映
-			md.battleData_.AbnormalSetStatusInfoPartsEventSet(playerStatusInfoParts_);
 		}
 
 		//イベントのセット
@@ -91,7 +105,11 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	}
 
 	public void SceneEnd() {
+		PlayerBattleData playerData = PlayerBattleData.GetInstance();
 
+		for(int i = 0;i < playerData.GetHaveMonsterSize(); ++i) {
+			playerData.GetMonsterDatas(i).BattleDataReset();
+		}
 	}
 
 	public GameObject GetGameObject() { return gameObject; }
@@ -117,6 +135,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	[SerializeField] private ScreenParts sleepScreenParts_ = null;
 	[SerializeField] private MagazineParts playerMagazineParts_ = null;
 	[SerializeField] private MagazineParts enemyMagazineParts_ = null;
+	[SerializeField] private EventSpriteRenderer dreamEffectScreenEventSprite_ = null;
+	[SerializeField] private DreamEffectParts dreamEffectParts_ = null;
 
 	public HpGaugeParts GetEnemyMonsterHpGauge() { return enemyStatusInfoParts_.GetFrameParts().GetHpGaugeParts(); }
 	public HpGaugeParts GetPlayerMonsterHpGauge() { return playerStatusInfoParts_.GetFrameParts().GetHpGaugeParts(); }
@@ -135,6 +155,8 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	public ScreenParts GetSleepScreenParts() { return sleepScreenParts_; }
 	public MagazineParts GetPlayerMagazineParts() { return playerMagazineParts_; }
 	public MagazineParts GetEnemyMagazineParts() { return enemyMagazineParts_; }
+	public EventSpriteRenderer GetDreamEffectScreenEventSprite() { return dreamEffectScreenEventSprite_; }
+	public DreamEffectParts GetDreamEffectParts() { return dreamEffectParts_; }
 
 	public void AttackCommandSkillInfoTextSet(int number) {
 		IMonsterData md = PlayerBattleData.GetInstance().GetMonsterDatas(0);
@@ -463,11 +485,12 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 
 	//ステート
 	private IProcessState nowProcessState_;
-	//get
-	public IProcessState nowProcessState() { return nowProcessState_; }
 	public ICommandState nowCommandState_ { get; set; }
 	private NovelWindowPartsActiveState novelWindowPartsActiveState_ = new NovelWindowPartsActiveState(NovelWindowPartsActive.Active);
+	private BattleSceneInputSoundProvider inputSoundProvider_ = new BattleSceneInputSoundProvider();
+	public IProcessState nowProcessState() { return nowProcessState_; }
 	public NovelWindowPartsActiveState GetNovelWindowPartsActiveState() { return novelWindowPartsActiveState_; }
+	public BattleSceneInputSoundProvider GetInputSoundProvider() { return inputSoundProvider_; }
 
 	public void CommandUpCursorMove() {
 		t13.UnityUtil.ObjectPosAdd(cursorParts_.gameObject, new Vector3(0, 0.8f, 0));
@@ -565,7 +588,7 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
 	}
 
-	public void StatusInfoPartsDPEffect(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
+	public void StatusInfoPartsDPEffectEventSet(TrainerBattleData trainerBattleData, StatusInfoParts statusInfoParts) {
 		for (int i = 0; i < 2; ++i) {
 			//ステータスインフォのDPの点滅演出
 			AllEventManager.GetInstance().UpdateImageSet(
@@ -602,6 +625,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 	}
 
 	void OpeningEventSet() {
+		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().blinkTimeRegulation_ = 0.5f;
+		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().GetBlinkState().state_ = UpdateSpriteRendererProcessBlink.In;
+
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_);
 
@@ -673,8 +699,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 
 		//Blinkの開始
-		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().blinkTimeRegulation_ = 0.5f;
-		novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite().GetBlinkState().state_ = UpdateSpriteRendererProcessBlink.In;
 		AllEventManager.GetInstance().EventSpriteRendererSet(novelWindowParts_.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite());
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
 		AllEventManager.GetInstance().AllUpdateEventExecute();
@@ -698,10 +722,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
 		}
 
-		//エネミーの退場
-		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f + 9.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
-		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
-
 		//エネミーのマガジンの消滅
 		AllEventManager.GetInstance().EventSpriteRendererSet(
 			enemyMagazineParts_.GetMagazineEventSpriteRenderer()
@@ -719,7 +739,14 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 
-		AllEventManager.GetInstance().AllUpdateEventExecute(1.0f);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
+
+		//エネミーの退場
+		AllEventManager.GetInstance().UpdateGameObjectSet(enemyParts_.GetEventGameObject(), new Vector3(3.5f + 9.5f, enemyParts_.GetEventGameObject().transform.position.y, enemyParts_.GetEventGameObject().transform.position.z));
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterSet()));
 
 		//モンスターの登場演出
 		{
@@ -730,8 +757,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			}
 			AllEventManager.GetInstance().EventSpriteRendererSet(enemyEffectParts_.GetEventSpriteRenderer(), animeSprites);
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
-			AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 		}
+
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);
@@ -758,10 +786,6 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			AllEventManager.GetInstance().AllUpdateEventExecute(eventContextUpdateTime_);
 		}
 
-		//プレイヤーの退場
-		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f - 9.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
-		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
-
 		//プレイヤーのマガジンの消滅
 		AllEventManager.GetInstance().EventSpriteRendererSet(
 			playerMagazineParts_.GetMagazineEventSpriteRenderer()
@@ -779,7 +803,23 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 		}
 		AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.ChangeColor);
 
-		AllEventManager.GetInstance().AllUpdateEventExecute(1.5f);
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
+
+		//プレイヤーの退場
+		AllEventManager.GetInstance().UpdateGameObjectSet(playerParts_.GetEventGameObject(), new Vector3(-4.5f - 9.5f, playerParts_.GetEventGameObject().transform.position.y, playerParts_.GetEventGameObject().transform.position.z));
+		AllEventManager.GetInstance().UpdateGameObjectUpdateExecuteSet(UpdateGameObjectEventManagerExecute.PosMove);
+
+		//プレイヤーのアニメーション
+		{
+			List<Sprite> animeSprites = new List<Sprite>();
+			animeSprites.Add(ResourcesGraphicsLoader.GetInstance().GetGraphics("Player/PlayerMonsterSet1"));
+			animeSprites.Add(ResourcesGraphicsLoader.GetInstance().GetGraphics("Player/PlayerMonsterSet2"));
+			AllEventManager.GetInstance().EventSpriteRendererSet(playerParts_.GetEventSprite(), animeSprites);
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
+		}
+
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterSet()));
 
 		//モンスターの登場演出
 		{
@@ -790,8 +830,9 @@ public class BattleManager : MonoBehaviour, ISceneManager {
 			}
 			AllEventManager.GetInstance().EventSpriteRendererSet(playerEffectParts_.GetEventSpriteRenderer(), animeSprites);
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.Anime);
-			AllEventManager.GetInstance().AllUpdateEventExecute(0.35f);
 		}
+
+		AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(eventWaitTime_ / 2);

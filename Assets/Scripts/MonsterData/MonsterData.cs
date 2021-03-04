@@ -46,7 +46,7 @@ public class MonsterData : IMonsterData {
 	private int uniqueSpeed_ = 0;
 
 	//バトルで使用するデータ
-	public IMonsterBattleData battleData_ { get; }
+	public IMonsterBattleData battleData_ { get; set; }
 
 	//実数値
 	public int RealHitPoint() { return ((tribesData_.tribesHitPoint_ * 2 + (uniqueHitPoint_ / 4)) * level_ / 100) + level_ + 10; }
@@ -58,7 +58,7 @@ public class MonsterData : IMonsterData {
 	private float RealPowerUp() {
 		//もしヒーロー状態だったら
 		if (battleData_.firstAbnormalState_.state_ == AbnormalType.Hero) {
-			return 1.5f;
+			return 1.3f;
 		}
 
 		return 1;
@@ -82,10 +82,24 @@ public class MonsterData : IMonsterData {
 		skillDatas_[changeNumber] = temp;
 	}
 
+	public void BattleDataReset() {
+		battleData_ = new MonsterBattleData();
+	}
+
+	//タイプ相性
+	static private float[,] elementSimillar_ = new float[(int)ElementType.Max, (int)ElementType.Max] {
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },//None
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f },//Normal
+		{ 1.0f, 1.0f, 1.0f, 2.0f, 0.5f, 0.5f, 1.0f, 1.0f },//Fire
+		{ 1.0f, 1.0f, 0.5f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f },//Water
+		{ 1.0f, 1.0f, 2.0f, 0.5f, 1.0f, 2.0f, 1.0f, 1.0f },//Tree
+		{ 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 1.0f, 2.0f, 1.0f },//Insect
+		{ 1.0f, 1.0f, 2.0f, 1.0f, 0.5f, 0.5f, 0.5f, 1.0f },//Steel
+		{ 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f },//Ghost
+	};
 	public float ElementSimillarChecker(ElementTypeState checkElementType) {
 		return elementSimillar_[(int)tribesData_.firstElement_.state_, (int)checkElementType.state_] * elementSimillar_[(int)tribesData_.secondElement_.state_, (int)checkElementType.state_];
 	}
-
 	public int ElementSimillarCheckerForValue(ElementTypeState checkElementType) {
 		float checkResult = ElementSimillarChecker(checkElementType);
 
@@ -103,14 +117,14 @@ public class MonsterData : IMonsterData {
 		return 3;
 	}
 
-	private const int ELEMENT_MAX_SIZE = 5;
-	private float[,] elementSimillar_ = new float[ELEMENT_MAX_SIZE, ELEMENT_MAX_SIZE] {
-		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-		{ 1.0f, 1.0f, 1.0f, 2.0f, 0.5f },
-		{ 1.0f, 1.0f, 0.5f, 1.0f, 2.0f },
-		{ 1.0f, 1.0f, 2.0f, 0.5f, 1.0f },
-	};
+	//技の習得関係
+	public bool SkillTradeCheck(ElementType skillElementType) {
+		if (tribesData_.firstElement_.SkillTradeCheck(skillElementType)) return true;
+		if (tribesData_.secondElement_.SkillTradeCheck(skillElementType)) return true;
+
+		return false;
+	}
+
 	/// <summary>
 	///メイン計算式
 	/// </summary>
@@ -166,7 +180,7 @@ public class MonsterData : IMonsterData {
 
 		//(((レベル×2/5+2)×威力×A/D)/50+2)
 		//最終ダメージ
-		int realDamage = (int)((((attackMonster.level_ * 2 / 5 + 2) * realSkillPower * realMonsterAttack / realMonsterDefense) / 50 + 2)
+		int realDamage = (int)((((attackMonster.level_ * 2 / 5 + 2) * realSkillPower * realMonsterAttack / realMonsterDefense) / 50)
 					   * randomResult * typeMatch * typeSimillar);
 
 		return realDamage;
@@ -219,7 +233,7 @@ public class MonsterData : IMonsterData {
 
 		//(((レベル×2/5+2)×威力×A/D)/50+2)
 		//最終ダメージ
-		int realDamage = (int)((((attackMonster.level_ * 2 / 5 + 2) * realSkillPower * realMonsterAttack / realMonsterDefense) / 50 + 2)
+		int realDamage = (int)((((attackMonster.level_ * 2 / 5 + 2) * realSkillPower * realMonsterAttack / realMonsterDefense) / 50)
 					   * randomResult * typeMatch * typeSimillar);
 
 		return realDamage;

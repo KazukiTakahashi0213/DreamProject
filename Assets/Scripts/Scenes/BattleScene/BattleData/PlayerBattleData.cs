@@ -55,11 +55,14 @@ public class PlayerBattleData : TrainerBattleData {
 		AllEventManager.GetInstance().UpdateGameObjectSet(manager.GetPlayerMonsterParts().GetEventGameObject());
 		AllEventManager.GetInstance().UpdateGameObjectsActiveSetExecute(false);
 
+		//SE
+		AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterDown()));
+
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 		//DPの演出のイベント
-		manager.StatusInfoPartsDPEffect(this, manager.GetPlayerStatusInfoParts());
+		manager.StatusInfoPartsDPEffectEventSet(this, manager.GetPlayerStatusInfoParts());
 
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
@@ -78,6 +81,10 @@ public class PlayerBattleData : TrainerBattleData {
 		AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
 
 		if (battleActiveMonsterSize_ == 0) {
+			//BGMの再生
+			AllEventManager.GetInstance().BGMAudioClipChangeEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathDreamers_Lose()));
+			AllEventManager.GetInstance().BGMAudioPlayEventSet();
+
 			//文字列の処理
 			AllEventManager.GetInstance().EventTextSet(
 				manager.GetNovelWindowParts().GetEventText()
@@ -95,7 +102,7 @@ public class PlayerBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(0.8f);
 
 			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime() * 2);
 
 			//フェードアウト
 			AllEventManager.GetInstance().EventSpriteRendererSet(
@@ -129,6 +136,9 @@ public class PlayerBattleData : TrainerBattleData {
 		if (changeMonsterNumber_ > 0) {
 			IMonsterData md = monsterDatas_[changeMonsterNumber_];
 
+			//先頭のパラメーターをリセット
+			monsterDatas_[0].battleData_.RankReset();
+
 			AllEventManager.GetInstance().EventStatusInfoPartsSet(manager.GetPlayerStatusInfoParts(), new Color32(0, 0, 0, 0));
 			AllEventManager.GetInstance().StatusInfoPartsUpdateExecuteSet(StatusInfoPartsEventManagerExecute.IdleMoveEnd);
 			AllEventManager.GetInstance().AllUpdateEventExecute();
@@ -159,6 +169,9 @@ public class PlayerBattleData : TrainerBattleData {
 			AllEventManager.GetInstance().AllUpdateEventExecute(manager.GetEventContextUpdateTime());
 
 			AllEventManager.GetInstance().EventWaitSet(manager.GetEventWaitTime());
+
+			//SE
+			AllEventManager.GetInstance().SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathMonsterSet()));
 
 			//モンスターの登場演出
 			{

@@ -15,14 +15,20 @@ public class MapSceneProcessMenuSelect : BMapSceneProcessState {
 
 		if (sceneMgr.inputProvider_.UpSelect()) {
 			if (mapManager.GetCommandParts().GetSelectNumber() > 0) {
-				mapManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 0.55f, 0));
+				//SE
+				mapManager.GetInputSoundProvider().UpSelect();
+
+				mapManager.GetCommandParts().CommandSelect(-1, new Vector3(0, 0.71f, 0));
 
 				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)mapManager.GetCommandParts().GetSelectNumber();
 			}
 		}
 		else if (sceneMgr.inputProvider_.DownSelect()) {
 			if (mapManager.GetCommandParts().GetSelectNumber() < mapManager.GetCommandParts().GetCommandWindowTextsCount() - 1) {
-				mapManager.GetCommandParts().CommandSelect(1, new Vector3(0, -0.55f, 0));
+				//SE
+				mapManager.GetInputSoundProvider().DownSelect();
+
+				mapManager.GetCommandParts().CommandSelect(1, new Vector3(0, -0.71f, 0));
 
 				commandSelectProvider_.state_ = (MapSceneMenuSelectCommandSelect)mapManager.GetCommandParts().GetSelectNumber();
 			}
@@ -32,6 +38,9 @@ public class MapSceneProcessMenuSelect : BMapSceneProcessState {
 		else if (sceneMgr.inputProvider_.LeftSelect()) {
 		}
 		else if (sceneMgr.inputProvider_.SelectEnter()) {
+			//SE
+			mapManager.GetInputSoundProvider().SelectEnter();
+
 			commandSelectProvider_.SelectEnter(mapManager);
 
 			commandSelectProvider_.state_ = MapSceneMenuSelectCommandSelect.None;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum MonsterNormalMenuSceneMonsterActionCommandExecute {
 	None
-	, Trade
+	, Swap
 	, Skill
 	, Back
 	, Max

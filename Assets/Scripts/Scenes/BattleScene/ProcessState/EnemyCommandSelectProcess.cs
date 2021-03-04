@@ -62,6 +62,21 @@ public class EnemyCommandSelectProcess : IProcessState {
 				}
 			}
 
+			//気まぐれで変化
+			//2/10の確立
+			if (AllSceneManager.GetInstance().GetRandom().Next(0, 10) < 2) {
+				EnemyBattleData.GetInstance().changeMonsterNumber_ = AllSceneManager.GetInstance().GetRandom().Next(0, EnemyBattleData.GetInstance().GetHaveMonsterSize());
+
+				if (EnemyBattleData.GetInstance().changeMonsterNumber_ > 0
+					&& EnemyBattleData.GetInstance().GetMonsterDatas(EnemyBattleData.GetInstance().changeMonsterNumber_).battleActive_
+					&& EnemyBattleData.GetInstance().GetMonsterDatas(EnemyBattleData.GetInstance().changeMonsterNumber_).tribesData_.monsterNumber_ != (int)MonsterTribesDataNumber.None) {
+					EnemyBattleData.GetInstance().changeMonsterActive_ = true;
+				}
+				else {
+					EnemyBattleData.GetInstance().changeMonsterActive_ = false;
+				}
+			}
+
 			//交換していなかったら
 			if (EnemyBattleData.GetInstance().changeMonsterActive_ == false) {
 
@@ -116,10 +131,16 @@ public class EnemyCommandSelectProcess : IProcessState {
 
 				//こんらん状態であれば
 				if (enemyMD.battleData_.HaveAbnormalType(AbnormalType.Confusion)) {
-					//5/10の確立
-					if (AllSceneManager.GetInstance().GetRandom().Next(0, 10) < 5) {
+					//2/10の確立
+					if (AllSceneManager.GetInstance().GetRandom().Next(0, 10) < 3) {
 						mgr.enemySelectSkillNumber_ = AllSceneManager.GetInstance().GetRandom().Next(0, skillNumbers.Length);
 					}
+				}
+
+				//気まぐれで変化
+				//3/10の確立
+				if (AllSceneManager.GetInstance().GetRandom().Next(0, 10) < 3) {
+					mgr.enemySelectSkillNumber_ = AllSceneManager.GetInstance().GetRandom().Next(0, skillNumbers.Length);
 				}
 
 				//dpが100以上だったら

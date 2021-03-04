@@ -9,34 +9,17 @@ public enum MonsterTribesDataNumber {
 	, Bauporisu
 	, Furiruma
 	, Furiruga
+	, Sorushaaku
+	, Biinaasu
+	, DJKong
+	, Naitobea
+	, Bakutaa
+	, Rabinobia
+	, Handreon
 	, Max
 }
 
 public class MonsterTribesData : IMonsterTribesData {
-	public MonsterTribesData(int number) {
-		ResourcesGraphicsLoader graphicsLoader = ResourcesGraphicsLoader.GetInstance();
-
-		ResourcesMonsterTribesData data = ResourcesMonsterTribesDatasLoader.GetInstance().GetMonsterDatas(number);
-
-		monsterNumber_ = number;
-		monsterName_ = data.monsterName_;
-
-		tribesHitPoint_ = data.tribesHitPoint_;
-		tribesAttack_ = data.tribesAttack_;
-		tribesDefense_ = data.tribesDefense_;
-		tribesSpecialAttack_ = data.tribesSpecialAttack_;
-		tribesSpecialDefense_ = data.tribesSpecialDefense_;
-		tribesSpeed_ = data.tribesSpeed_;
-
-		firstElement_ = new ElementTypeState((ElementType)data.firstElement_);
-		secondElement_ = new ElementTypeState((ElementType)data.secondElement_);
-
-		frontTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_Front");
-		backTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_Back");
-		SDTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_SD");
-		frontDreamTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_FrontDream");
-		backDreamTex_ = graphicsLoader.GetGraphics("Monster/" + data.texName_ + "/" + data.texName_ + "_BackDream");
-	}
 	public MonsterTribesData(MonsterTribesDataNumber monsterTribesNumber) {
 		ResourcesGraphicsLoader graphicsLoader = ResourcesGraphicsLoader.GetInstance();
 

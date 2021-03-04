@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioParts : MonoBehaviour {
-	[SerializeField] private AudioSource audioSource_ = null;
+	[SerializeField] private AudioSource BGMAudioSource_ = null;
+	[SerializeField] private AudioSource SEAudioSource_ = null;
 
-	public AudioSource GetAudioSource() { return audioSource_; }
+	public AudioSource GetBGMAudioSource() { return BGMAudioSource_; }
+	public AudioSource GetSEAudioSource() { return SEAudioSource_; }
 }

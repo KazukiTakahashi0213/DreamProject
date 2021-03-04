@@ -11,6 +11,8 @@ public class MonsterMenuSceneSkillActionCommandExecuteTrade : BMonsterMenuSceneS
 
 		monsterMenuManager.GetSkillActionCommandParts().gameObject.SetActive(false);
 
+		MonsterMenuManager.skillTradeSelectMonsterNumber_ = monsterMenuManager.selectMonsterNumber_;
+
 		//フェードアウト
 		eventMgr.EventSpriteRendererSet(
 			sceneMgr.GetPublicFrontScreen().GetEventScreenSprite()

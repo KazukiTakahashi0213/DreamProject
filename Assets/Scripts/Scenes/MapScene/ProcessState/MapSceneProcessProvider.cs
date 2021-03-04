@@ -7,6 +7,7 @@ public enum MapSceneProcess {
 	, PlayerMove
 	, EventExecute
 	, MenuSelect
+	, TradeMonsterSelect
 	, Max
 }
 
@@ -16,6 +17,7 @@ public class MapSceneProcessProvider {
 		baseMapSceneProcessStates_.Add(new MapSceneProcessPlayerMove());
 		baseMapSceneProcessStates_.Add(new MapSceneProcessEventExecute());
 		baseMapSceneProcessStates_.Add(new MapSceneProcessMenuSelect());
+		baseMapSceneProcessStates_.Add(new MapSceneProcessTradeMonsterSelect());
 	}
 
 	public MapSceneProcess state_ = MapSceneProcess.None;

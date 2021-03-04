@@ -7,8 +7,6 @@ public class EventMoveMap : ObjectMoveMap {
 
 	private EventMoveMapTriggerState triggerState_ = new EventMoveMapTriggerState(EventMoveMapTrigger.None);
 
-	//public bool eventActive_ = true;
-
 	public int executeEventNum_ = 1;
 
 	public enum MOVE_TYPE { NONE, RANDOM, }
@@ -61,7 +59,7 @@ public class EventMoveMap : ObjectMoveMap {
 		allEventMgr.EventFinishSet();
 	}
 
-	public void NovelEvent(NovelWindowParts novelWindowParts, string textFilePath) {
+	static public void NovelEvent(NovelWindowParts novelWindowParts, string context) {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
@@ -69,7 +67,6 @@ public class EventMoveMap : ObjectMoveMap {
 		allEventMgr.UpdateGameObjectSet(novelWindowParts.GetUpdateGameObject());
 		allEventMgr.UpdateGameObjectsActiveSetExecute(true);
 
-		string context = ResourcesTextsLoader.GetInstance().GetTexts(textFilePath);
 		List<string> contexts = t13.Utility.ContextSlice(context, "\r\n\r\n");
 
 		for (int i = 0; i < contexts.Count; ++i) {
@@ -85,6 +82,9 @@ public class EventMoveMap : ObjectMoveMap {
 
 			//Enterの押下待ち
 			allEventMgr.EventTriggerSet();
+
+			//SE
+			allEventMgr.SEAudioPlayOneShotEventSet(ResourcesSoundsLoader.GetInstance().GetSounds(SoundsPathSupervisor.GetInstance().GetPathNovelNext()));
 
 			//Blinkの終了
 			allEventMgr.EventSpriteRendererSet(novelWindowParts.GetNovelBlinkIconParts().GetNovelBlinkIconEventSprite());
@@ -102,7 +102,7 @@ public class EventMoveMap : ObjectMoveMap {
 		allEventMgr.UpdateGameObjectsActiveSetExecute(false);
 	}
 
-	public void ObjectMovePosYEvent(ObjectMoveMap objectMoveMap, int addValue, float timeRgulation) {
+	static public void ObjectMovePosYEvent(ObjectMoveMap objectMoveMap, int addValue, float timeRgulation) {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
@@ -116,7 +116,7 @@ public class EventMoveMap : ObjectMoveMap {
 			objectMoveMap.MapMoveUp(System.Math.Abs(addValue));	
 		}
 	}
-	public void ObjectMovePosXEvent(ObjectMoveMap objectMoveMap, int addValue, float timeRgulation) {
+	static public void ObjectMovePosXEvent(ObjectMoveMap objectMoveMap, int addValue, float timeRgulation) {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 
@@ -131,17 +131,13 @@ public class EventMoveMap : ObjectMoveMap {
 		}
 	}
 
-	public void BattleEvent() {
+	static public void BattleEvent() {
 		AllEventManager allEventMgr = AllEventManager.GetInstance();
 		AllSceneManager allSceneMgr = AllSceneManager.GetInstance();
 		PlayerTrainerData playerTrainerData = PlayerTrainerData.GetInstance();
 		EnemyTrainerData enemyTrainerData = EnemyTrainerData.GetInstance();
 		PlayerBattleData playerBattleData = PlayerBattleData.GetInstance();
 		EnemyBattleData enemyBattleData = EnemyBattleData.GetInstance();
-
-		//BGMの再生
-		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().clip = ResourcesSoundsLoader.GetInstance().GetSounds("BGM/BattleScene/Dreamers_Battle");
-		AllSceneManager.GetInstance().GetPublicAudioParts().GetAudioSource().Play();
 
 		//白
 		allEventMgr.EventSpriteRendererSet(

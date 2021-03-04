@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CommandDream : ICommandState {
 	public ICommandState DownSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().DownSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -11,6 +14,9 @@ public class CommandDream : ICommandState {
 		return new CommandEscape();
 	}
 	public ICommandState LeftSelect(BattleManager mgr) {
+		//SE
+		mgr.GetInputSoundProvider().LeftSelect();
+
 		//どくのダメージ処理
 		mgr.PoisonDamageProcess(PlayerBattleData.GetInstance(), mgr.GetPlayerStatusInfoParts(), mgr.GetPlayerMonsterParts());
 
@@ -30,6 +36,9 @@ public class CommandDream : ICommandState {
 
 		//dpが100以上だったら
 		if (PlayerBattleData.GetInstance().dreamPoint_ >= 100) {
+			//SE
+			mgr.GetInputSoundProvider().SelectEnter();
+
 			if (PlayerBattleData.GetInstance().dreamSyncronize_ == false) {
 				//ゆめの文字色の変更
 				mgr.GetNovelWindowParts().GetCommandParts().GetCommandWindowTexts(1).color = new Color32(94, 120, 255, 255);

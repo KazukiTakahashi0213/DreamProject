@@ -29,5 +29,5 @@ public interface ISkillData {
 
 	string effectInfo_ { get; }
 
-	void Animetion(EffectParts targetEffectParts);
+	void EffectAnimetionEventSet(EffectParts targetEffectParts);
 }

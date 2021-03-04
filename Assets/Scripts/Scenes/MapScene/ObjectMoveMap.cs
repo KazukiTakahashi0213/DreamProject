@@ -27,6 +27,8 @@ public class ObjectMoveMap : MonoBehaviour
     protected Vector3 _start_pos = Vector3.zero;
     protected Vector2 _next = Vector2.zero;
     public Vector2 GetNext() { return _next; }
+    public Vector3 GetStartPos() { return _start_pos; }
+    public void SetStartPos(Vector3 value) { _start_pos = value; }
     public void ResetNowPos() { 
         _now_pos = _start_pos;
         transform.position = _start_pos;
@@ -40,7 +42,7 @@ public class ObjectMoveMap : MonoBehaviour
     //アニメーション関連
     [SerializeField] float _walk_interval = 0.2f;
     [SerializeField] float _stop_interval = 0.4f;
-    [SerializeField] private bool animeSpritesActive_ = false;
+    [SerializeField] public bool animeSpritesActive_ = false;
     SpriteRenderer _sprite_renderer = null;
     Sprite[] sprites = null;
     int[] dir_states = new int[4] { 10, 1, 7, 4 };

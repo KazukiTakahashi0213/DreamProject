@@ -109,9 +109,9 @@ public class UpdateGameObjectProcessState {
 				updateGameObject.addEulerVec3_.z
 				);
 
-			updateGameObject.addEulerVec3_.x = updateGameObject.transform.rotation.eulerAngles.x;
-			updateGameObject.addEulerVec3_.y = updateGameObject.transform.rotation.eulerAngles.y;
-			updateGameObject.addEulerVec3_.z = updateGameObject.transform.rotation.eulerAngles.z;
+			updateGameObject.addEulerVec3_.x = updateGameObject.transform.localRotation.eulerAngles.x;
+			updateGameObject.addEulerVec3_.y = updateGameObject.transform.localRotation.eulerAngles.y;
+			updateGameObject.addEulerVec3_.z = updateGameObject.transform.localRotation.eulerAngles.z;
 
 			return UpdateGameObjectProcess.None;
 		}

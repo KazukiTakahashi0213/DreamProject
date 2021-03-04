@@ -18,7 +18,8 @@ public class SkillInfoFrameParts : MonoBehaviour{
 			"PP　　　　" + playPointContext + "\n"
 			+ "わざタイプ／" + referSkillData.elementType_.GetName() + "\n"
 			+ "いりょく　　" + t13.Utility.HarfSizeForFullSize(referSkillData.effectValue_.ToString()) + "\n"
-			+ "めいちゅう　" + t13.Utility.HarfSizeForFullSize(referSkillData.hitRateValue_.ToString());
+			+ "めいちゅう　" + t13.Utility.HarfSizeForFullSize(referSkillData.hitRateValue_.ToString()) + "\n"
+			+ "アップ" + t13.Utility.HarfSizeForFullSize("DP") + "　" + t13.Utility.HarfSizeForFullSize(referSkillData.upDpValue_.ToString());
 
 		texts_[1].text = referSkillData.effectInfo_;
 	}

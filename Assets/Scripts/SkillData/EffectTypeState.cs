@@ -18,15 +18,15 @@ public class EffectTypeState {
 	public EffectType state_;
 
 	//None
-	static private void NoneExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-
+	static private bool NoneExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+		return false;
 	}
-	static private void NoneExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
-
+	static private bool NoneExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+		return false;
 	}
 
 	//Attack
-	static private void AttackExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+	static private bool AttackExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
 		//ランク補正の計算
 		float monsterHitRateValue = 0;
 		{
@@ -55,33 +55,8 @@ public class EffectTypeState {
 
 			AllEventManager.GetInstance().EventWaitSet(1.0f);
 
-			return;
+			return false;
 		}
-
-		//技のアニメーション
-		attackSkillData.Animetion(mgr.GetEnemyEffectParts());
-		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-
-		//ダメージアクション（点滅）
-		if (attackSkillData.effectValue_ != 0) {
-			mgr.GetEnemyMonsterParts().GetEventMonsterSprite().blinkTimeRegulation_ = 0.06f;
-
-			//点滅の開始
-			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
-			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
-			AllEventManager.GetInstance().AllUpdateEventExecute();
-
-			//ウェイト
-			AllEventManager.GetInstance().EventWaitSet(0.48f);
-
-			//点滅の終了
-			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
-			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
-			AllEventManager.GetInstance().AllUpdateEventExecute();
-		}
-
-		//ウェイト
-		AllEventManager.GetInstance().EventWaitSet(0.2f);
 
 		//急所の判定
 		float critical = 1;
@@ -100,48 +75,79 @@ public class EffectTypeState {
 		int realDamage = (int)(MonsterData.BattleDamageCalculate(attackMonsterData, defenseMonsterData, attackSkillData) * critical);
 		defenseMonsterData.nowHitPoint_ -= realDamage;
 
-		//ヒットポイントのゲージの変動イベントの設定
-		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
-		AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetEnemyStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount);
-		AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
-		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
+		//技のアニメーション
+		attackSkillData.EffectAnimetionEventSet(mgr.GetEnemyEffectParts());
+
 		//ウェイト
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
-		if (critical > 1.0f) {
-			//急所の説明
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+		//ダメージを受けていたら
+		if (realDamage > 0) {
+			//ダメージアクション（点滅）
+			mgr.GetEnemyMonsterParts().GetEventMonsterSprite().blinkTimeRegulation_ = 0.06f;
 
+			//点滅の開始
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkStart);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.48f);
+
+			//点滅の終了
+			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetEnemyMonsterParts().GetEventMonsterSprite());
+			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
+			AllEventManager.GetInstance().AllUpdateEventExecute();
+
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.2f);
+
+			//ヒットポイントのゲージの変動イベントの設定
+			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
+			AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetEnemyStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount);
+			AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
+
+			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			if (critical > 1.0f) {
+				//急所の説明
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+
+			//効果の説明
+			if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+			else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
+				&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+			else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ないようだ・・・");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
 		}
 
-		//効果の説明
-		if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
-		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
-			&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
-		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ないようだ・・・");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
+		return true;
 	}
-	static private void AttackExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+	static private bool AttackExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
 		//ランク補正の計算
 		float monsterHitRateValue = 0;
 		{
@@ -170,12 +176,8 @@ public class EffectTypeState {
 
 			AllEventManager.GetInstance().EventWaitSet(1.0f);
 
-			return;
+			return false;
 		}
-
-		//技のアニメーション
-		attackSkillData.Animetion(mgr.GetPlayerEffectParts());
-		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
 
 		//急所の判定
 		float critical = 1;
@@ -194,8 +196,15 @@ public class EffectTypeState {
 		int realDamage = (int)(MonsterData.BattleDamageCalculate(attackMonsterData, defenseMonsterData, attackSkillData) * critical);
 		defenseMonsterData.nowHitPoint_ -= realDamage;
 
-		//ダメージアクション（点滅）
-		if (attackSkillData.effectValue_ != 0) {
+		//技のアニメーション
+		attackSkillData.EffectAnimetionEventSet(mgr.GetPlayerEffectParts());
+
+		//ウェイト
+		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+		//ダメージを受けていたら
+		if (realDamage > 0) {
+			//ダメージアクション（点滅）
 			mgr.GetPlayerMonsterParts().GetEventMonsterSprite().blinkTimeRegulation_ = 0.06f;
 
 			//点滅の開始
@@ -210,80 +219,87 @@ public class EffectTypeState {
 			AllEventManager.GetInstance().EventSpriteRendererSet(mgr.GetPlayerMonsterParts().GetEventMonsterSprite());
 			AllEventManager.GetInstance().EventSpriteRenderersUpdateExecuteSet(EventSpriteRendererEventManagerExecute.BlinkEnd);
 			AllEventManager.GetInstance().AllUpdateEventExecute();
-		}
 
-		//ウェイト
-		AllEventManager.GetInstance().EventWaitSet(0.2f);
+			//ウェイト
+			AllEventManager.GetInstance().EventWaitSet(0.2f);
 
-		//ヒットポイントのゲージの変動イベントの設定
-		float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
-		AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetPlayerStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, defenseMonsterData);
-		AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
-		AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
-		//ウェイト
-		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			//ヒットポイントのゲージの変動イベントの設定
+			float hpGaugeFillAmount = t13.Utility.ValueForPercentage(defenseMonsterData.RealHitPoint(), defenseMonsterData.nowHitPoint_, 1);
+			AllEventManager.GetInstance().HpGaugePartsSet(mgr.GetPlayerStatusInfoParts().GetFrameParts().GetHpGaugeParts(), hpGaugeFillAmount, defenseMonsterData);
+			AllEventManager.GetInstance().HpGaugePartsUpdateExecuteSet(HpGaugePartsEventManagerExecute.GaugeUpdate);
+			AllEventManager.GetInstance().AllUpdateEventExecute(0.5f);
 
-		if (critical > 1.0f) {
-			//急所の説明
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
+			//ウェイト
 			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+			if (critical > 1.0f) {
+				//急所の説明
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "きゅうしょに　あたった！");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+
+			//効果の説明
+			if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+			else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
+				&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
+			else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
+				AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかが　ないようだ・・・");
+				AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
+				AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
+
+				AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+			}
 		}
 
-		//効果の説明
-		if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 1.0f) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　ばつぐんだ！");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
-		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 1.0f
-			&& defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) > 0) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかは　いまひとつの　ようだ");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
-		else if (defenseMonsterData.ElementSimillarChecker(attackSkillData.elementType_) < 0.1f) {
-			AllEventManager.GetInstance().EventTextSet(mgr.GetNovelWindowParts().GetEventText(), "こうかが　ないようだ・・・");
-			AllEventManager.GetInstance().EventTextsUpdateExecuteSet(EventTextEventManagerExecute.CharaUpdate);
-			AllEventManager.GetInstance().AllUpdateEventExecute(mgr.GetEventContextUpdateTime());
-
-			AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
-		}
+		return true;
 	}
 
 	//Support
-	static private void SupportExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+	static private bool SupportExecutePlayerEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
 		//技のアニメーション
-		attackSkillData.Animetion(mgr.GetEnemyEffectParts());
+		attackSkillData.EffectAnimetionEventSet(mgr.GetEnemyEffectParts());
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+		return true;
 	}
-	static private void SupportExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
+	static private bool SupportExecuteEnemyEventSet(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) {
 		//技のアニメーション
-		attackSkillData.Animetion(mgr.GetPlayerEffectParts());
+		attackSkillData.EffectAnimetionEventSet(mgr.GetPlayerEffectParts());
 		AllEventManager.GetInstance().EventWaitSet(mgr.GetEventWaitTime());
+
+		return true;
 	}
 
-	private delegate void ExecutePlayerEventSetFunc(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData);
+	private delegate bool ExecutePlayerEventSetFunc(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData);
 	private ExecutePlayerEventSetFunc[] executePlayerEventSets_ = new ExecutePlayerEventSetFunc[(int)EffectType.Max] {
 		NoneExecutePlayerEventSet,
 		AttackExecutePlayerEventSet,
 		SupportExecutePlayerEventSet
 	};
-	public void ExecutePlayerEventSet(BattleManager battleManager, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) { executePlayerEventSets_[(int)state_](this, battleManager, attackMonsterData, attackSkillData, defenseMonsterData); }
+	public bool ExecutePlayerEventSet(BattleManager battleManager, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) { return executePlayerEventSets_[(int)state_](this, battleManager, attackMonsterData, attackSkillData, defenseMonsterData); }
 
-	private delegate void ExecuteEnemyEventSetFunc(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData);
+	private delegate bool ExecuteEnemyEventSetFunc(EffectTypeState mine, BattleManager mgr, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData);
 	private ExecuteEnemyEventSetFunc[] executeEnemyEventSets_ = new ExecuteEnemyEventSetFunc[(int)EffectType.Max] {
 		NoneExecuteEnemyEventSet,
 		AttackExecuteEnemyEventSet,
 		SupportExecuteEnemyEventSet
 	};
-	public void ExecuteEnemyEventSet(BattleManager battleManager, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) { executeEnemyEventSets_[(int)state_](this, battleManager, attackMonsterData, attackSkillData, defenseMonsterData); }
+	public bool ExecuteEnemyEventSet(BattleManager battleManager, IMonsterData attackMonsterData, ISkillData attackSkillData, IMonsterData defenseMonsterData) { return executeEnemyEventSets_[(int)state_](this, battleManager, attackMonsterData, attackSkillData, defenseMonsterData); }
 
 	private EffectAttackTypeState effectAttackTypeState_ = new EffectAttackTypeState(EffectAttackType.Normal);
 	public EffectAttackTypeState GetEffectAttackTypeState() { return effectAttackTypeState_; }
